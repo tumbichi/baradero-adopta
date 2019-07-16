@@ -1,0 +1,130 @@
+{
+  "project_info": {
+    "project_number": "354125955848",
+    "firebase_url": "https://fir-appautentificacion.firebaseio.com",
+    "project_id": "fir-appautentificacion",
+    "storage_bucket": "fir-appautentificacion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354125955848:android:4df6e5595579eb13",
+        "android_client_info": {
+          "package_name": "com.pity.appperros1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354125955848-r0sndu5muqjlct1e2ah6pl8meu6aidao.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pity.appperros1",
+            "certificate_hash": "a0c954543165edc68042ddbce7b2d9362c343e01"
+          }
+        },
+        {
+          "client_id": "354125955848-uajhs61srh1rbidrkbaaagdv7cqhu988.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYyQU0TLvwoQnva65JiGRnsr-_TS2zwvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354125955848-uajhs61srh1rbidrkbaaagdv7cqhu988.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354125955848:android:1f7e598745c3ab8b",
+        "android_client_info": {
+          "package_name": "com.pity.baraderoadoptamvp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354125955848-41qk2mu3kr4el167knofap68vsjnjb4t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pity.baraderoadoptamvp",
+            "certificate_hash": "fe7dc697dacf464a9f49a3d3099eec9264b03e9e"
+          }
+        },
+        {
+          "client_id": "354125955848-uajhs61srh1rbidrkbaaagdv7cqhu988.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYyQU0TLvwoQnva65JiGRnsr-_TS2zwvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354125955848-uajhs61srh1rbidrkbaaagdv7cqhu988.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354125955848:android:b8f8cef6f613944d",
+        "android_client_info": {
+          "package_name": "com.pity.firebaseappautentificacion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354125955848-524f24bofjmtfgckg6qp1l6b4viejo19.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pity.firebaseappautentificacion",
+            "certificate_hash": "5b726cd77a0d8a8fe975602797346711dfb5a699"
+          }
+        },
+        {
+          "client_id": "354125955848-kgd9ehjenkj65cmif5lvk3fhh529m9p3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pity.firebaseappautentificacion",
+            "certificate_hash": "7cfe5c9b676f39940b17ad0d37e953d28c419d0c"
+          }
+        },
+        {
+          "client_id": "354125955848-uajhs61srh1rbidrkbaaagdv7cqhu988.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYyQU0TLvwoQnva65JiGRnsr-_TS2zwvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354125955848-uajhs61srh1rbidrkbaaagdv7cqhu988.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

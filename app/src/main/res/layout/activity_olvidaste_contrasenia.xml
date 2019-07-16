@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.olvidaste_contrasenia.OlvidasteContraseniaView"
+    android:padding="8dp"
+    android:layout_margin="8dp"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ingresa el mail de tu cuenta"
+        android:textAlignment="center"
+        android:textColor="@color/icons"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edit_text_email_olvidate_contrasenia"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/custom_edit_text_white"
+            android:inputType="textEmailAddress"/>
+
+        <ProgressBar
+            android:id="@+id/olvidaste_pass_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/button_enviar_olvidaste_contrasenia"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/custom_button_purple"
+            android:text="Enviar"
+            android:textColor="@color/icons"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

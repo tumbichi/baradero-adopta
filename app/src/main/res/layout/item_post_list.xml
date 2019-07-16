@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        
+
+
+
+        <ImageView
+            android:id="@+id/post_image_view_foto_perro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_perro"
+            android:src="@drawable/foto_perro" />
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/post_etiqueta_adopcion"
+                android:layout_width="96dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:background="@drawable/custom_button_red"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADOPCION"
+                    android:textColor="@color/icons"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/post_etiqueta_perdido"
+                android:layout_width="96dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:background="@drawable/custom_button_blue"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PERDIDO"
+                    android:textColor="@color/icons"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+    
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:id="@+id/post_foto_perfil_usuario"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+
+            android:layout_alignParentStart="true"
+
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+
+            app:srcCompat="@drawable/boy" />
+
+
+        <TextView
+            android:id="@+id/post_text_view_nombre_perro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_toEndOf="@+id/post_foto_perfil_usuario"
+
+            android:layout_marginStart="8dp"
+
+            android:text="Nombre"
+            android:textColor="#ffff"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/post_text_view_descripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+
+            android:layout_toEndOf="@+id/post_foto_perfil_usuario"
+            android:layout_toStartOf="@+id/post_button_ver_mas"
+            android:layout_below="@+id/post_text_view_nombre_perro"
+
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+
+            android:text="Descripcion"
+            android:textStyle="italic"
+            android:textColor="#ffff" />
+
+
+        <Button
+
+            android:id="@+id/post_button_ver_mas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentEnd="true"
+
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+
+            android:background="@drawable/custom_button_ver_mas"
+            android:text="VER MAS"
+            android:textColor="@color/icons"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
