@@ -11,6 +11,7 @@ public interface IDogRepository {
     void uploadPhoto(Uri path, CallbackUploadPhoto callbackUploadPhoto);
     void uploadPerro(PerroModel perro, FirebaseUser currentUser, CallbackUploadDog callback);
     void getDogList(CallbackDogList callbackDogList);
+    void queryDogBy(String id, CallbackQueryDog callbackQueryDog);
 
 
     interface CallbackUploadPhoto {
@@ -24,6 +25,10 @@ public interface IDogRepository {
     interface CallbackDogList {
         void onSuccesGetDogList(ArrayList<PerroModel> dogList);
         void onFailureGetDogList(String error);
+    }
+    interface CallbackQueryDog {
+        void onSucessQueryDog(PerroModel currentDog);
+        void onFailureQueryDog(String msgError);
     }
 
 }

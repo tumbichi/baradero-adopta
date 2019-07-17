@@ -22,10 +22,15 @@ public class InicioAdapter extends BaseAdapter {
     private ArrayList<PerroModel> dogsList;
     private int layout;
 
-    public InicioAdapter (Context context, ArrayList<PerroModel> list, int l) {
+    private View.OnClickListener mOnClick;
+
+
+    public InicioAdapter (Context context, ArrayList<PerroModel> list, int l, View.OnClickListener onClickListener) {
         this.mContext = context;
         this.dogsList = list;
         this.layout = l;
+        this.mOnClick = onClickListener;
+
     }
 
 
@@ -61,14 +66,17 @@ public class InicioAdapter extends BaseAdapter {
             holder.etiquetaAdopcion = convertView.findViewById(R.id.post_etiqueta_adopcion);
             holder.etiquetPerdido = convertView.findViewById(R.id.post_etiqueta_perdido);
 
+            holder.buttonVerMas.setOnClickListener(mOnClick);
+
             convertView.setTag(holder);
 
         } else {
             holder = (PostListHolder) convertView.getTag();
+
         }
 
         PerroModel currentDog = dogsList.get(position);
-        
+        holder.buttonVerMas.setTag(position);
         if (currentDog != null){
             holder.textViewNombre.setText(currentDog.getNombre());
             holder.textViewDescripcion.setText(currentDog.getDescripcion());
@@ -93,6 +101,8 @@ public class InicioAdapter extends BaseAdapter {
                 }
             }
 
+
+
         }
 
 
@@ -101,7 +111,11 @@ public class InicioAdapter extends BaseAdapter {
     }
 
 
-    class PostListHolder{
+
+    }
+
+
+     class PostListHolder {
         TextView textViewNombre;
         TextView textViewDescripcion;
 
@@ -113,5 +127,6 @@ public class InicioAdapter extends BaseAdapter {
         LinearLayout etiquetaAdopcion;
         LinearLayout etiquetPerdido;
 
+
     }
-}
+

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.informacion_perro.implementation.InformacionPerroView">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/informacion_perro_layout_perdido"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/material_blue"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:text="PERDIDO"
+                    android:textColor="@color/icons"
+                    android:textSize="28sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/informacion_perro_layout_adopcion"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/material_red"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:text="ADOPCION"
+                    android:textColor="@color/icons"
+                    android:textSize="28sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/primary_dark"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:gravity="">
+
+                <ImageView
+                    android:id="@+id/informacion_perro_image_view_foto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_launcher" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/primary"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:background="#333333"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/boy" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/informacion_perro_text_view_nombre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Nombre"
+                        android:textColor="@color/icons"
+                        android:textSize="24sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@color/icons" />
+
+                    <TextView
+                        android:id="@+id/informacion_perro_text_view_descripcion"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="8dp"
+                        android:text="Descripcion"
+                        android:textColor="@color/icons"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#333333"
+                android:gravity="end"
+                android:paddingBottom="16dp"
+                >
+
+                <TextView
+                    android:id="@+id/informacion_perro_text_view_ver_mas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VER MAS"
+                    android:textSize="16sp"
+                    android:textColor="#FF5722"
+                    android:layout_marginEnd="16dp" />
+
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/icons"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:background="@color/divider"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="12dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/informacion_perro_image_view_genero"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/macho"/>
+
+                        <TextView
+                            android:id="@+id/informacion_perro_text_view_genero"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Macho"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="@color/primary"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/informacion_perro_image_view_tamanio"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/pequnio"/>
+                        <TextView
+                            android:id="@+id/informacion_perro_text_view_tamanio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Pequeño"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="@color/primary"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/informacion_perro_image_view_edad"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/cachorro"/>
+                        <TextView
+                            android:id="@+id/informacion_perro_text_view_edad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Cachorro"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="@color/primary"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_marginStart="24dp">
+
+                        <ImageView
+                            android:id="@+id/informacion_perro_image_view_vacuna"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/vacuna"/>
+                        <TextView
+                            android:id="@+id/informacion_perro_text_view_vacuna"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Vacunado"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="@color/primary"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_marginEnd="24dp">
+                        <ImageView
+                            android:id="@+id/informacion_perro_image_view_castrado"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/castrado"/>
+                        <TextView
+                            android:id="@+id/informacion_perro_text_view_castrado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Castrado"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="@color/primary"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/icons"/>
+            <Button
+                android:id="@+id/informacion_perro_button_contactar"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_gravity="bottom"
+                android:background="@color/primary"
+                android:text="CONTACT WITH OWNER"
+                android:textColor="@color/icons" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

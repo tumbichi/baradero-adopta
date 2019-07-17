@@ -2,8 +2,10 @@ package com.pity.appperros1.ui.inicio;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,15 +17,21 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pity.appperros1.R;
 import com.pity.appperros1.base.BaseActivity;
 import com.pity.appperros1.data.interactor.implementation.InicioInteractor;
+import com.pity.appperros1.data.modelos.PerroModel;
 import com.pity.appperros1.ui.fragment_agregar_perro.implementation.AgregarPerroFragment;
+import com.pity.appperros1.ui.informacion_perro.implementation.InformacionPerroView;
 import com.pity.appperros1.ui.inicio.adapters.InicioAdapter;
 import com.pity.appperros1.ui.login.LoginView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 
-public class InicioActivity extends BaseActivity<IInicioPresentador> implements IInicioView {
+public class InicioActivity extends BaseActivity<IInicioPresentador>
+        implements IInicioView, View.OnClickListener {
 
     private AgregarPerroFragment fragment;
 
@@ -111,12 +119,35 @@ public class InicioActivity extends BaseActivity<IInicioPresentador> implements 
     }
 
     @Override
+    public void navigateToInformacionOf(PerroModel currentDog) {
+        Intent intent = new Intent(this, InformacionPerroView.class);
+
+        intent.setData(Uri.parse(currentDog.getId()));
+        startActivity(intent);
+    }
+
+    @Override
     public void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void setListViewAdapter(InicioAdapter adapter) {
+    public void setListViewAdapter(InicioAdapter adapter, ArrayList<PerroModel> postList) {
+        adapter = new InicioAdapter(this, postList, R.layout.item_post_list,this);
         postListView.setAdapter(adapter);
+    }
+
+    @OnItemClick(R.id.inicio_list_view)
+    public void onItemClickListener(AdapterView<?> parent, int position){
+        showToast(": " + parent.getAdapter().getItem(position));
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.post_button_ver_mas){
+            final int position = postListView.getPositionForView(v);
+            mPresenter.onItemClickVerMas(position);
+        }
     }
 }

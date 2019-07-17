@@ -12,6 +12,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -29,13 +30,22 @@ import java.util.Map;
 
 public class DogRepository implements IDogRepository {
 
+
+    private static DogRepository mRepository;
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
 
 
-    public DogRepository(){
+    private DogRepository(){
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mStorage = FirebaseStorage.getInstance("gs://fir-appautentificacion.appspot.com").getReference();
+    }
+
+    public static DogRepository getInstance(){
+        if (mRepository == null){
+            mRepository = new DogRepository();
+        }
+        return mRepository;
     }
 
     @Override
@@ -132,6 +142,37 @@ public class DogRepository implements IDogRepository {
             }
         });
 
+    }
+
+    @Override
+    public void queryDogBy(String Id, CallbackQueryDog callbackQueryDog){
+        DatabaseReference mReference = mDatabase.child("Perros");
+        final PerroModel[] currentDog = {null};
+
+
+        Query query = mReference.orderByChild("id").equalTo(Id).limitToFirst(1);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                PerroModel currentDog = null;
+                if (dataSnapshot != null){
+
+                    currentDog = dataSnapshot.getChildren().iterator().next().getValue(PerroModel.class);
+
+
+                }
+
+                callbackQueryDog.onSucessQueryDog(currentDog);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callbackQueryDog.onFailureQueryDog(databaseError.getMessage());
+            }
+        });
     }
 
 

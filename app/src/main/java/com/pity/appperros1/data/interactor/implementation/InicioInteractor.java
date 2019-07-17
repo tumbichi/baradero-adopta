@@ -25,7 +25,7 @@ public class InicioInteractor implements IInicioInteractor,
 
     public InicioInteractor(){
         this.userRepository = new UserRepository();
-        this.dogRepository = new DogRepository();
+        this.dogRepository = DogRepository.getInstance();
 
     }
 
@@ -45,6 +45,10 @@ public class InicioInteractor implements IInicioInteractor,
         return postList;
     }
 
+    @Override
+    public PerroModel getDogById(int position) {
+        return getListPost().get(position);
+    }
 
 
     @Override

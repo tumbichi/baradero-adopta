@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.registro.RegitroView"
-    android:padding="8dp"
-    android:layout_margin="8dp"
+
+    android:layout_margin="4dp"
     android:background="@color/background"
-    android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:orientation="vertical">
 
 
     <TextView
@@ -21,14 +20,18 @@
         android:textSize="40dp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"/>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 <ScrollView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center">
 
@@ -158,40 +161,43 @@
                 android:visibility="gone"/>
 
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center|bottom"
-            android:layout_gravity="center|bottom"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/registro_button_registrate"
-
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="10dp"
-
-                android:background="@drawable/custom_button_purple"
-
-                android:text="Registrate"
-                android:textColor="@color/icons"
-                android:textStyle="bold" />
-        </LinearLayout>
 
     </LinearLayout>
 
 
 </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|bottom"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/registro_button_registrate"
+
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+
+            android:background="@drawable/custom_button_purple"
+
+            android:text="Registrate"
+            android:textColor="@color/icons"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
 

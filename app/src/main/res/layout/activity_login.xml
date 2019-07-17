@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.login.LoginView"
-    android:padding="8dp">
+    android:background="@color/primary_dark"
+    android:padding="4dp">
 
 
 

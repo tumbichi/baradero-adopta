@@ -52,6 +52,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.informacion_perro.implementation.InformacionPerroView">
+            <intent-filter>
+                <action android:name="android.intent.action.INFORMACIONPERROVIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+        </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.pity.appperros1.android.FileProvider"

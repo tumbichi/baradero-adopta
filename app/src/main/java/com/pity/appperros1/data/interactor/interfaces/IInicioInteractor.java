@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public interface IInicioInteractor {
     void logout();
     ArrayList<PerroModel> getListPost();
+    PerroModel getDogById(int position);
     void bringDogList(CallbackGetDogList callbackGetDogList);
 
     void createCurrentNewDog();
