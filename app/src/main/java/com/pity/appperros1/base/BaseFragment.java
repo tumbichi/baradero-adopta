@@ -34,11 +34,10 @@ public abstract class BaseFragment<TPresenter extends IBasePresenter> extends Fr
 
         if (mPresenter == null) {
             mPresenter = initializePresenter(context);
-        }
-
-        if (mPresenter != null){
             mPresenter.attachView(this);
         }
+
+
 
     }
 
@@ -53,6 +52,7 @@ public abstract class BaseFragment<TPresenter extends IBasePresenter> extends Fr
         super.onCreate(savedInstanceState);
         if (mPresenter != null) {
             mPresenter.onCreate(savedInstanceState);
+
         }
     }
 

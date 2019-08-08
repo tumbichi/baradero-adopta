@@ -308,6 +308,8 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
     public void onSuccesUploadDog() {
         mView.showToastError("Perro subido con exito!");
         mView.hideProgressDialog();
+        mViewParent.hideFragment();
+        mViewParent.notifyDataChangeForListView();
     }
 
     @Override

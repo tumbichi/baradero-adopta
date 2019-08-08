@@ -19,7 +19,8 @@ public abstract class BasePresenter<TView extends IBaseView> implements IBasePre
 
     // onCreate para activity
     @Override
-    public void onCreate(final Bundle savedInstanceState){}
+    public void onCreate(final Bundle savedInstanceState){
+    }
     // onCreate para Fragment
 
 

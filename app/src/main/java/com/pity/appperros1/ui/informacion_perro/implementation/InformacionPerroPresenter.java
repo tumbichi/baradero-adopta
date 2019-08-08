@@ -42,8 +42,6 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
 
     @Override
     public void onSucessQueryDog(PerroModel currentDog) {
-        String nombre = currentDog.getNombre();
-        mView.toast(nombre);
         bindRowsOfDogInformation(currentDog);
     }
 

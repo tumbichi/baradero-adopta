@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -34,6 +35,7 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
         implements IInicioView, View.OnClickListener {
 
     private AgregarPerroFragment fragment;
+    private InicioAdapter mAdapter;
 
     @BindView(R.id.inicio_icon_button_logout)
     ImageView imgViewLogout;
@@ -43,27 +45,29 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
     FrameLayout fragmentLayout;
     @BindView(R.id.inicio_list_view)
     ListView postListView;
+    @BindView(R.id.inicio_progress_bar)
+    ProgressBar progressBar;
 
-    @OnClick (R.id.inicio_icon_button_logout)
-    public void onClickLogout(ImageView imgView){
-        if (imgView == imgViewLogout){
+
+    @OnClick(R.id.inicio_icon_button_logout)
+    public void onClickLogout(ImageView imgView) {
+        if (imgView == imgViewLogout) {
             mPresenter.logoutToFirebase();
 
         }
     }
 
     @OnClick(R.id.floatingActionButton)
-    public void onClickFab(FloatingActionButton clicked){
-        if(clicked == fab){
+    public void onClickFab(FloatingActionButton clicked) {
+        if (clicked == fab) {
             showFragment();
         }
     }
 
 
-
     @Override
     public InicioPresentador createBasePresenter(Context context) {
-        return new InicioPresentador(this,  new InicioInteractor());
+        return new InicioPresentador(this, new InicioInteractor());
     }
 
     @Override
@@ -71,29 +75,39 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_inicio);
+
         ButterKnife.bind(this);
         mPresenter.attachView(this);
         fragment = new AgregarPerroFragment(this);
-
 
     }
 
 
     @Override
     public void showProgressDialog() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressDialog() {
+        progressBar.setVisibility(View.GONE);
+    }
 
+    @Override
+    public void showListView() {
+        postListView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideListView() {
+        postListView.setVisibility(View.GONE);
     }
 
     @Override
     public void showFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_bottom,R.anim.slide_out_bottom)
+                .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
                 .add(R.id.fragment_layout, fragment)
                 .commit();
         fab.setVisibility(View.GONE);
@@ -122,7 +136,7 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
     public void navigateToInformacionOf(PerroModel currentDog) {
         Intent intent = new Intent(this, InformacionPerroView.class);
 
-        intent.setData(Uri.parse(currentDog.getId()));
+        intent.setData(Uri.parse(currentDog.getDid()));
         startActivity(intent);
     }
 
@@ -132,20 +146,25 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
     }
 
     @Override
-    public void setListViewAdapter(InicioAdapter adapter, ArrayList<PerroModel> postList) {
-        adapter = new InicioAdapter(this, postList, R.layout.item_post_list,this);
-        postListView.setAdapter(adapter);
+    public void setListViewAdapter(ArrayList<PerroModel> postList) {
+        mAdapter = new InicioAdapter(this, postList, R.layout.item_post_list, this);
+        postListView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void notifyDataChangeForListView() {
+        mAdapter.notifyDataSetChanged();
     }
 
     @OnItemClick(R.id.inicio_list_view)
-    public void onItemClickListener(AdapterView<?> parent, int position){
+    public void onItemClickListener(AdapterView<?> parent, int position) {
         showToast(": " + parent.getAdapter().getItem(position));
     }
 
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.post_button_ver_mas){
+        if (v.getId() == R.id.post_button_ver_mas) {
             final int position = postListView.getPositionForView(v);
             mPresenter.onItemClickVerMas(position);
         }

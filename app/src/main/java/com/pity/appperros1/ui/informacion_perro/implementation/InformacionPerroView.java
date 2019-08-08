@@ -75,7 +75,6 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
         mPresenter.attachCurrentDogId(currentIDDog);
 
 
-
     }
 
 

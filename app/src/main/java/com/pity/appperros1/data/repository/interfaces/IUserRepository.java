@@ -16,11 +16,15 @@ public interface IUserRepository {
         void onFailedSendMail(Exception e);
     }
 
+    interface CallbackUserRegistered{
+        void saveUserOnDatabase(FirebaseUser mNoRegisteredUser);
+    }
+
     void saveNewUser(Usuario newUser, CallbackRepositoryNewUser callback);
     void updateUser(Usuario currentUser);
     void sendMailVerication(FirebaseUser currentUser, CallbackRepositorySendMail callback);
     FirebaseUser currentUser();
     void logoutUser();
-
+    void isUserRegistered(FirebaseUser facebookUser, CallbackUserRegistered callback);
 
 }

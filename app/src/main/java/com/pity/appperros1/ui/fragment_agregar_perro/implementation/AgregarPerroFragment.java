@@ -158,7 +158,7 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
 
 
     @OnClick(R.id.button_agregar_nuevo_perro)
-    public void onClickAgregar(Button clicked){
+    public void onClickAgregar(Button clicked) {
         //mPresenter.getIteamAtSpinner();
         //spinnerGenero.getSelectedItem();
 
@@ -167,11 +167,11 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
             mPresenter.checkCurrentFields(
                     editTextNombrePerro.getText().toString().trim(),
                     editTextDescripcionPerro.getText().toString().trim(),
-                    adapterItemGenero.getItem(spinnerEdad.getSelectedItemPosition()).getValor(),
+                    adapterItemGenero.getItem(spinnerGenero.getSelectedItemPosition()).getValor(),
                     adapterItemEdad.getItem(spinnerEdad.getSelectedItemPosition()).getValor(),
-                    adapterItemTamanio.getItem(spinnerEdad.getSelectedItemPosition()).getValor(),
-                    adapterItemEsterilizado.getItem(spinnerEdad.getSelectedItemPosition()).getValor(),
-                    adapterItemVacunado.getItem(spinnerEdad.getSelectedItemPosition()).getValor(),
+                    adapterItemTamanio.getItem(spinnerTamanio.getSelectedItemPosition()).getValor(),
+                    adapterItemEsterilizado.getItem(spinnerCastrado.getSelectedItemPosition()).getValor(),
+                    adapterItemVacunado.getItem(spinnerVacunado.getSelectedItemPosition()).getValor(),
                     spinnerEstado.getSelectedItemPosition()
             );
         }

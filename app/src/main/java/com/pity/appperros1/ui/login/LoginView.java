@@ -28,10 +28,12 @@ public class LoginView extends BaseActivity<ILoginPresenter>
 
     @BindView(R.id.login_button_iniciar_sesion)  Button btnLogin;
     @BindView(R.id.login_button_registrate)  Button btnRegistrate;
+    @BindView(R.id.login_button_registrate_facebook) Button btnFacebook;
     @BindView(R.id.text_view_login_olvidaste_password) TextView textViewOlvidasteContrasenia;
     @BindView(R.id.login_edit_text_usuario)  EditText editTextMail;
     @BindView(R.id.login_edit_text_password) EditText editTextContrasenia;
     @BindView(R.id.login_progress_bar)  ProgressBar progressBar;
+
 
 
     @Override
@@ -45,7 +47,7 @@ public class LoginView extends BaseActivity<ILoginPresenter>
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        mPresenter.attachView(this);
+
 
 
     }
@@ -59,6 +61,11 @@ public class LoginView extends BaseActivity<ILoginPresenter>
     @OnClick(R.id.login_button_registrate)
     public void onClickRegistrate(View view){
         navigateTo(RegitroView.class);
+    }
+
+    @OnClick(R.id.login_button_registrate_facebook)
+    public void onClickFacebook(View view){
+        mPresenter.onRequestContinueWithFacebook(this);
     }
 
     @OnClick(R.id.text_view_login_olvidaste_password)
@@ -78,8 +85,8 @@ public class LoginView extends BaseActivity<ILoginPresenter>
 
     @Override
     public void navigateToInicio() {
-        finish();
         startActivity(new Intent(this, InicioActivity.class));
+        finish();
     }
 
 
@@ -97,5 +104,11 @@ public class LoginView extends BaseActivity<ILoginPresenter>
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mPresenter.onActivityResult(requestCode, resultCode, data);
     }
 }

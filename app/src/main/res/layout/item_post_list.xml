@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:orientation="vertical">
+    android:layout_height="252dp"
+    android:orientation="vertical"
+    app:cardCornerRadius="6dp"
+    >
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:gravity="center"
+        >
         
 
 
@@ -26,7 +29,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#80000000"
+            android:background="#33000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +38,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
             <LinearLayout
                 android:id="@+id/post_etiqueta_adopcion"
                 android:layout_width="96dp"
@@ -76,12 +80,14 @@
 
 
     </RelativeLayout>
-    
+
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="8dp">
 
         <ImageView
             android:id="@+id/post_foto_perfil_usuario"
@@ -93,7 +99,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
 
-            app:srcCompat="@drawable/boy" />
+            app:srcCompat="@drawable/ic_launcher_background" />
 
 
         <TextView
@@ -133,7 +139,7 @@
             android:layout_height="wrap_content"
 
             android:layout_alignParentEnd="true"
-
+            android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
 
@@ -144,4 +150,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</androidx.cardview.widget.CardView>

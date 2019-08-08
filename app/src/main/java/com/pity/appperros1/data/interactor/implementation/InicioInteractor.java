@@ -2,6 +2,7 @@ package com.pity.appperros1.data.interactor.implementation;
 
 import android.net.Uri;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.pity.appperros1.data.interactor.interfaces.IInicioInteractor;
 import com.pity.appperros1.data.modelos.PerroModel;
 import com.pity.appperros1.data.repository.implementacion.DogRepository;
@@ -24,7 +25,7 @@ public class InicioInteractor implements IInicioInteractor,
     private ArrayList<PerroModel> postList;
 
     public InicioInteractor(){
-        this.userRepository = new UserRepository();
+        this.userRepository = UserRepository.getInstance();
         this.dogRepository = DogRepository.getInstance();
 
     }
@@ -37,7 +38,7 @@ public class InicioInteractor implements IInicioInteractor,
     @Override
     public void bringDogList(CallbackGetDogList callbackGetDogList) {
         this.callbackInicioInteractor = callbackGetDogList;
-        dogRepository.getDogList(this);
+        dogRepository.getDogListPerdido(this);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class InicioInteractor implements IInicioInteractor,
 
     @Override
     public void createCurrentNewDog() {
-        newDog = new PerroModel();
+        newDog = new PerroModel(new ArrayList<>());
     }
 
     @Override
@@ -63,7 +64,8 @@ public class InicioInteractor implements IInicioInteractor,
 
 
     @Override
-    public void startUploadNewDog(String nombre, String descripcion, String genero, String edad, String tamanio, String castrado, String vacunado,
+    public void startUploadNewDog(String nombre, String descripcion, String genero, String edad,
+                                  String tamanio, String castrado, String vacunado,
                                   ArrayList<Boolean> estados,
                                   IAgregarPerroPresenter.CallbackInteractor callbackInteractor) {
         this.callbackAgregarPerroInteractor = callbackInteractor;
@@ -96,11 +98,15 @@ public class InicioInteractor implements IInicioInteractor,
 
     }
 
+    @Override
+    public FirebaseUser getUserLogged() {
+        return userRepository.currentUser();
+    }
+
 
     @Override
     public void onSuccessUploadPhoto(String url, String fecha) {
         newDog.setUrlFoto(url);
-        newDog.setFechaPublicacion(fecha);
         callbackAgregarPerroInteractor.onSuccessUploadPhoto();
         dogRepository.uploadPerro(newDog, userRepository.currentUser(), this);
 

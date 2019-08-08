@@ -1,33 +1,57 @@
 package com.pity.appperros1.data.modelos;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class PerroModel {
-    private String id;
+    private String did;
+
     private String nombre;
     private String descripcion;
+
     private String urlFoto;
     private String pathFoto;
+
     private String genero;
     private String edad;
     private String tamanio;
     private String esterilizado;
     private String vacunado;
-    private String fechaPublicacion;
+
     private List<Boolean> etiquetas;
-    private String idUser;
+
+    private long timestamp;
+
+    private String uid;
+
+    private List <SolicitudModel> solicitudes;
+
 
     public PerroModel(){
 
     }
 
-    public String getId() {
-        return id;
+    public PerroModel(ArrayList<SolicitudModel> solicitudes){
+        this.solicitudes = solicitudes;
+        timestamp = Calendar.getInstance().getTime().getTime();
+
+        /*Date date = new Date(timestamp);
+        Calendar dat = Calendar.getInstance();
+        dat.setTime(date);
+
+        Log.e("Fecha", "timestamp " + date.getDate() + "/" + date.getMonth() + "/" + date.getYear()
+                + " " +  date.getHours() + ":" + date.getMinutes() + ":" +  date.getSeconds());*/
+
     }
 
-    public void setId(String id) {
-        this.id = id;
+
+    public String getDid() {
+        return did;
+    }
+
+    public void setDid(String did) {
+        this.did = did;
     }
 
     public String getNombre() {
@@ -55,14 +79,10 @@ public class PerroModel {
     }
 
     public String getPathFoto() {
-        if (pathFoto != null) {
-            return pathFoto;
-        }
-        return null;
+        return pathFoto;
     }
 
-    public void setPathFoto(String pathFoto) throws NullPointerException {
-
+    public void setPathFoto(String pathFoto) {
         this.pathFoto = pathFoto;
     }
 
@@ -72,6 +92,14 @@ public class PerroModel {
 
     public void setGenero(String genero) {
         this.genero = genero;
+    }
+
+    public String getEdad() {
+        return edad;
+    }
+
+    public void setEdad(String edad) {
+        this.edad = edad;
     }
 
     public String getTamanio() {
@@ -98,37 +126,35 @@ public class PerroModel {
         this.vacunado = vacunado;
     }
 
-    public String getEdad() {
-        return edad;
-    }
-
-    public void setEdad(String edad) {
-        this.edad = edad;
-    }
-
-
-    public String getFechaPublicacion() {
-        return fechaPublicacion;
-    }
-
-    public void setFechaPublicacion(String fechaPublicacion) {
-        this.fechaPublicacion = fechaPublicacion;
-    }
-
-
     public List<Boolean> getEtiquetas() {
         return etiquetas;
     }
 
-    public void setEtiquetas(ArrayList<Boolean> etiquetas) {
+    public void setEtiquetas(List<Boolean> etiquetas) {
         this.etiquetas = etiquetas;
     }
 
-    public String getIdUser() {
-        return idUser;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public List<SolicitudModel> getSolicitudes() {
+        return solicitudes;
+    }
+
+    public void setSolicitudes(List<SolicitudModel> solicitudes) {
+        this.solicitudes = solicitudes;
     }
 }

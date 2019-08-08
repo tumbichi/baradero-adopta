@@ -24,6 +24,7 @@ public abstract class BaseActivity <TPresenter extends IBasePresenter> extends A
 
         if (mPresenter == null) {
             mPresenter = createBasePresenter(this);
+            mPresenter.attachView(this);
         }
 
         if (mPresenter != null){

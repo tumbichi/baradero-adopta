@@ -23,7 +23,7 @@ public class RegistroInteractor implements IRegistroInteractor,
 
     public RegistroInteractor(){
         mAuth = FirebaseAuth.getInstance();
-        repository = new UserRepository();
+        repository = UserRepository.getInstance();
     }
 
     @Override
@@ -36,6 +36,7 @@ public class RegistroInteractor implements IRegistroInteractor,
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+
                             Usuario newUser = new Usuario(mAuth.getCurrentUser().getUid(), email, nombre, apellido, telefono);
                             repository.saveNewUser(newUser, callbackRepositoryNewUser);
 
