@@ -87,12 +87,11 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
         Usuario mUser;
         if (mNoRegisteredUser.getPhotoUrl() != null) {
             mUser = new Usuario(mNoRegisteredUser.getUid(), mNoRegisteredUser.getEmail(),
-                    mNoRegisteredUser.getDisplayName(), "", mNoRegisteredUser.getPhoneNumber(), mNoRegisteredUser.getPhotoUrl());
+                    mNoRegisteredUser.getDisplayName(), mNoRegisteredUser.getPhoneNumber(), mNoRegisteredUser.getPhotoUrl());
         }else mUser = new Usuario(mNoRegisteredUser.getUid(), mNoRegisteredUser.getEmail(),
-                mNoRegisteredUser.getDisplayName(), "", mNoRegisteredUser.getPhoneNumber());
+                mNoRegisteredUser.getDisplayName(), mNoRegisteredUser.getPhoneNumber());
 
         mRepository.saveNewUser(mUser, this);
-
     }
 
 

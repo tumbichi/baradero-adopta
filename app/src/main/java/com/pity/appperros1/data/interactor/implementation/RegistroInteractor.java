@@ -1,5 +1,7 @@
 package com.pity.appperros1.data.interactor.implementation;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -53,6 +55,7 @@ public class RegistroInteractor implements IRegistroInteractor,
     @Override
     public void onSuccefulSaveNewUser() {
         // Usuario creado en la base de datos
+        Log.e("Registro", "onSuccefulSaveNewUser on database");
         repository.sendMailVerication(mAuth.getCurrentUser(), this);
     }
 

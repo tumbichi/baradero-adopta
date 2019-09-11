@@ -65,7 +65,10 @@ public class LoginView extends BaseActivity<ILoginPresenter>
 
     @OnClick(R.id.login_button_registrate_facebook)
     public void onClickFacebook(View view){
+        disableFacebookButton();
+        showProgressBar();
         mPresenter.onRequestContinueWithFacebook(this);
+
     }
 
     @OnClick(R.id.text_view_login_olvidaste_password)
@@ -85,7 +88,7 @@ public class LoginView extends BaseActivity<ILoginPresenter>
 
     @Override
     public void navigateToInicio() {
-        startActivity(new Intent(this, InicioActivity.class));
+        startActivity(new Intent(LoginView.this, InicioActivity.class));
         finish();
     }
 
@@ -99,6 +102,16 @@ public class LoginView extends BaseActivity<ILoginPresenter>
     @Override
     public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void enabledFacebookButton() {
+        btnFacebook.setEnabled(true);
+    }
+
+    @Override
+    public void disableFacebookButton() {
+        btnFacebook.setEnabled(false);
     }
 
     @Override

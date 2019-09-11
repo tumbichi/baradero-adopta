@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -75,10 +76,10 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_inicio);
-
         ButterKnife.bind(this);
-        mPresenter.attachView(this);
         fragment = new AgregarPerroFragment(this);
+        Log.e("InicioView", "onCreate");
+
 
     }
 
@@ -127,9 +128,8 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
 
     @Override
     public void navigateToLogin() {
-        finish();
         startActivity(new Intent(this, LoginView.class));
-
+        finish();
     }
 
     @Override
@@ -158,7 +158,7 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
 
     @OnItemClick(R.id.inicio_list_view)
     public void onItemClickListener(AdapterView<?> parent, int position) {
-        showToast(": " + parent.getAdapter().getItem(position));
+        Log.e("InicioView" , "onItemClickListener(" + parent.getAdapter().getItem(position) + ")");
     }
 
 

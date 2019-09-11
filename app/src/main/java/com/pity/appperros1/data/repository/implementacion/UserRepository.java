@@ -28,7 +28,7 @@ public class UserRepository implements IUserRepository {
     private FirebaseAuth mAuth;
     // For
 
-    private AccessToken accessToken;
+    //private AccessToken accessToken;
 
     private UserRepository(){
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -94,7 +94,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void logoutUser() {
-        accessToken = AccessToken.getCurrentAccessToken();
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken != null && !accessToken.isExpired()) LoginManager.getInstance().logOut();
         mAuth.signOut();
     }
@@ -117,8 +117,6 @@ public class UserRepository implements IUserRepository {
             }
         });
 
-
-
     }
 
 
@@ -126,21 +124,23 @@ public class UserRepository implements IUserRepository {
         Map<String, Object> crearUsuario = new HashMap<>();
 
         crearUsuario.put("id", user.getUid());
-        crearUsuario.put("nombre", user.getNombre());
-        crearUsuario.put("apellido", user.getApellido());
+
+        crearUsuario.put("displayName", user.getDisplayName());
         crearUsuario.put("email", user.getEmail());
-        crearUsuario.put("timestamp", user.getTimestamp());
-        crearUsuario.put("descripcion", user.getDescripcion());
         crearUsuario.put("telefono", user.getTelefono());
 
+        crearUsuario.put("mailVerification", user.isMailVerificated());
+        crearUsuario.put("timestamp", user.getTimestamp());
+
+        crearUsuario.put("descripcion", user.getDescripcion());
         crearUsuario.put("fotoperfil", user.getUrlFotoPerfil());
 
         crearUsuario.put("perrosPublicados", user.getPerrosPublicados());
         crearUsuario.put("perrosAdoptados", user.getPerrosAdoptados());
         crearUsuario.put("perrosEncontrados", user.getPerrosEncontrados());
 
-
         return crearUsuario;
 
     }
+
 }

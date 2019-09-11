@@ -7,6 +7,10 @@ public interface ILoginView extends IBaseView {
 
     void showProgressBar();
     void hideProgressBar();
+
+    void enabledFacebookButton();
+    void disableFacebookButton();
+
     void showMessage(String message);
     void navigateTo(Class activity);
     void navigateToInicio();

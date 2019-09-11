@@ -106,7 +106,7 @@ public class LoginPresenter extends BasePresenter<ILoginView>
 
     @Override
     public void onFailedFacebook(String error) {
-
+        mView.showMessage(error);
     }
 
 
@@ -119,7 +119,9 @@ public class LoginPresenter extends BasePresenter<ILoginView>
 
     @Override
     public void onCancel() {
-        mView.showMessage("Se cancelo el inicio por Facebook");
+         Log.e("LoginPresenter", "facebook:onCancel");
+         mView.hideProgressBar();
+         mView.enabledFacebookButton();
     }
 
     @Override
