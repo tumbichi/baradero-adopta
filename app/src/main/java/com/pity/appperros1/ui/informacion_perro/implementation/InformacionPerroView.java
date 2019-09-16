@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,16 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
     @BindView(R.id.informacion_perro_button_contactar)
     Button buttonContactar;
 
+    @BindView(R.id.informacion_perro_text_view_user_name)
+    TextView textViewUserName;
+    @BindView(R.id.informacion_perro_image_view_user)
+    ImageView imageViewUserPhoto;
+
+    @BindView(R.id.informacion_perro_view)
+    LinearLayout mainView;
+
+    @BindView(R.id.informacion_perro_progress_bar)
+    ProgressBar progressBar;
 
     @Override
     public InformacionPerroPresenter createBasePresenter(Context context) {
@@ -79,9 +90,10 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
 
 
     @Override
-    public void setViewsOfRows(String nombre, String descripcion, String urlFoto, String genero,
-                               String tamanio, String edad, String vacunado, String castrado,
-                               ArrayList<Boolean> etiquetas) {
+    public void setViewOfInformationDog(String nombre, String descripcion, String urlFoto, String genero,
+                                        String tamanio, String edad, String vacunado, String castrado,
+                                        ArrayList<Boolean> etiquetas) {
+
 
         textViewNombrePerro.setText(nombre);
         textViewDescripcionPerro.setText(descripcion);
@@ -109,7 +121,19 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
                 .fitCenter()
                 .centerCrop()
                 .into(imageViewFotoPerro);
+
+        progressBar.setVisibility(View.GONE);
+        mainView.setVisibility(View.VISIBLE);
+
     }
+
+    @Override
+    public void setViewOfInformationUser(String nombre, String urlFoto) {
+        textViewUserName.setText(nombre);
+        if (!TextUtils.isEmpty(urlFoto))
+        Glide.with(this).load(urlFoto).fitCenter().centerCrop().into(imageViewUserPhoto);
+    }
+
 
     @Override
     public void toast(String msg) {

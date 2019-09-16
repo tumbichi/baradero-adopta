@@ -40,13 +40,13 @@ public class InicioAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public PerroModel getItem(int position) {
         return dogsList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return  position;
     }
 
     @Override

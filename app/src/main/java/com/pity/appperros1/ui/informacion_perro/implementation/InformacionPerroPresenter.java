@@ -4,18 +4,26 @@ import android.content.Context;
 
 import com.pity.appperros1.base.BasePresenter;
 import com.pity.appperros1.data.modelos.PerroModel;
+import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.implementacion.DogRepository;
+import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.data.repository.interfaces.IDogRepository;
+import com.pity.appperros1.data.repository.interfaces.IUserRepository;
 import com.pity.appperros1.ui.informacion_perro.interfaces.IInformacionPerroPresenter;
 import com.pity.appperros1.ui.informacion_perro.interfaces.IInformacionPerroView;
 
 import java.util.ArrayList;
 
 public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroView>
-        implements IInformacionPerroPresenter, IDogRepository.CallbackQueryDog {
+        implements IInformacionPerroPresenter{
+
+    private DogRepository mDogRepository;
+    private UserRepository mUserRepository;
 
     public InformacionPerroPresenter(Context context) {
         super(context);
+        this.mDogRepository = DogRepository.getInstance();
+        this.mUserRepository = UserRepository.getInstance();
     }
 
 
@@ -31,22 +39,45 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
         String castrado = perroModel.getEsterilizado();
         ArrayList<Boolean> etiquetas = (ArrayList<Boolean>) perroModel.getEtiquetas();
 
-        mView.setViewsOfRows(nombre,descripcion,imageUrl,genero,tamanio,edad,vacunado,castrado,etiquetas);
+        mView.setViewOfInformationDog(nombre,descripcion,imageUrl,genero,tamanio,edad,vacunado,castrado,etiquetas);
+    }
+
+    private void bindRowsOfUserInformation(Usuario uploader){
+        String nombre = uploader.getDisplayName();
+        String urlFoto;
+        if (uploader.getUrlFotoPerfil() == null){
+            urlFoto = "";
+        }else urlFoto = uploader.getUrlFotoPerfil();
+        mView.setViewOfInformationUser(nombre, urlFoto);
     }
 
     @Override
     public void attachCurrentDogId(String currentId) {
-        DogRepository.getInstance().queryDogBy(currentId, this);
+        mDogRepository.queryDogBy(currentId, new IDogRepository.CallbackQueryDog() {
+            @Override
+            public void onSucessQueryDog(PerroModel currentDog) {
+                bindRowsOfDogInformation(currentDog);
+                mUserRepository.getUserById(currentDog.getUid(), new IUserRepository.CallbackUserById() {
+                    @Override
+                    public void onSuccessUserQueryById(Usuario uploader) {
+                        bindRowsOfUserInformation(uploader);
+                    }
+
+                    @Override
+                    public void onFailureUserQueryById(String msgError) {
+                        mView.toast(msgError);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailureQueryDog(String msgError) {
+                mView.toast(msgError);
+            }
+        });
     }
 
 
-    @Override
-    public void onSucessQueryDog(PerroModel currentDog) {
-        bindRowsOfDogInformation(currentDog);
-    }
 
-    @Override
-    public void onFailureQueryDog(String msgError) {
-        mView.toast(msgError);
-    }
+
 }

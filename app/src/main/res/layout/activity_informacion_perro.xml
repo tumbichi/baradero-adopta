@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.informacion_perro.implementation.InformacionPerroView">
 
+    <ProgressBar
+        android:id="@+id/informacion_perro_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/informacion_perro_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/informacion_perro_layout_perdido"
@@ -86,12 +95,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/informacion_perro_image_view_user"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:src="@drawable/ic_launcher_background" />
+
+                    <TextView
+                        android:id="@+id/informacion_perro_text_view_user_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="UserName"
+                        android:textColor="@color/icons"
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 

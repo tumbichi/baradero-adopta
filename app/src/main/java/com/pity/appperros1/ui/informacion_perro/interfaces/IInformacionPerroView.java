@@ -6,9 +6,11 @@ import java.util.ArrayList;
 
 public interface IInformacionPerroView extends IBaseView {
 
-    void setViewsOfRows(String nombre, String descripcion, String urlFoto, String genero,
-                        String tamanio, String edad, String vacunado, String castrado,
-                        ArrayList<Boolean> etiquetas);
+    void setViewOfInformationDog(String nombre, String descripcion, String urlFoto, String genero,
+                                 String tamanio, String edad, String vacunado, String castrado,
+                                 ArrayList<Boolean> etiquetas);
+
+    void setViewOfInformationUser(String nombre, String urlFoto);
 
     void toast(String msg);
 }

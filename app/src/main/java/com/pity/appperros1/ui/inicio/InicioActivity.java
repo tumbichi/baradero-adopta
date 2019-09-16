@@ -152,6 +152,14 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
     }
 
     @Override
+    public InicioAdapter getListViewAdapter() {
+        if (mAdapter != null){
+            return mAdapter;
+        }else
+            return null;
+    }
+
+    @Override
     public void notifyDataChangeForListView() {
         mAdapter.notifyDataSetChanged();
     }

@@ -24,14 +24,14 @@ public class UserRepository implements IUserRepository {
 
 
     private static UserRepository userRepository;
-    private DatabaseReference mDatabase;
+    private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
     // For
 
     //private AccessToken accessToken;
 
     private UserRepository(){
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -45,7 +45,8 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void saveNewUser(Usuario newUser, final CallbackRepositoryNewUser callbackNewUser) {
-        mDatabase.child("Usuarios")
+        DatabaseReference mRef = mDatabase.getReference();
+        mRef.child("Usuarios")
                 .child(newUser.getUid())
                 .updateChildren(createUserMap(newUser))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -101,9 +102,9 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void isUserRegistered(FirebaseUser currentUser, CallbackUserRegistered callbackUserRegistered) {
-        DatabaseReference mRef = mDatabase.child("Usuarios");
+        DatabaseReference mRef = mDatabase.getReference().child("Usuarios");
 
-        Query mQuery = mRef.getRef().orderByKey().equalTo(currentUser.getUid()).limitToFirst(1);
+        Query mQuery = mRef.orderByKey().equalTo(currentUser.getUid()).limitToFirst(1);
 
         mQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -116,6 +117,37 @@ public class UserRepository implements IUserRepository {
 
             }
         });
+
+    }
+
+    @Override
+    public void getUserById(String id, CallbackUserById callbackUserById) {
+        DatabaseReference mRef = mDatabase.getReference().child("Usuarios");
+
+        Query query = mRef.orderByKey().equalTo(id).limitToFirst(1);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Usuario mCurrentUser = null;
+
+                if (dataSnapshot != null) {
+                    mCurrentUser = dataSnapshot.getChildren().iterator().next().getValue(Usuario.class);
+                }
+
+                if (mCurrentUser != null) {
+                    callbackUserById.onSuccessUserQueryById(mCurrentUser);
+                }else callbackUserById.onFailureUserQueryById("Error de ID");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbackUserById.onFailureUserQueryById("Se cancelo");
+            }
+        });
+
+
 
     }
 

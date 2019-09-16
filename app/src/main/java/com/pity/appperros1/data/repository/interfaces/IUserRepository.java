@@ -8,7 +8,11 @@ public interface IUserRepository {
     interface CallbackRepositoryNewUser{
         void onSuccefulSaveNewUser();
         void onFailedSaveNewUser(Exception e);
+    }
 
+    interface CallbackUserById{
+        void onSuccessUserQueryById(Usuario uploader);
+        void onFailureUserQueryById(String msgError);
     }
 
     interface CallbackRepositorySendMail{
@@ -26,5 +30,6 @@ public interface IUserRepository {
     FirebaseUser currentUser();
     void logoutUser();
     void isUserRegistered(FirebaseUser facebookUser, CallbackUserRegistered callback);
+    void getUserById(String id, CallbackUserById callbackUserById);
 
 }

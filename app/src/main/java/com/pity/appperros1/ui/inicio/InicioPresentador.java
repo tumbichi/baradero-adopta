@@ -36,7 +36,7 @@ public class InicioPresentador extends BasePresenter<IInicioView>
 
     @Override
     public void onItemClickVerMas(int position) {
-        PerroModel perroModel = mInteractor.getListPost().get(position);
+        PerroModel perroModel = mView.getListViewAdapter().getItem(position);
         mView.navigateToInformacionOf(perroModel);
     }
 

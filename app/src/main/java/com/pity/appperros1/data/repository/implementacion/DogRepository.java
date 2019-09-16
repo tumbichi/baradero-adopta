@@ -136,7 +136,7 @@ public class DogRepository implements IDogRepository {
                     currentDog.setNombre(currentDog.getNombre());
                     currentDog.setDescripcion(currentDog.getDescripcion());
                     currentDog.setUrlFoto(currentDog.getUrlFoto());
-
+                    //currentDog.setUid(currentDog.getUid());
                     mDogList.add(currentDog);
                 }
                 //ArrayList<PerroModel> tempList = new ArrayList<>(mDogList);
