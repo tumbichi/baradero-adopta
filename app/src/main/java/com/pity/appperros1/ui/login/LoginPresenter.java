@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.pity.appperros1.base.BasePresenter;
 import com.pity.appperros1.data.interactor.implementation.LoginIteractor;
 import com.pity.appperros1.data.interactor.interfaces.ILoginInteractor;
+import com.pity.appperros1.data.repository.implementacion.UserRepository;
 
 import java.util.Arrays;
 
@@ -74,6 +75,7 @@ public class LoginPresenter extends BasePresenter<ILoginView>
     @Override
     public void onSuccess() {
          if (isViewAttached()) {
+             mIntereactor.attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid());
              mView.navigateToInicio();
              mView.hideProgressBar();
          }
@@ -99,6 +101,7 @@ public class LoginPresenter extends BasePresenter<ILoginView>
     public void onSuccessFacebook(FirebaseUser currentUser) {
         Log.e("presenter", "onSuccesFacebook");
         mIntereactor.checkIfIsRegistedOnDatabase(currentUser);
+        mIntereactor.attachLoggedUser(currentUser.getUid());
         if (isViewAttached()){
             mView.navigateToInicio();
         }

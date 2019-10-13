@@ -12,5 +12,8 @@ public interface IInformacionPerroView extends IBaseView {
 
     void setViewOfInformationUser(String nombre, String urlFoto);
 
+
+    void navigateToAdoption(String dogID, String uploaderID, String adopterID);
+
     void toast(String msg);
 }

@@ -1,6 +1,9 @@
 package com.pity.appperros1.ui.informacion_perro.implementation;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,12 +19,14 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.pity.appperros1.R;
 import com.pity.appperros1.base.BaseActivity;
+import com.pity.appperros1.ui.adoption.AdopcionView;
 import com.pity.appperros1.ui.informacion_perro.interfaces.IInformacionPerroView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter>
         implements IInformacionPerroView {
@@ -134,6 +139,15 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
         Glide.with(this).load(urlFoto).fitCenter().centerCrop().into(imageViewUserPhoto);
     }
 
+    @Override
+    public void navigateToAdoption(String dogID, String uploaderID, String adopterID) {
+        Intent intentAdoption = new Intent(InformacionPerroView.this, AdopcionView.class);
+        intentAdoption.putExtra("dog", dogID);
+        intentAdoption.putExtra("uploader", uploaderID);
+        intentAdoption.putExtra("adopter", adopterID);
+        startActivity(intentAdoption);
+    }
+
 
     @Override
     public void toast(String msg) {
@@ -197,5 +211,24 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
     }
 
 
-
+    @OnClick(R.id.informacion_perro_button_contactar)
+    public void onClickIniciarAdopcion(View clicked){
+        AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
+        mDialog.setTitle("¿Esta seguro que quiere adoptar este perro? ");
+        mDialog.setMessage("Esto implica que debera proporcionar un numero y email de contacto");
+        mDialog.setCancelable(false);
+        mDialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mPresenter.initDogAdoption();
+            }
+        });
+        mDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                toast("shameeee");
+            }
+        });
+        mDialog.show();
+    }
 }

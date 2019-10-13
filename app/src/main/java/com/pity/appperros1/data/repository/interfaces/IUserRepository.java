@@ -11,7 +11,7 @@ public interface IUserRepository {
     }
 
     interface CallbackUserById{
-        void onSuccessUserQueryById(Usuario uploader);
+        void onSuccessUserQueryById(Usuario user);
         void onFailureUserQueryById(String msgError);
     }
 
@@ -24,12 +24,13 @@ public interface IUserRepository {
         void saveUserOnDatabase(FirebaseUser mNoRegisteredUser);
     }
 
-    void saveNewUser(Usuario newUser, CallbackRepositoryNewUser callback);
+    void attachLoggedUser(String currentUserID);
+    void persistNewUserOnDatabase(Usuario newUser, CallbackRepositoryNewUser callback);
     void updateUser(Usuario currentUser);
     void sendMailVerication(FirebaseUser currentUser, CallbackRepositorySendMail callback);
-    FirebaseUser currentUser();
+    FirebaseUser currentFirebaseUser();
     void logoutUser();
-    void isUserRegistered(FirebaseUser facebookUser, CallbackUserRegistered callback);
+    void isUserRegisteredOnDatabase(FirebaseUser facebookUser, CallbackUserRegistered callback);
     void getUserById(String id, CallbackUserById callbackUserById);
 
 }

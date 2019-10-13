@@ -17,5 +17,6 @@ public interface ILoginInteractor {
     void login(String user, String pass, OnLoginCallback listener);
     void handleFacebookAccessToken(AccessToken token, OnLoginCallback listener);
     void checkIfIsRegistedOnDatabase(FirebaseUser currentUser);
+    void attachLoggedUser(String userID);
     boolean isUserLogged();
 }

@@ -100,7 +100,7 @@ public class InicioInteractor implements IInicioInteractor,
 
     @Override
     public FirebaseUser getUserLogged() {
-        return userRepository.currentUser();
+        return userRepository.currentFirebaseUser();
     }
 
 
@@ -108,7 +108,7 @@ public class InicioInteractor implements IInicioInteractor,
     public void onSuccessUploadPhoto(String url, String fecha) {
         newDog.setUrlFoto(url);
         callbackAgregarPerroInteractor.onSuccessUploadPhoto();
-        dogRepository.uploadPerro(newDog, userRepository.currentUser(), this);
+        dogRepository.uploadPerro(newDog, userRepository.currentFirebaseUser(), this);
 
     }
 

@@ -1,5 +1,7 @@
 package com.pity.appperros1.data.repository.implementacion;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.facebook.AccessToken;
@@ -26,25 +28,43 @@ public class UserRepository implements IUserRepository {
     private static UserRepository userRepository;
     private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
-    // For
-
+    private static Usuario CURRENT_USER;
     //private AccessToken accessToken;
-
-    private UserRepository(){
+    private final static String TAG = "UserRepository";
+    private UserRepository() {
         mDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public static UserRepository getInstance(){
-        if (userRepository == null){
+    public static UserRepository getInstance() {
+        if (userRepository == null) {
             userRepository = new UserRepository();
         }
         return userRepository;
     }
 
 
+    static Usuario getLoggedUser(){
+        return CURRENT_USER;
+    }
+
     @Override
-    public void saveNewUser(Usuario newUser, final CallbackRepositoryNewUser callbackNewUser) {
+    public void attachLoggedUser(String currentUserID) {
+        getUserById(currentUserID, new CallbackUserById() {
+            @Override
+            public void onSuccessUserQueryById(Usuario user) {
+                CURRENT_USER = user;
+            }
+
+            @Override
+            public void onFailureUserQueryById(String msgError) {
+                Log.e(TAG, "onFailQueryByID " + msgError);
+            }
+        });
+    }
+
+    @Override
+    public void persistNewUserOnDatabase(Usuario newUser, final CallbackRepositoryNewUser callbackNewUser) {
         DatabaseReference mRef = mDatabase.getReference();
         mRef.child("Usuarios")
                 .child(newUser.getUid())
@@ -52,10 +72,10 @@ public class UserRepository implements IUserRepository {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             callbackNewUser.onSuccefulSaveNewUser();
 
-                        }else{
+                        } else {
                             callbackNewUser.onFailedSaveNewUser(task.getException());
                         }
                     }
@@ -68,14 +88,14 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void sendMailVerication(FirebaseUser currentUser,final CallbackRepositorySendMail callback) {
+    public void sendMailVerication(FirebaseUser currentUser, final CallbackRepositorySendMail callback) {
         currentUser.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             callback.onSuccefulSendMail();
-                        }else{
+                        } else {
                             callback.onFailedSendMail(task.getException());
                         }
                     }
@@ -84,24 +104,24 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public FirebaseUser currentUser() throws NullPointerException {
-
+    public FirebaseUser currentFirebaseUser() throws NullPointerException {
         if (mAuth.getCurrentUser() != null) {
-           return mAuth.getCurrentUser();
-       }else{
-           return null;
-       }
+            return mAuth.getCurrentUser();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public void logoutUser() {
+        CURRENT_USER = null;
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken != null && !accessToken.isExpired()) LoginManager.getInstance().logOut();
         mAuth.signOut();
     }
 
     @Override
-    public void isUserRegistered(FirebaseUser currentUser, CallbackUserRegistered callbackUserRegistered) {
+    public void isUserRegisteredOnDatabase(FirebaseUser currentUser, CallbackUserRegistered callbackUserRegistered) {
         DatabaseReference mRef = mDatabase.getReference().child("Usuarios");
 
         Query mQuery = mRef.orderByKey().equalTo(currentUser.getUid()).limitToFirst(1);
@@ -123,36 +143,29 @@ public class UserRepository implements IUserRepository {
     @Override
     public void getUserById(String id, CallbackUserById callbackUserById) {
         DatabaseReference mRef = mDatabase.getReference().child("Usuarios");
-
         Query query = mRef.orderByKey().equalTo(id).limitToFirst(1);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Usuario mCurrentUser = null;
 
-                if (dataSnapshot != null) {
-                    mCurrentUser = dataSnapshot.getChildren().iterator().next().getValue(Usuario.class);
-                }
+                mCurrentUser = dataSnapshot.getChildren().iterator().next().getValue(Usuario.class);
 
                 if (mCurrentUser != null) {
                     callbackUserById.onSuccessUserQueryById(mCurrentUser);
-                }else callbackUserById.onFailureUserQueryById("Error de ID");
+                } else callbackUserById.onFailureUserQueryById("Error de ID");
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 callbackUserById.onFailureUserQueryById("Se cancelo");
             }
         });
 
-
-
     }
 
-
-    private Map<String, Object> createUserMap(Usuario user){
+    private Map<String, Object> createUserMap(Usuario user) {
         Map<String, Object> crearUsuario = new HashMap<>();
 
         crearUsuario.put("id", user.getUid());

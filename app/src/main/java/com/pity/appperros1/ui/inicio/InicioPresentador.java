@@ -24,7 +24,7 @@ public class InicioPresentador extends BasePresenter<IInicioView>
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mInteractor.getUserLogged();
-        Log.e("UID" , currentUser.getUid());
+        Log.d("UID" , currentUser.getUid());
 
     }
 

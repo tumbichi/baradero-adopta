@@ -40,7 +40,7 @@ public class RegistroInteractor implements IRegistroInteractor,
                         if(task.isSuccessful()){
 
                             Usuario newUser = new Usuario(mAuth.getCurrentUser().getUid(), email, nombre, apellido, telefono);
-                            repository.saveNewUser(newUser, callbackRepositoryNewUser);
+                            repository.persistNewUserOnDatabase(newUser, callbackRepositoryNewUser);
 
                         }
                         else

@@ -73,13 +73,18 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
 
     @Override
     public void checkIfIsRegistedOnDatabase(FirebaseUser currentUser) {
-        mRepository.isUserRegistered(currentUser, this);
+        mRepository.isUserRegisteredOnDatabase(currentUser, this);
+    }
+
+    @Override
+    public void attachLoggedUser(String userID) {
+
     }
 
 
     @Override
     public boolean isUserLogged() {
-        return (mRepository.currentUser() != null);
+        return (mRepository.currentFirebaseUser() != null);
     }
 
     @Override
@@ -91,7 +96,7 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
         }else mUser = new Usuario(mNoRegisteredUser.getUid(), mNoRegisteredUser.getEmail(),
                 mNoRegisteredUser.getDisplayName(), mNoRegisteredUser.getPhoneNumber());
 
-        mRepository.saveNewUser(mUser, this);
+        mRepository.persistNewUserOnDatabase(mUser, this);
     }
 
 

@@ -37,13 +37,13 @@ public class DogRepository implements IDogRepository {
     private StorageReference mStorage;
 
 
-    private DogRepository(){
+    private DogRepository() {
         mDatabase = FirebaseDatabase.getInstance();
         mStorage = FirebaseStorage.getInstance("gs://fir-appautentificacion.appspot.com").getReference();
     }
 
-    public static DogRepository getInstance(){
-        if (mRepository == null){
+    public static DogRepository getInstance() {
+        if (mRepository == null) {
             mRepository = new DogRepository();
         }
         return DogRepository.mRepository;
@@ -52,13 +52,13 @@ public class DogRepository implements IDogRepository {
     @Override
     public void uploadPhoto(Uri path, CallbackUploadPhoto callback) {
 
-        StorageReference mRefImage = mStorage.child("images/").child("foto_perro/"+path.getLastPathSegment());
+        StorageReference mRefImage = mStorage.child("images/").child("foto_perro/" + path.getLastPathSegment());
 
 
         mRefImage.putFile(path).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()){
+                if (!task.isSuccessful()) {
                     throw task.getException();
                 }
                 return mRefImage.getDownloadUrl();
@@ -92,7 +92,7 @@ public class DogRepository implements IDogRepository {
         nuevoPerro.put("did", perro.getDid());
 
         nuevoPerro.put("nombre", perro.getNombre());
-        nuevoPerro.put("descripcion" , perro.getDescripcion());
+        nuevoPerro.put("descripcion", perro.getDescripcion());
 
         nuevoPerro.put("urlFoto", perro.getUrlFoto());
         nuevoPerro.put("pathFoto", perro.getPathFoto());
@@ -112,9 +112,9 @@ public class DogRepository implements IDogRepository {
         mRef.updateChildren(nuevoPerro).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     callback.onSuccessUploadDog();
-                }else{
+                } else {
                     callback.onFailureUploadDog(task.getException().getMessage());
                 }
             }
@@ -125,12 +125,12 @@ public class DogRepository implements IDogRepository {
     @Override
     public void getDogList(CallbackDogList callbackDogList) {
         DatabaseReference mRef = mDatabase.getReference().child("Perros");
-        ArrayList<PerroModel>  mDogList = new ArrayList<>();
+        ArrayList<PerroModel> mDogList = new ArrayList<>();
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     PerroModel currentDog = snapshot.getValue(PerroModel.class);
 
                     currentDog.setNombre(currentDog.getNombre());
@@ -143,6 +143,7 @@ public class DogRepository implements IDogRepository {
                 Collections.reverse(mDogList);
                 callbackDogList.onSuccesGetDogList(mDogList);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 callbackDogList.onFailureGetDogList(databaseError.toString());
@@ -168,7 +169,7 @@ public class DogRepository implements IDogRepository {
                 PerroModel currentDog;
                 perdidos.clear();
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     currentDog = snapshot.getValue(PerroModel.class);
 
                     perdidos.add(currentDog);
@@ -187,34 +188,23 @@ public class DogRepository implements IDogRepository {
         });
     }
 
-
     @Override
-    public void queryDogBy(String Id, CallbackQueryDog callbackQueryDog){
+    public void queryDogBy(String Id, CallbackQueryDog callbackQueryDog) {
         DatabaseReference mReference = mDatabase.getReference().child("Perros");
         final PerroModel[] currentDog = {null};
-
-
-       // Query query = mReference.orderByChild("id").equalTo(Id).limitToFirst(1);
+        // Query query = mReference.orderByChild("id").equalTo(Id).limitToFirst(1);
         // Query qe = mReference.child("etiquetas").orderByChild("1").equalTo(true);
-
         Query q = mReference.orderByKey().equalTo(Id).limitToFirst(1);
-
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 PerroModel currentDog = null;
-                if (dataSnapshot != null){
-
+                if (dataSnapshot != null) {
                     currentDog = dataSnapshot.getChildren().iterator().next().getValue(PerroModel.class);
-
-
                 }
-
                 callbackQueryDog.onSucessQueryDog(currentDog);
-
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 callbackQueryDog.onFailureQueryDog(databaseError.getMessage());
