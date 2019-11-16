@@ -8,6 +8,8 @@ import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,9 +20,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.interfaces.IUserRepository;
+import com.pity.appperros1.utils.UserUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class UserRepository implements IUserRepository {
 
@@ -31,6 +35,7 @@ public class UserRepository implements IUserRepository {
     private static Usuario CURRENT_USER;
     //private AccessToken accessToken;
     private final static String TAG = "UserRepository";
+
     private UserRepository() {
         mDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -44,13 +49,14 @@ public class UserRepository implements IUserRepository {
     }
 
 
-    static Usuario getLoggedUser(){
+    @Override
+    public Usuario getLoggedUser() {
         return CURRENT_USER;
     }
 
     @Override
     public void attachLoggedUser(String currentUserID) {
-        getUserById(currentUserID, new CallbackUserById() {
+        getUserById(currentUserID, new CallbackQueryUser() {
             @Override
             public void onSuccessUserQueryById(Usuario user) {
                 CURRENT_USER = user;
@@ -64,26 +70,39 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void persistNewUserOnDatabase(Usuario newUser, final CallbackRepositoryNewUser callbackNewUser) {
+    public void persistNewUserOnDatabase(Usuario newUser, final CallbackUserUpdate callbackNewUser) {
         DatabaseReference mRef = mDatabase.getReference();
-        mRef.child("Usuarios")
+        mRef.child(UserUtils.USER_CHILD)
                 .child(newUser.getUid())
-                .updateChildren(createUserMap(newUser))
+                .updateChildren(UserUtils.userToMap(newUser))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            callbackNewUser.onSuccefulSaveNewUser();
+                            callbackNewUser.onSuccessUpdateUser();
 
                         } else {
-                            callbackNewUser.onFailedSaveNewUser(task.getException());
+                            callbackNewUser.onFailedUpdateUser(task.getException());
                         }
                     }
                 });
     }
 
     @Override
-    public void updateUser(Usuario currentUser) {
+    public void updateUser(Usuario currentUser, final CallbackUserUpdate callbackUserUpdate) {
+        DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_CHILD);
+        mRef.child(currentUser.getUid())
+                .updateChildren(UserUtils.userToMap(currentUser))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            callbackUserUpdate.onSuccessUpdateUser();
+                        }else{
+                            callbackUserUpdate.onFailedUpdateUser(task.getException());
+                        }
+                    }
+                });
 
     }
 
@@ -121,8 +140,8 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void isUserRegisteredOnDatabase(FirebaseUser currentUser, CallbackUserRegistered callbackUserRegistered) {
-        DatabaseReference mRef = mDatabase.getReference().child("Usuarios");
+    public void isUserRegisteredOnDatabase(FirebaseUser currentUser, CallbackIsUserRegistered callbackUserRegistered) {
+        DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_CHILD);
 
         Query mQuery = mRef.orderByKey().equalTo(currentUser.getUid()).limitToFirst(1);
 
@@ -141,8 +160,8 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void getUserById(String id, CallbackUserById callbackUserById) {
-        DatabaseReference mRef = mDatabase.getReference().child("Usuarios");
+    public void getUserById(String id, CallbackQueryUser callbackUserById) {
+        DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_CHILD);
         Query query = mRef.orderByKey().equalTo(id).limitToFirst(1);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -165,27 +184,41 @@ public class UserRepository implements IUserRepository {
 
     }
 
-    private Map<String, Object> createUserMap(Usuario user) {
-        Map<String, Object> crearUsuario = new HashMap<>();
+    // Syncronic but is not asdasd
+    public Usuario getUserById(String id) {
+        final TaskCompletionSource<List<Usuario>> tcs = new TaskCompletionSource<>();
+        DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_CHILD);
+        Query query = mRef.orderByKey().equalTo(id).limitToFirst(1);
+        final List<Usuario> currentUser = new ArrayList<>();
 
-        crearUsuario.put("id", user.getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                currentUser.add(dataSnapshot.getChildren().iterator().next().getValue(Usuario.class));
+                tcs.setResult(currentUser);
 
-        crearUsuario.put("displayName", user.getDisplayName());
-        crearUsuario.put("email", user.getEmail());
-        crearUsuario.put("telefono", user.getTelefono());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, databaseError.getMessage());
+                tcs.setException(databaseError.toException());
+            }
+        });
 
-        crearUsuario.put("mailVerification", user.isMailVerificated());
-        crearUsuario.put("timestamp", user.getTimestamp());
+        Task<List<Usuario>> resultTask = tcs.getTask();
 
-        crearUsuario.put("descripcion", user.getDescripcion());
-        crearUsuario.put("fotoperfil", user.getUrlFotoPerfil());
+        try {
+            Tasks.await(resultTask);
+        }catch (ExecutionException | InterruptedException e){
+            resultTask = Tasks.forException(e);
+        }
 
-        crearUsuario.put("perrosPublicados", user.getPerrosPublicados());
-        crearUsuario.put("perrosAdoptados", user.getPerrosAdoptados());
-        crearUsuario.put("perrosEncontrados", user.getPerrosEncontrados());
+        if (resultTask.isSuccessful()){
+            return resultTask.getResult().get(0);
 
-        return crearUsuario;
-
+        }else return null;
     }
+
+
 
 }

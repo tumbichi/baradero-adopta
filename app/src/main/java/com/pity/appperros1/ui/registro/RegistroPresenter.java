@@ -2,13 +2,11 @@ package com.pity.appperros1.ui.registro;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Patterns;
 
 import com.pity.appperros1.base.BasePresenter;
 import com.pity.appperros1.data.interactor.implementation.RegistroInteractor;
 import com.pity.appperros1.data.interactor.interfaces.IRegistroInteractor;
-
-import java.util.regex.Pattern;
+import com.pity.appperros1.utils.UserUtils;
 
 public class RegistroPresenter extends BasePresenter<IRegistroView>
         implements IRegistroPresenter, IRegistroInteractor.CallbackRegistro {
@@ -33,10 +31,6 @@ public class RegistroPresenter extends BasePresenter<IRegistroView>
 
     }
 
-    private boolean validarEmail(String email) {
-        Pattern pattern = Patterns.EMAIL_ADDRESS;
-        return pattern.matcher(email).matches();
-    }
 
     private boolean validarRegistro(String email, String password1, String password2, String nombre, String apellido, String phoneNumber){
         if (TextUtils.isEmpty(email)){
@@ -44,7 +38,7 @@ public class RegistroPresenter extends BasePresenter<IRegistroView>
             return false;
         }
 
-        if (!validarEmail(email)){
+        if (!UserUtils.isEmailValid(email)){
             mView.showError("El email ingresado no es valido");
             return false;
         }

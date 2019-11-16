@@ -8,10 +8,13 @@ import java.util.List;
 
 public class Usuario {
 
-    private String uid;
+    private String id;
     private String displayName;
     private String email;
     private String descripcion;
+
+
+
     private String telefono;
     private String urlFotoPerfil;
 
@@ -27,7 +30,7 @@ public class Usuario {
     public Usuario(){}
 
     public Usuario(String id, String email, String nombre, String apellido, String telefono){
-        this.uid = id;
+        this.id = id;
         this.email = email;
         this.displayName = nombre + " " + apellido;
         this.telefono = telefono;
@@ -44,7 +47,7 @@ public class Usuario {
     }
 
     public Usuario(String id, String email, String displayName, String telefono){
-        this.uid = id;
+        this.id = id;
         this.email = email;
         this.displayName = displayName;
         this.telefono = telefono;
@@ -62,7 +65,7 @@ public class Usuario {
 
 
     public Usuario(String id, String email, String displayName, String telefono, Uri fotoPerfil){
-        this.uid = id;
+        this.id = id;
         this.email = email;
         this.displayName = displayName;
         this.telefono = telefono;
@@ -79,7 +82,7 @@ public class Usuario {
     }
 
     public String getUid() {
-        return uid;
+        return id;
     }
 
     public String getDisplayName() {
@@ -134,5 +137,7 @@ public class Usuario {
         return timestamp;
     }
 
-
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 }

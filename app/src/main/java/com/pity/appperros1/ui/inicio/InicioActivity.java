@@ -20,6 +20,7 @@ import com.pity.appperros1.R;
 import com.pity.appperros1.base.BaseActivity;
 import com.pity.appperros1.data.interactor.implementation.InicioInteractor;
 import com.pity.appperros1.data.modelos.PerroModel;
+import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.ui.fragment_agregar_perro.implementation.AgregarPerroFragment;
 import com.pity.appperros1.ui.informacion_perro.implementation.InformacionPerroView;
 import com.pity.appperros1.ui.inicio.adapters.InicioAdapter;
@@ -79,8 +80,7 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
         ButterKnife.bind(this);
         fragment = new AgregarPerroFragment(this);
         Log.e("InicioView", "onCreate");
-
-
+        if (UserRepository.getInstance().getLoggedUser() == null) UserRepository.getInstance().attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid());
     }
 
 

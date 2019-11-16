@@ -5,12 +5,12 @@ import com.pity.appperros1.data.modelos.Usuario;
 
 public interface IUserRepository {
 
-    interface CallbackRepositoryNewUser{
-        void onSuccefulSaveNewUser();
-        void onFailedSaveNewUser(Exception e);
+    interface CallbackUserUpdate {
+        void onSuccessUpdateUser();
+        void onFailedUpdateUser(Exception e);
     }
 
-    interface CallbackUserById{
+    interface CallbackQueryUser {
         void onSuccessUserQueryById(Usuario user);
         void onFailureUserQueryById(String msgError);
     }
@@ -20,17 +20,19 @@ public interface IUserRepository {
         void onFailedSendMail(Exception e);
     }
 
-    interface CallbackUserRegistered{
+    interface CallbackIsUserRegistered {
         void saveUserOnDatabase(FirebaseUser mNoRegisteredUser);
     }
 
+
+    Usuario getLoggedUser();
     void attachLoggedUser(String currentUserID);
-    void persistNewUserOnDatabase(Usuario newUser, CallbackRepositoryNewUser callback);
-    void updateUser(Usuario currentUser);
+    void persistNewUserOnDatabase(Usuario newUser, CallbackUserUpdate callback);
+    void updateUser(Usuario currentUser, CallbackUserUpdate callbackUserUpdate);
     void sendMailVerication(FirebaseUser currentUser, CallbackRepositorySendMail callback);
     FirebaseUser currentFirebaseUser();
     void logoutUser();
-    void isUserRegisteredOnDatabase(FirebaseUser facebookUser, CallbackUserRegistered callback);
-    void getUserById(String id, CallbackUserById callbackUserById);
+    void isUserRegisteredOnDatabase(FirebaseUser facebookUser, CallbackIsUserRegistered callback);
+    void getUserById(String id, CallbackQueryUser callbackUserById);
 
 }

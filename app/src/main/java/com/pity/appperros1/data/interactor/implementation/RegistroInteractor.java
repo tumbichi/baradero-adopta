@@ -16,11 +16,11 @@ import com.pity.appperros1.data.repository.implementacion.UserRepository;
 
 
 public class RegistroInteractor implements IRegistroInteractor,
-        IUserRepository.CallbackRepositoryNewUser, IUserRepository.CallbackRepositorySendMail {
+        IUserRepository.CallbackUserUpdate, IUserRepository.CallbackRepositorySendMail {
 
     private FirebaseAuth mAuth;
     private UserRepository repository;
-    private IUserRepository.CallbackRepositoryNewUser callbackRepositoryNewUser = this;
+    private IUserRepository.CallbackUserUpdate callbackRepositoryNewUser = this;
     private IRegistroInteractor.CallbackRegistro callbackPresenter;
 
     public RegistroInteractor(){
@@ -53,14 +53,14 @@ public class RegistroInteractor implements IRegistroInteractor,
     }
 
     @Override
-    public void onSuccefulSaveNewUser() {
+    public void onSuccessUpdateUser() {
         // Usuario creado en la base de datos
-        Log.e("Registro", "onSuccefulSaveNewUser on database");
+        Log.e("Registro", "onSuccessUpdateUser on database");
         repository.sendMailVerication(mAuth.getCurrentUser(), this);
     }
 
     @Override
-    public void onFailedSaveNewUser(Exception e) {
+    public void onFailedUpdateUser(Exception e) {
         // Usuario no se creo en la base de datos
         callbackPresenter.onFailedRegistro(e);
 

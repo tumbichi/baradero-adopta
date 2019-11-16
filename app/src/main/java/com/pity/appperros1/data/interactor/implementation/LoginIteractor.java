@@ -18,7 +18,7 @@ import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.data.repository.interfaces.IUserRepository;
 
 
-public class LoginIteractor implements ILoginInteractor, IUserRepository.CallbackUserRegistered, IUserRepository.CallbackRepositoryNewUser {
+public class LoginIteractor implements ILoginInteractor, IUserRepository.CallbackIsUserRegistered, IUserRepository.CallbackUserUpdate {
 
     private UserRepository mRepository;
     private FirebaseAuth mAuth;
@@ -31,7 +31,6 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
 
     @Override
     public void login(String email, String pass, final OnLoginCallback listener) {
-
         mAuth.signInWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -78,7 +77,7 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
 
     @Override
     public void attachLoggedUser(String userID) {
-
+        UserRepository.getInstance().attachLoggedUser(userID);
     }
 
 
@@ -101,12 +100,12 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
 
 
     @Override
-    public void onSuccefulSaveNewUser() {
-        Log.e("Login", "facebook:onSuccefulSaveNewUser()");
+    public void onSuccessUpdateUser() {
+        Log.e("Login", "facebook:onSuccessUpdateUser()");
     }
 
     @Override
-    public void onFailedSaveNewUser(Exception e) {
-        Log.e("Login","facebook:onFailedSaveNewUser");
+    public void onFailedUpdateUser(Exception e) {
+        Log.e("Login","facebook:onFailedUpdateUser");
     }
 }

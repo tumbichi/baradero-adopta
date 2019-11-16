@@ -25,7 +25,6 @@ import java.util.Arrays;
 public class LoginPresenter extends BasePresenter<ILoginView>
         implements ILoginPresenter, ILoginInteractor.OnLoginCallback, FacebookCallback<LoginResult> {
 
-
     private LoginIteractor mIntereactor;
     private CallbackManager mCallbackManager;
 
@@ -37,11 +36,12 @@ public class LoginPresenter extends BasePresenter<ILoginView>
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (mIntereactor.isUserLogged()) mView.navigateToInicio();
+        if (mIntereactor.isUserLogged()){
+            mIntereactor.attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid());
+            mView.navigateToInicio();
+        }
         mCallbackManager = CallbackManager.Factory.create();
     }
-
-
 
 
     @Override
@@ -101,7 +101,6 @@ public class LoginPresenter extends BasePresenter<ILoginView>
     public void onSuccessFacebook(FirebaseUser currentUser) {
         Log.e("presenter", "onSuccesFacebook");
         mIntereactor.checkIfIsRegistedOnDatabase(currentUser);
-        mIntereactor.attachLoggedUser(currentUser.getUid());
         if (isViewAttached()){
             mView.navigateToInicio();
         }
@@ -111,9 +110,6 @@ public class LoginPresenter extends BasePresenter<ILoginView>
     public void onFailedFacebook(String error) {
         mView.showMessage(error);
     }
-
-
-
 
     @Override
     public void onSuccess(LoginResult loginResult) {

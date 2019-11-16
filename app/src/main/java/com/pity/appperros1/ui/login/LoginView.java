@@ -47,9 +47,6 @@ public class LoginView extends BaseActivity<ILoginPresenter>
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-
-
     }
 
     @OnClick(R.id.login_button_iniciar_sesion)
@@ -76,7 +73,6 @@ public class LoginView extends BaseActivity<ILoginPresenter>
         if (textView == this.textViewOlvidasteContrasenia) {
             navigateTo(OlvidasteContraseniaView.class);
         }
-
     }
 
 
@@ -91,7 +87,6 @@ public class LoginView extends BaseActivity<ILoginPresenter>
         startActivity(new Intent(LoginView.this, InicioActivity.class));
         finish();
     }
-
 
 
     @Override
