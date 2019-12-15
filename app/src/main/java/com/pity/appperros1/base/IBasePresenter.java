@@ -13,8 +13,6 @@ public interface IBasePresenter<TView extends IBaseView> {
 
     void onCreate(Bundle savedState);
 
-
-
     void onStart();
 
     void onResume();

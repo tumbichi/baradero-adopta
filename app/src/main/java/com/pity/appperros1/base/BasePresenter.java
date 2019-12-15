@@ -24,9 +24,6 @@ public abstract class BasePresenter<TView extends IBaseView> implements IBasePre
     // onCreate para Fragment
 
 
-
-
-
     // enlazar una vista al presenter
     @Override
     public void attachView(TView view) {
@@ -48,7 +45,6 @@ public abstract class BasePresenter<TView extends IBaseView> implements IBasePre
 
     @Override
     public void onStop() { }
-
 
 
     @Override

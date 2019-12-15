@@ -3,13 +3,13 @@ package com.pity.appperros1.data.repository.interfaces;
 import android.net.Uri;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.pity.appperros1.data.modelos.PerroModel;
+import com.pity.appperros1.data.modelos.Perro;
 
 import java.util.ArrayList;
 
 public interface IDogRepository {
     void uploadPhoto(Uri path, CallbackUploadPhoto callbackUploadPhoto);
-    void uploadPerro(PerroModel perro, FirebaseUser currentUser, CallbackUploadDog callback);
+    void uploadPerro(Perro perro, FirebaseUser currentUser, CallbackUploadDog callback);
     void getDogList(CallbackDogList callbackDogList);
     void getDogListPerdido(CallbackDogList callbackDogList);
     void queryDogBy(String id, CallbackQueryDog callbackQueryDog);
@@ -25,11 +25,11 @@ public interface IDogRepository {
         void onFailureUploadDog(String messasgeError);
     }
     interface CallbackDogList {
-        void onSuccesGetDogList(ArrayList<PerroModel> dogList);
+        void onSuccesGetDogList(ArrayList<Perro> dogList);
         void onFailureGetDogList(String error);
     }
     interface CallbackQueryDog {
-        void onSucessQueryDog(PerroModel currentDog);
+        void onSucessQueryDog(Perro currentDog);
         void onFailureQueryDog(String msgError);
     }
 

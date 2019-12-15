@@ -4,12 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.pity.appperros1.base.BasePresenter;
-import com.pity.appperros1.data.modelos.PerroModel;
+import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.implementacion.DogRepository;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.data.repository.interfaces.IDogRepository;
-import com.pity.appperros1.data.repository.interfaces.IUserRepository;
 import com.pity.appperros1.ui.informacion_perro.interfaces.IInformacionPerroPresenter;
 import com.pity.appperros1.ui.informacion_perro.interfaces.IInformacionPerroView;
 
@@ -22,7 +21,7 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
     private UserRepository mUserRepository;
 
     private Usuario mCurrentUploader;
-    private PerroModel mCurrentDog;
+    private Perro mCurrentDog;
 
     InformacionPerroPresenter(Context context) {
         super(context);
@@ -31,7 +30,7 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
     }
 
 
-    private void bindRowsOfDogInformation(PerroModel perroModel) {
+    private void bindRowsOfDogInformation(Perro perroModel) {
         String nombre = perroModel.getNombre();
         String descripcion = perroModel.getDescripcion();
         String imageUrl = perroModel.getUrlFoto();
@@ -60,21 +59,9 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
     public void attachCurrentDogId(String currentId) {
         mDogRepository.queryDogBy(currentId, new IDogRepository.CallbackQueryDog() {
             @Override
-            public void onSucessQueryDog(PerroModel currentDog) {
+            public void onSucessQueryDog(Perro currentDog) {
                 mCurrentDog = currentDog;
                 bindRowsOfDogInformation(currentDog);
-                mUserRepository.getUserById(currentDog.getUid(), new IUserRepository.CallbackUserById() {
-                    @Override
-                    public void onSuccessUserQueryById(Usuario user) {
-                        mCurrentUploader = user;
-                        bindRowsOfUserInformation(user);
-                    }
-
-                    @Override
-                    public void onFailureUserQueryById(String msgError) {
-                        mView.toast(msgError);
-                    }
-                });
             }
 
             @Override
@@ -87,7 +74,7 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
     @Override
     public void initDogAdoption() {
         String dogID = mCurrentDog.getDid();
-        String uploaderID = mCurrentUploader.getUid();
+        String uploaderID = mCurrentDog.getUid();
         String adopterID = mUserRepository.currentFirebaseUser().getUid();
 
         mView.navigateToAdoption(dogID, uploaderID, adopterID);

@@ -19,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pity.appperros1.R;
 import com.pity.appperros1.base.BaseActivity;
 import com.pity.appperros1.data.interactor.implementation.InicioInteractor;
-import com.pity.appperros1.data.modelos.PerroModel;
+import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.ui.fragment_agregar_perro.implementation.AgregarPerroFragment;
 import com.pity.appperros1.ui.informacion_perro.implementation.InformacionPerroView;
@@ -133,7 +133,7 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
     }
 
     @Override
-    public void navigateToInformacionOf(PerroModel currentDog) {
+    public void navigateToInformacionOf(Perro currentDog) {
         Intent intent = new Intent(this, InformacionPerroView.class);
 
         intent.setData(Uri.parse(currentDog.getDid()));
@@ -146,7 +146,7 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
     }
 
     @Override
-    public void setListViewAdapter(ArrayList<PerroModel> postList) {
+    public void setListViewAdapter(ArrayList<Perro> postList) {
         mAdapter = new InicioAdapter(this, postList, R.layout.item_post_list, this);
         postListView.setAdapter(mAdapter);
     }

@@ -64,7 +64,6 @@ public class RegitroView extends BaseActivity<IRegistroPresenter>
         setContentView(R.layout.activity_registro);
         ButterKnife.bind(this);
         mPresenter.attachView(this);
-
     }
 
     @Override

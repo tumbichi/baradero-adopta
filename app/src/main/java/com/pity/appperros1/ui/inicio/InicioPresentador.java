@@ -6,7 +6,7 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseUser;
 import com.pity.appperros1.base.BasePresenter;
 import com.pity.appperros1.data.interactor.interfaces.IInicioInteractor;
-import com.pity.appperros1.data.modelos.PerroModel;
+import com.pity.appperros1.data.modelos.Perro;
 
 public class InicioPresentador extends BasePresenter<IInicioView>
             implements IInicioPresentador, IInicioInteractor.CallbackGetDogList {
@@ -36,7 +36,7 @@ public class InicioPresentador extends BasePresenter<IInicioView>
 
     @Override
     public void onItemClickVerMas(int position) {
-        PerroModel perroModel = mView.getListViewAdapter().getItem(position);
+        Perro perroModel = mView.getListViewAdapter().getItem(position);
         mView.navigateToInformacionOf(perroModel);
     }
 

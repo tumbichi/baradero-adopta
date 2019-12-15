@@ -12,20 +12,20 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.pity.appperros1.R;
-import com.pity.appperros1.data.modelos.PerroModel;
+import com.pity.appperros1.data.modelos.Perro;
 
 import java.util.ArrayList;
 
 public class InicioAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<PerroModel> dogsList;
+    private ArrayList<Perro> dogsList;
     private int layout;
 
     private View.OnClickListener mOnClick;
 
 
-    public InicioAdapter (Context context, ArrayList<PerroModel> list, int l, View.OnClickListener onClickListener) {
+    public InicioAdapter (Context context, ArrayList<Perro> list, int l, View.OnClickListener onClickListener) {
         this.mContext = context;
         this.dogsList = list;
         this.layout = l;
@@ -40,7 +40,7 @@ public class InicioAdapter extends BaseAdapter {
     }
 
     @Override
-    public PerroModel getItem(int position) {
+    public Perro getItem(int position) {
         return dogsList.get(position);
     }
 
@@ -75,7 +75,7 @@ public class InicioAdapter extends BaseAdapter {
 
         }
 
-        PerroModel currentDog = dogsList.get(position);
+        Perro currentDog = dogsList.get(position);
         holder.buttonVerMas.setTag(position);
         if (currentDog != null){
             holder.textViewNombre.setText(currentDog.getNombre());

@@ -23,6 +23,8 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
     private UserRepository mRepository;
     private FirebaseAuth mAuth;
 
+    private final static String TAG = "LoginInteractor";
+
     public LoginIteractor(){
         this.mAuth = FirebaseAuth.getInstance();
         this.mRepository = UserRepository.getInstance();

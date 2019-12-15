@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.pity.appperros1.data.interactor.interfaces.IInicioInteractor;
-import com.pity.appperros1.data.modelos.PerroModel;
+import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.data.repository.implementacion.DogRepository;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.data.repository.interfaces.IDogRepository;
@@ -21,8 +21,8 @@ public class InicioInteractor implements IInicioInteractor,
     private IAgregarPerroPresenter.CallbackInteractor callbackAgregarPerroInteractor;
     private CallbackGetDogList callbackInicioInteractor;
 
-    private PerroModel newDog;
-    private ArrayList<PerroModel> postList;
+    private Perro newDog;
+    private ArrayList<Perro> postList;
 
     public InicioInteractor(){
         this.userRepository = UserRepository.getInstance();
@@ -42,19 +42,19 @@ public class InicioInteractor implements IInicioInteractor,
     }
 
     @Override
-    public ArrayList<PerroModel> getListPost() {
+    public ArrayList<Perro> getListPost() {
         return postList;
     }
 
     @Override
-    public PerroModel getDogById(int position) {
+    public Perro getDogById(int position) {
         return getListPost().get(position);
     }
 
 
     @Override
     public void createCurrentNewDog() {
-        newDog = new PerroModel(new ArrayList<>());
+        newDog = new Perro(new ArrayList<>());
     }
 
     @Override
@@ -131,7 +131,7 @@ public class InicioInteractor implements IInicioInteractor,
 
 
     @Override
-    public void onSuccesGetDogList(ArrayList<PerroModel> dogList) {
+    public void onSuccesGetDogList(ArrayList<Perro> dogList) {
         postList = dogList;
         callbackInicioInteractor.onSuccesGetDogList();
     }

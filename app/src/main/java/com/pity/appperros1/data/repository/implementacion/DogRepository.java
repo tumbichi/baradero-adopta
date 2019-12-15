@@ -1,12 +1,15 @@
 package com.pity.appperros1.data.repository.implementacion;
 
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.pity.appperros1.data.modelos.PerroModel;
+import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.data.repository.interfaces.IDogRepository;
 
 import java.text.SimpleDateFormat;
@@ -26,8 +29,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class DogRepository implements IDogRepository {
 
@@ -36,7 +41,7 @@ public class DogRepository implements IDogRepository {
     private FirebaseDatabase mDatabase;
     private StorageReference mStorage;
 
-
+    private final static String TAG = "DogRepository";
     private DogRepository() {
         mDatabase = FirebaseDatabase.getInstance();
         mStorage = FirebaseStorage.getInstance("gs://fir-appautentificacion.appspot.com").getReference();
@@ -80,7 +85,7 @@ public class DogRepository implements IDogRepository {
     }
 
     @Override
-    public void uploadPerro(PerroModel perro, FirebaseUser currentUser, CallbackUploadDog callback) {
+    public void uploadPerro(Perro perro, FirebaseUser currentUser, CallbackUploadDog callback) {
 
         perro.setUid(currentUser.getUid());
 
@@ -125,13 +130,13 @@ public class DogRepository implements IDogRepository {
     @Override
     public void getDogList(CallbackDogList callbackDogList) {
         DatabaseReference mRef = mDatabase.getReference().child("Perros");
-        ArrayList<PerroModel> mDogList = new ArrayList<>();
+        ArrayList<Perro> mDogList = new ArrayList<>();
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    PerroModel currentDog = snapshot.getValue(PerroModel.class);
+                    Perro currentDog = snapshot.getValue(Perro.class);
 
                     currentDog.setNombre(currentDog.getNombre());
                     currentDog.setDescripcion(currentDog.getDescripcion());
@@ -139,7 +144,7 @@ public class DogRepository implements IDogRepository {
                     //currentDog.setUid(currentDog.getUid());
                     mDogList.add(currentDog);
                 }
-                //ArrayList<PerroModel> tempList = new ArrayList<>(mDogList);
+                //ArrayList<Perro> tempList = new ArrayList<>(mDogList);
                 Collections.reverse(mDogList);
                 callbackDogList.onSuccesGetDogList(mDogList);
             }
@@ -155,7 +160,7 @@ public class DogRepository implements IDogRepository {
     @Override
     public void getDogListPerdido(CallbackDogList callbackDogList) {
         DatabaseReference mRef = mDatabase.getReference().child("Perros");
-        ArrayList<PerroModel> perdidos = new ArrayList<>();
+        ArrayList<Perro> perdidos = new ArrayList<>();
         //Query qe = mRef.child("etiquetas").orderByChild("2").equalTo(true);
 
         //Query qe = mRef.orderByChild("etiquetas/1").equalTo(true);
@@ -166,11 +171,11 @@ public class DogRepository implements IDogRepository {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                PerroModel currentDog;
+                Perro currentDog;
                 perdidos.clear();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    currentDog = snapshot.getValue(PerroModel.class);
+                    currentDog = snapshot.getValue(Perro.class);
 
                     perdidos.add(currentDog);
 
@@ -191,7 +196,7 @@ public class DogRepository implements IDogRepository {
     @Override
     public void queryDogBy(String Id, CallbackQueryDog callbackQueryDog) {
         DatabaseReference mReference = mDatabase.getReference().child("Perros");
-        final PerroModel[] currentDog = {null};
+        final Perro[] currentDog = {null};
         // Query query = mReference.orderByChild("id").equalTo(Id).limitToFirst(1);
         // Query qe = mReference.child("etiquetas").orderByChild("1").equalTo(true);
         Query q = mReference.orderByKey().equalTo(Id).limitToFirst(1);
@@ -199,9 +204,9 @@ public class DogRepository implements IDogRepository {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                PerroModel currentDog = null;
+                Perro currentDog = null;
                 if (dataSnapshot != null) {
-                    currentDog = dataSnapshot.getChildren().iterator().next().getValue(PerroModel.class);
+                    currentDog = dataSnapshot.getChildren().iterator().next().getValue(Perro.class);
                 }
                 callbackQueryDog.onSucessQueryDog(currentDog);
             }
@@ -211,6 +216,41 @@ public class DogRepository implements IDogRepository {
             }
         });
     }
+
+    public Perro queryDogBy(String id){
+        final TaskCompletionSource<List<Perro>> tcs = new TaskCompletionSource<>();
+        DatabaseReference mReference = mDatabase.getReference().child("Perros");
+        final List<Perro> currentDog = new ArrayList<>();
+        // Query query = mReference.orderByChild("id").equalTo(Id).limitToFirst(1);
+        // Query qe = mReference.child("etiquetas").orderByChild("1").equalTo(true);
+        Query q = mReference.orderByKey().equalTo(id).limitToFirst(1);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                currentDog.add(dataSnapshot.getChildren().iterator().next().getValue(Perro.class));
+                tcs.setResult(currentDog);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, databaseError.getMessage());
+            }
+        });
+
+        Task<List<Perro>> taskResult = tcs.getTask();
+
+        try {
+            Tasks.await(taskResult);
+        }catch (ExecutionException | InterruptedException e){
+            taskResult = Tasks.forException(e);
+        }
+
+        if (taskResult.isSuccessful()) {
+            return taskResult.getResult().get(0);
+        }else return null;
+
+
+    }
+
 
 
 }

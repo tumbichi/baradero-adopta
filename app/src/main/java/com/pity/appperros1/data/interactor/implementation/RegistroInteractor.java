@@ -37,14 +37,10 @@ public class RegistroInteractor implements IRegistroInteractor,
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-
+                        if (task.isSuccessful()) {
                             Usuario newUser = new Usuario(mAuth.getCurrentUser().getUid(), email, nombre, apellido, telefono);
                             repository.persistNewUserOnDatabase(newUser, callbackRepositoryNewUser);
-
-                        }
-                        else
-                        {
+                        } else {
                             callbackRegistro.onFailedRegistro(task.getException());
 
                         }

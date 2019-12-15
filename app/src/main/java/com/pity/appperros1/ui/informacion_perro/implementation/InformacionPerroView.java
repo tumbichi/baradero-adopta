@@ -83,8 +83,8 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_informacion_perro);
+        getSupportActionBar().hide();
         ButterKnife.bind(this);
         mPresenter.attachView(this);
         String currentIDDog = getIntent().getData().toString();

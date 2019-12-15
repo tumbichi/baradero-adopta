@@ -18,12 +18,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.interfaces.IUserRepository;
 import com.pity.appperros1.utils.UserUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class UserRepository implements IUserRepository {
@@ -60,6 +64,36 @@ public class UserRepository implements IUserRepository {
             @Override
             public void onSuccessUserQueryById(Usuario user) {
                 CURRENT_USER = user;
+                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (task.isSuccessful()){
+                            String token = task.getResult().getToken();
+                            Log.i(TAG, "Token ID: " + token);
+
+                            Map<String, Object> tokenMap = new HashMap<>();
+                            tokenMap.put(UserUtils.TOKEN_KEY, token);
+                            mDatabase.getReference()
+                                    .child("Usuarios")
+                                    .child(CURRENT_USER.getUid())
+                                    .updateChildren(tokenMap);
+                            updateUser(CURRENT_USER, new CallbackUserUpdate() {
+                                @Override
+                                public void onSuccessUpdateUser() {
+                                    Log.i(TAG, "User Logged and attached \n" +
+                                                    "token : " + token);
+                                }
+
+                                @Override
+                                public void onFailedUpdateUser(Exception e) {
+                                    Log.e(TAG, e.getMessage());
+                                }
+                            });
+
+                        }
+                    }
+                });
+
             }
 
             @Override
@@ -91,6 +125,7 @@ public class UserRepository implements IUserRepository {
     @Override
     public void updateUser(Usuario currentUser, final CallbackUserUpdate callbackUserUpdate) {
         DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_CHILD);
+
         mRef.child(currentUser.getUid())
                 .updateChildren(UserUtils.userToMap(currentUser))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -133,9 +168,10 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void logoutUser() {
-        CURRENT_USER = null;
+        mDatabase.getReference().child("Usuarios").child(CURRENT_USER.getUid()).child(UserUtils.TOKEN_KEY).removeValue();
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken != null && !accessToken.isExpired()) LoginManager.getInstance().logOut();
+        CURRENT_USER = null;
         mAuth.signOut();
     }
 
@@ -167,12 +203,13 @@ public class UserRepository implements IUserRepository {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Usuario mCurrentUser = null;
+                ArrayList<Usuario> userResult = new ArrayList<>();
 
-                mCurrentUser = dataSnapshot.getChildren().iterator().next().getValue(Usuario.class);
-
-                if (mCurrentUser != null) {
-                    callbackUserById.onSuccessUserQueryById(mCurrentUser);
+                for (DataSnapshot user : dataSnapshot.getChildren()) {
+                    userResult.add(UserUtils.unmapperUser(user));
+                }
+                if (userResult.get(0) != null) {
+                    callbackUserById.onSuccessUserQueryById(userResult.get(0));
                 } else callbackUserById.onFailureUserQueryById("Error de ID");
 
             }

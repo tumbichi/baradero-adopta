@@ -1,16 +1,16 @@
-package com.pity.appperros1.data.repository.implementacion;
+package com.pity.appperros1.data.repository.interfaces;
 
 import androidx.annotation.NonNull;
 
-import com.pity.appperros1.data.modelos.PerroModel;
-import com.pity.appperros1.data.modelos.Usuario;
+import com.pity.appperros1.data.modelos.Adopcion;
 
-interface IAdopcionRepository {
+public interface IAdopcionRepository {
     interface CallbackAdoption{
         void onSuccesAdoption();
-        void onFailedAdoption();
+        void onFailedAdoption(Exception e);
     }
 
-    void registerAdoptionOnDatabase(@NonNull PerroModel dog, @NonNull Usuario uploader, @NonNull Usuario adopter, CallbackAdoption callbackAdoption);
+    void registerAdoptionOnDatabase(@NonNull Adopcion adopcion, CallbackAdoption callbackAdoption);
+    void registerSolicitudOnDatabase(String uploaderID, String adopterID, CallbackAdoption callbackAdoption);
 
 }

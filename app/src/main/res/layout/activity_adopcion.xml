@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:background="@color/primary_text">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_adopcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/primary"
+        android:visibility="gone"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:id="@+id/content_view_adoption"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:padding="2dp"
+            android:background="@drawable/custom_background_grey"
+            android:hint="Email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/adopcion_text_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:editable="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="8dp" />
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/custom_background_grey">
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_weight="0"/>
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/adopcion_country_code_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:ccpDialog_showPhoneCode="true"
+                app:ccpDialog_showCloseIcon="true"
+                app:ccp_defaultPhoneCode="54"
+                app:ccp_showPhoneCode="true"
+                app:ccp_showNameCode="false"
+                app:ccp_showArrow="true"
+                app:ccp_arrowColor="@color/primary"
+                android:layout_gravity="center"/>
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Telefono">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/adopcion_text_telefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="phone"
+                    android:maxEms="10"
+                    android:maxLength="10"
+                    android:layout_marginEnd="4dp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/adopcion_button_confirmar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirmar Adopcion"
+            android:background="@drawable/custom_button_purple"
+            android:textColor="@color/icons"
+            android:layout_gravity="bottom"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
