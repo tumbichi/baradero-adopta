@@ -63,8 +63,6 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
         mInteractor.deleteCurrentNewDog();
     }
 
-
-
     private void openCamera() {
         final Intent intentFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intentFoto.resolveActivity(mActivity.getPackageManager()) != null) {
@@ -243,8 +241,6 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
         return resultado == PackageManager.PERMISSION_GRANTED;
     }
 
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == Activity.RESULT_OK){
@@ -258,7 +254,6 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 //dataListener.sendData(bitmap);
                 //imgViewFotoPerro.setImageURI(Uri.parse(rutaImageFile));
             }
@@ -271,18 +266,13 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
                     mInteractor.setCurrentPathPhoto(currentPathFoto);
                     mView.setImageViewFotoPerroTo(currentPathFoto);
                 }
-
-
-
             }
-
         }
     }
 
     @Override
     public void onRequestPermissionResult(int requestCode, String[] permission, int[] grantResults) {
         super.onRequestPermissionResult(requestCode, permission, grantResults);
-
         if (requestCode == CODIGO_CAMARA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openCamera();
@@ -290,8 +280,6 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
                 mView.showToastError("Se necesitan permisos de la camara para seguir");
             }
         }
-
-
     }
 
     @Override
@@ -308,7 +296,7 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
     public void onSuccesUploadDog() {
         mView.showToastError("Perro subido con exito!");
         mView.hideProgressDialog();
-        mViewParent.hideFragment();
+        mViewParent.hideAgregarPerroFragment();
         mViewParent.notifyDataChangeForListView();
     }
 

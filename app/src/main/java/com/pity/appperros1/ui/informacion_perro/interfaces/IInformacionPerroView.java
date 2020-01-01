@@ -15,5 +15,7 @@ public interface IInformacionPerroView extends IBaseView {
 
     void navigateToAdoption(String dogID, String uploaderID, String adopterID);
 
+    void hideContactButton();
+
     void toast(String msg);
 }

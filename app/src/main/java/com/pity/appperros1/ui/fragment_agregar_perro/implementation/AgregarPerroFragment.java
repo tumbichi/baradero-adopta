@@ -80,7 +80,6 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
     private AdapterItemSpinner adapterItemVacunado;
     private AdapterItemSpinner adapterItemEstado;
 
-
     private IInicioView mActivityView;
 
     public AgregarPerroFragment(IInicioView view){
@@ -93,15 +92,11 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
 
     }
 
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mPresenter.onAttach(context);
     }
-
-
 
 
     @Nullable
@@ -180,7 +175,7 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
     public void onClickCancelar(Button clicked)  {
         // cancelar
         if (clicked == buttonCancelar) {
-            mActivityView.hideFragment();
+            mActivityView.hideAgregarPerroFragment();
             mPresenter.onHideFragment();
         }
     }
@@ -198,7 +193,7 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
     @OnClick(R.id.button_image_view_esconder_fragment)
     public void onClickCerrar(ImageView clicked){
         if (clicked == imgViewBtnCerrar) {
-            mActivityView.hideFragment();
+            mActivityView.hideAgregarPerroFragment();
             mPresenter.onHideFragment();
         }
     }

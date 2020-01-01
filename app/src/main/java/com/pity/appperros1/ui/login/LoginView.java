@@ -44,7 +44,7 @@ public class LoginView extends BaseActivity<ILoginPresenter>
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+//      getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
     }
@@ -84,8 +84,8 @@ public class LoginView extends BaseActivity<ILoginPresenter>
 
     @Override
     public void navigateToInicio() {
-        startActivity(new Intent(LoginView.this, InicioActivity.class));
         finish();
+        startActivity(new Intent(LoginView.this, InicioActivity.class));
     }
 
 

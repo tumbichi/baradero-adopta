@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,11 +13,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        >
-        
-
-
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/post_image_view_foto_perro"
@@ -87,48 +84,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="2dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/post_foto_perfil_usuario"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/background_perro"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FFF"
+            android:layout_marginStart="4dp"
             android:layout_alignParentStart="true"
-
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-
-            app:srcCompat="@drawable/ic_launcher_background" />
-
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/post_text_view_nombre_perro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_toEndOf="@+id/post_foto_perfil_usuario"
-
-            android:layout_marginStart="8dp"
-
+            android:layout_toEndOf="@id/post_foto_perfil_usuario"
+            android:layout_marginStart="4dp"
             android:text="Nombre"
             android:textColor="#ffff"
-            android:textStyle="bold" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.PopupMenu.Small" />
 
         <TextView
             android:id="@+id/post_text_view_descripcion"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
 
-            android:layout_toEndOf="@+id/post_foto_perfil_usuario"
-            android:layout_toStartOf="@+id/post_button_ver_mas"
+            android:layout_toEndOf="@id/post_foto_perfil_usuario"
+            android:layout_toStartOf="@id/post_button_ver_mas"
             android:layout_below="@+id/post_text_view_nombre_perro"
 
             android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="1dp"
 
             android:text="Descripcion"
-            android:textStyle="italic"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.DropDownItem"
             android:textColor="#ffff" />
 
 
@@ -140,8 +132,8 @@
 
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="4dp"
+
 
             android:background="@drawable/custom_button_ver_mas"
             android:text="VER MAS"

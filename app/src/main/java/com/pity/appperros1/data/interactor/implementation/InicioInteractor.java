@@ -27,7 +27,6 @@ public class InicioInteractor implements IInicioInteractor,
     public InicioInteractor(){
         this.userRepository = UserRepository.getInstance();
         this.dogRepository = DogRepository.getInstance();
-
     }
 
     @Override
@@ -51,7 +50,6 @@ public class InicioInteractor implements IInicioInteractor,
         return getListPost().get(position);
     }
 
-
     @Override
     public void createCurrentNewDog() {
         newDog = new Perro(new ArrayList<>());
@@ -61,7 +59,6 @@ public class InicioInteractor implements IInicioInteractor,
     public void deleteCurrentNewDog() {
         newDog = null;
     }
-
 
     @Override
     public void startUploadNewDog(String nombre, String descripcion, String genero, String edad,
@@ -89,13 +86,10 @@ public class InicioInteractor implements IInicioInteractor,
 
     @Override
     public Uri getCurrentPathPhoto() throws NullPointerException {
-
-
         if (newDog.getPathFoto() == null) {
             return null;
         }
         return Uri.parse(newDog.getPathFoto());
-
     }
 
     @Override
@@ -111,8 +105,6 @@ public class InicioInteractor implements IInicioInteractor,
         dogRepository.uploadPerro(newDog, userRepository.currentFirebaseUser(), this);
 
     }
-
-
 
     @Override
     public void onFailureUploadPhoto(String messageError) {

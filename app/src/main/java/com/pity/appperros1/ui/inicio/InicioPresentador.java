@@ -5,16 +5,18 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.pity.appperros1.base.BasePresenter;
+import com.pity.appperros1.data.interactor.implementation.InicioInteractor;
 import com.pity.appperros1.data.interactor.interfaces.IInicioInteractor;
 import com.pity.appperros1.data.modelos.Perro;
+import com.pity.appperros1.ui.inicio.adapters.InicioAdapter;
 
 public class InicioPresentador extends BasePresenter<IInicioView>
             implements IInicioPresentador, IInicioInteractor.CallbackGetDogList {
 
-    private IInicioInteractor mInteractor;
+    private InicioInteractor mInteractor;
 
 
-     InicioPresentador(Context context, IInicioInteractor interactor){
+     InicioPresentador(Context context, InicioInteractor interactor){
         super(context);
         this.mInteractor = interactor;
         mInteractor.bringDogList(this);
@@ -35,23 +37,21 @@ public class InicioPresentador extends BasePresenter<IInicioView>
     }
 
     @Override
-    public void onItemClickVerMas(int position) {
-        Perro perroModel = mView.getListViewAdapter().getItem(position);
+    public void onItemClickVerMas(int position, InicioAdapter adapter) {
+        Perro perroModel = adapter.getItem(position);
         mView.navigateToInformacionOf(perroModel);
     }
 
     @Override
     public void onSuccesGetDogList() {
         mView.hideProgressDialog();
-        mView.showListView();
-        mView.showToast("Post cargados");
-        mView.setListViewAdapter(mInteractor.getListPost());
+        mView.toast("Post cargados");
+        mView.setPostListAdapter(mInteractor.getListPost());
     }
 
     @Override
     public void onFailureDogList(String error) {
-        mView.showToast(error);
+        mView.toast(error);
     }
-
 
 }

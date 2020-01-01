@@ -84,7 +84,6 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacion_perro);
-        getSupportActionBar().hide();
         ButterKnife.bind(this);
         mPresenter.attachView(this);
         String currentIDDog = getIntent().getData().toString();
@@ -99,10 +98,8 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
                                         String tamanio, String edad, String vacunado, String castrado,
                                         ArrayList<Boolean> etiquetas) {
 
-
         textViewNombrePerro.setText(nombre);
         textViewDescripcionPerro.setText(descripcion);
-
 
         textViewGenero.setText(genero);
         attachIconGeneroOnView(genero);
@@ -127,6 +124,8 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
                 .centerCrop()
                 .into(imageViewFotoPerro);
 
+
+
         progressBar.setVisibility(View.GONE);
         mainView.setVisibility(View.VISIBLE);
 
@@ -148,6 +147,10 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
         startActivity(intentAdoption);
     }
 
+    @Override
+    public void hideContactButton() {
+        buttonContactar.setVisibility(View.GONE);
+    }
 
     @Override
     public void toast(String msg) {

@@ -1,6 +1,7 @@
 package com.pity.appperros1.ui.informacion_perro.implementation;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.pity.appperros1.base.BasePresenter;
@@ -9,6 +10,7 @@ import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.implementacion.DogRepository;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.data.repository.interfaces.IDogRepository;
+import com.pity.appperros1.data.repository.interfaces.IUserRepository;
 import com.pity.appperros1.ui.informacion_perro.interfaces.IInformacionPerroPresenter;
 import com.pity.appperros1.ui.informacion_perro.interfaces.IInformacionPerroView;
 
@@ -41,6 +43,10 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
         String castrado = perroModel.getEsterilizado();
         ArrayList<Boolean> etiquetas = (ArrayList<Boolean>) perroModel.getEtiquetas();
 
+
+        if (TextUtils.equals(mCurrentDog.getUid(), mUserRepository.getLoggedUser().getUid())){
+            mView.hideContactButton();
+        }
         mView.setViewOfInformationDog(nombre, descripcion, imageUrl, genero, tamanio, edad, vacunado, castrado, etiquetas);
         Log.d("InfoDogPresenter", "DogAttached!");
     }
@@ -61,7 +67,24 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
             @Override
             public void onSucessQueryDog(Perro currentDog) {
                 mCurrentDog = currentDog;
-                bindRowsOfDogInformation(currentDog);
+                if (!TextUtils.equals(currentDog.getUid(), mUserRepository.getLoggedUser().getUid())){
+                    mUserRepository.getUserById(currentDog.getUid(), new IUserRepository.CallbackQueryUser() {
+                        @Override
+                        public void onSuccessUserQueryById(Usuario user) {
+                            bindRowsOfUserInformation(user);
+                            bindRowsOfDogInformation(currentDog);
+                        }
+
+                        @Override
+                        public void onFailureUserQueryById(String msgError) {
+
+                        }
+                    });
+                }else{
+                    bindRowsOfUserInformation(mUserRepository.getLoggedUser());
+                    bindRowsOfDogInformation(currentDog);
+                }
+
             }
 
             @Override

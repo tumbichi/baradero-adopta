@@ -30,7 +30,6 @@ public class InicioAdapter extends BaseAdapter {
         this.dogsList = list;
         this.layout = l;
         this.mOnClick = onClickListener;
-
     }
 
 

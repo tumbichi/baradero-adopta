@@ -1,129 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.inicio.InicioActivity">
+    android:layout_width="match_parent">
 
 
-    <LinearLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/divider">
+        android:background="@color/primary"
+        tools:context=".ui.inicio.InicioActivity">
 
-        <LinearLayout
-            android:id="@+id/linear_layout_top_inicio"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:background="#7C4DFF"
-            android:gravity="center"
-            android:weightSum="10">
-            
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="9"
-                android:layout_marginEnd="12dp"
-                android:gravity="center_vertical"
-                android:weightSum="10"
-                android:background="@drawable/custom_searcher_inicio">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="8"
-                    android:focusableInTouchMode="true"
-                    android:layout_marginStart="16dp">
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-
-                        android:layout_gravity="start|center"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="center|end"
-                    android:layout_marginEnd="8dp">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_search" />
-
-                    <ImageView
-                        android:id="@+id/inicio_icon_button_logout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_more" />
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/divider"/>
-
-        <ProgressBar
-            android:id="@+id/inicio_progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp" />
-        <ListView
-            android:id="@+id/inicio_list_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            android:visibility="gone"
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar" />
 
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:padding="4dp"
+            <FrameLayout
+                android:id="@+id/content_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-            android:focusable="false"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="6dp"
-            android:clipToPadding="false"
-            android:overScrollHeader="@color/divider"
-            android:footerDividersEnabled="true"
-            android:headerDividersEnabled="true"
-            />
+            <FrameLayout
+                android:id="@+id/fragment_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
+            <ProgressBar
+                android:id="@+id/inicio_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                android:layout_marginTop="8dp"/>
 
-    </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/header_navigation_drawer"
+            android:background="@color/primary_light"
+            app:menu="@menu/nav_options" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        app:srcCompat="@drawable/icon_plus_white"
         android:layout_margin="16dp"
-        android:layout_gravity="bottom|end"
+        android:clickable="true"
         android:focusable="true"
-        />
+        app:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:pressedTranslationZ="12dp"
+        app:srcCompat="@drawable/icon_plus_white" />
 
 
-    <FrameLayout
-        android:id="@+id/fragment_layout"
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="3dp"
-        android:layout_marginEnd="3dp"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="0dp">
-
-
-    </FrameLayout>
-
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_home"
+            android:title="Home"
+            android:icon="@drawable/icon_home">
+        </item>
+        <item
+         android:id="@+id/menu_perfil"
+         android:title="Perfil"
+         android:icon="@drawable/icon_perfil">
+       </item>
+      <!--item
+        android:id="@+id/menu_conf"
+        android:title="Configuration"
+        android:icon="@drawable/icon_settings">
+      </item-->
+      <item
+        android:id="@+id/menu_logout"
+        android:title="Cerrar sesion">
+      </item>
+    </group>
+</menu>

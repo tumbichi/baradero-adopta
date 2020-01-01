@@ -4,26 +4,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.pity.appperros1.R;
 import com.pity.appperros1.base.BaseActivity;
 import com.pity.appperros1.data.interactor.implementation.InicioInteractor;
 import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
+import com.pity.appperros1.ui.ProfileActivity;
 import com.pity.appperros1.ui.fragment_agregar_perro.implementation.AgregarPerroFragment;
 import com.pity.appperros1.ui.informacion_perro.implementation.InformacionPerroView;
-import com.pity.appperros1.ui.inicio.adapters.InicioAdapter;
+import com.pity.appperros1.ui.inicio.fragments.DogsPostFragment;
 import com.pity.appperros1.ui.login.LoginView;
 
 import java.util.ArrayList;
@@ -31,58 +36,104 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 
 public class InicioActivity extends BaseActivity<IInicioPresentador>
-        implements IInicioView, View.OnClickListener {
+        implements IInicioView{
 
-    private AgregarPerroFragment fragment;
-    private InicioAdapter mAdapter;
 
-    @BindView(R.id.inicio_icon_button_logout)
-    ImageView imgViewLogout;
     @BindView(R.id.floatingActionButton)
     FloatingActionButton fab;
     @BindView(R.id.fragment_layout)
     FrameLayout fragmentLayout;
-    @BindView(R.id.inicio_list_view)
-    ListView postListView;
     @BindView(R.id.inicio_progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    @BindView(R.id.navigation_view)
+    NavigationView navigationView;
 
-
-    @OnClick(R.id.inicio_icon_button_logout)
-    public void onClickLogout(ImageView imgView) {
-        if (imgView == imgViewLogout) {
-            mPresenter.logoutToFirebase();
-
-        }
-    }
+    private FragmentManager fragmentManager;
+    private DogsPostFragment postListFragment = null;
+    private AgregarPerroFragment addDogFragment = null;
 
     @OnClick(R.id.floatingActionButton)
     public void onClickFab(FloatingActionButton clicked) {
         if (clicked == fab) {
-            showFragment();
+            addDogFragment = new AgregarPerroFragment(this);
+            fragmentManager
+                    .beginTransaction().
+                    setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
+                    .add(R.id.fragment_layout, addDogFragment)
+                    .commit();
+            fab.setVisibility(View.GONE);
         }
     }
-
 
     @Override
     public InicioPresentador createBasePresenter(Context context) {
         return new InicioPresentador(this, new InicioInteractor());
     }
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_inicio);
         ButterKnife.bind(this);
-        fragment = new AgregarPerroFragment(this);
-        Log.e("InicioView", "onCreate");
-        if (UserRepository.getInstance().getLoggedUser() == null) UserRepository.getInstance().attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid());
+        setToolbar();
+
+        if (UserRepository.getInstance().getLoggedUser() == null)
+            UserRepository.getInstance().attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid());
+
+        init();
+        showPostsView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        navigationView.getMenu().getItem(0).setChecked(true);
+    }
+
+    private void init(){
+        fragmentManager = getSupportFragmentManager();
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.menu_perfil:
+                        navigateToUserProfile();
+                        return true;
+                    case R.id.menu_logout:
+                        mPresenter.logoutToFirebase();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        TextView navDrawerHeaderUsername = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_header_username);
+        navDrawerHeaderUsername.setText(UserRepository.getInstance().currentFirebaseUser().getDisplayName());
+    }
+
+    private void setToolbar(){
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.icon_menu);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public void showProgressDialog() {
@@ -95,35 +146,26 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
     }
 
     @Override
-    public void showListView() {
-        postListView.setVisibility(View.VISIBLE);
+    public void showPostsView() {
+        postListFragment = DogsPostFragment.newInstance(mPresenter);
+        fragmentManager.beginTransaction().add(R.id.fragment_layout, postListFragment).commit();
     }
 
     @Override
-    public void hideListView() {
-        postListView.setVisibility(View.GONE);
+    public void hidePostsView() {
+        fragmentManager.beginTransaction().remove(postListFragment).commit();
+        postListFragment = null;
     }
 
     @Override
-    public void showFragment() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
-                .add(R.id.fragment_layout, fragment)
-                .commit();
-        fab.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void hideFragment() {
+    public void hideAgregarPerroFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_top, R.anim.slide_out_top)
-                .remove(fragment)
+                .remove(addDogFragment)
                 .commit();
-
+        addDogFragment = null;
         fab.setVisibility(View.VISIBLE);
-
     }
 
     @Override
@@ -140,41 +182,27 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
         startActivity(intent);
     }
 
+    private void navigateToUserProfile() {
+        startActivity(new Intent(this, ProfileActivity.class));
+    }
+
     @Override
-    public void showToast(String msg) {
+    public void toast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void setListViewAdapter(ArrayList<Perro> postList) {
-        mAdapter = new InicioAdapter(this, postList, R.layout.item_post_list, this);
-        postListView.setAdapter(mAdapter);
-    }
-
-    @Override
-    public InicioAdapter getListViewAdapter() {
-        if (mAdapter != null){
-            return mAdapter;
-        }else
-            return null;
+    public void setPostListAdapter(ArrayList<Perro> postList) {
+        if (postListFragment != null) {
+            postListFragment.setListViewAdapter(postList);
+        }
     }
 
     @Override
     public void notifyDataChangeForListView() {
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @OnItemClick(R.id.inicio_list_view)
-    public void onItemClickListener(AdapterView<?> parent, int position) {
-        Log.e("InicioView" , "onItemClickListener(" + parent.getAdapter().getItem(position) + ")");
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.post_button_ver_mas) {
-            final int position = postListView.getPositionForView(v);
-            mPresenter.onItemClickVerMas(position);
+        if (postListFragment != null) {
+            postListFragment.notifyDataChangeForListView();
         }
     }
+
 }
