@@ -46,7 +46,7 @@ public class DogsPostFragment extends Fragment implements IDogsPostFragment, Vie
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.posts_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_posts, container, false);
         ButterKnife.bind(this, view);
         postListView = view.findViewById(R.id.inicio_list_view);
         return view;

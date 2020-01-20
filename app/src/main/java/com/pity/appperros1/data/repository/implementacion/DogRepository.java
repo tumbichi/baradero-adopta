@@ -10,7 +10,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +20,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.pity.appperros1.data.modelos.Perro;
+import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.interfaces.IDogRepository;
+import com.pity.appperros1.utils.UserUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ public class DogRepository implements IDogRepository {
     }
 
     @Override
-    public void uploadPerro(Perro perro, FirebaseUser currentUser, CallbackUploadDog callback) {
+    public void uploadPerro(Perro perro, Usuario currentUser, CallbackUploadDog callback) {
 
         perro.setUid(currentUser.getUid());
 
@@ -112,13 +113,35 @@ public class DogRepository implements IDogRepository {
         nuevoPerro.put("uid", perro.getUid());
 
         nuevoPerro.put("etiquetas", perro.getEtiquetas());
-        nuevoPerro.put("solicitudes", perro.getSolicitudes());
 
         mRef.updateChildren(nuevoPerro).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    callback.onSuccessUploadDog();
+                    DatabaseReference mRef = mDatabase.getReference().child("Usuario").child(currentUser.getUid());
+
+                    ArrayList<String> publicados = new ArrayList<>();
+                    if (currentUser.getPerrosPublicados() == null || currentUser.getPerrosPublicados().size() == 0){
+                        publicados.add((String) nuevoPerro.get("did"));
+                    }else{
+                        publicados = currentUser.getPerrosPublicados();
+                        publicados.add((String) nuevoPerro.get("did"));
+                    }
+
+                    HashMap<String, Object> uploadedDogs = new HashMap<>();
+
+                    uploadedDogs.put(UserUtils.DOGS_UPLOADS_KEY, publicados);
+
+                    mRef.updateChildren(uploadedDogs).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                callback.onSuccessUploadDog();
+                            }else{
+                                callback.onFailureUploadDog(task.getException().getMessage());
+                            }
+                        }
+                    });
                 } else {
                     callback.onFailureUploadDog(task.getException().getMessage());
                 }

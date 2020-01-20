@@ -12,6 +12,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.pity.appperros1.data.interactor.interfaces.ILoginInteractor;
 import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
@@ -38,7 +40,12 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            listener.onSuccess();
+                            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    listener.onSuccess(task.getResult().getToken());
+                                }
+                            });
                         }else{
                             listener.onFailed(task.getException().getMessage());
                         }
@@ -59,8 +66,15 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
+                            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    if (task.isSuccessful()){
+                                        listener.onSuccessFacebook(mAuth.getCurrentUser(), task.getResult().getToken());
+                                    }
+                                }
+                            });
 
-                            listener.onSuccessFacebook(mAuth.getCurrentUser());
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -78,14 +92,14 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
     }
 
     @Override
-    public void attachLoggedUser(String userID) {
-        UserRepository.getInstance().attachLoggedUser(userID);
+    public void attachLoggedUser(String userID, String token) {
+        UserRepository.getInstance().attachLoggedUser(userID, token);
     }
 
 
     @Override
     public boolean isUserLogged() {
-        return (mRepository.currentFirebaseUser() != null);
+        return mRepository.currentFirebaseUser() != null;
     }
 
     @Override

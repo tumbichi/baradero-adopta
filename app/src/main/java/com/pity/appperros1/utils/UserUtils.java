@@ -17,17 +17,17 @@ public class UserUtils {
 
     public final static String USER_CHILD = "Usuarios";
 
-    private final static String UID_KEY = "id";
-    private final static String DISPLAY_NAME_KEY = "displayName";
-    private final static String EMAIL_KEY = "email";
-    private final static String PHONE_KEY = "telefono";
-    private final static String EMAIL_VERIFICATION_KEY = "mailVerification";
-    private final static String TIMESTAMP_KEY = "timestamp";
-    private final static String DESCRIPTION_NKEY = "descripcion";
-    private final static String PROFILE_PHOTO_KEY = "fotoperfil";
-    private final static String DOGS_UPLOADS_KEY = "perrosPublicados";
-    private final static String DOGS_ADOPTED_KEY = "perrosAdoptados";
-    private final static String DOGS_FOUND_KEY = "perrosEncontrados";
+    public final static String UID_KEY = "id";
+    public final static String DISPLAY_NAME_KEY = "displayName";
+    public final static String EMAIL_KEY = "email";
+    public final static String PHONE_KEY = "telefono";
+    public final static String EMAIL_VERIFICATION_KEY = "mailVerification";
+    public final static String TIMESTAMP_KEY = "timestamp";
+    public final static String DESCRIPTION_NKEY = "descripcion";
+    public final static String PROFILE_PHOTO_KEY = "fotoperfil";
+    public final static String DOGS_UPLOADS_KEY = "perrosPublicados";
+    public final static String DOGS_ADOPTED_KEY = "perrosAdoptados";
+    public final static String DOGS_FOUND_KEY = "perrosEncontrados";
 
     public final static String TOKEN_KEY = "device_token";
 
@@ -54,6 +54,7 @@ public class UserUtils {
         userMap.put(DOGS_UPLOADS_KEY, user.getPerrosPublicados());
         userMap.put(DOGS_ADOPTED_KEY, user.getPerrosAdoptados());
         userMap.put(DOGS_FOUND_KEY, user.getPerrosEncontrados());
+
         return userMap;
     }
 

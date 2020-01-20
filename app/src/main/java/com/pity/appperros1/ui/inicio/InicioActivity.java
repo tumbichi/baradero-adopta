@@ -25,7 +25,7 @@ import com.pity.appperros1.base.BaseActivity;
 import com.pity.appperros1.data.interactor.implementation.InicioInteractor;
 import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
-import com.pity.appperros1.ui.ProfileActivity;
+import com.pity.appperros1.ui.profile.ProfileView;
 import com.pity.appperros1.ui.fragment_agregar_perro.implementation.AgregarPerroFragment;
 import com.pity.appperros1.ui.informacion_perro.implementation.InformacionPerroView;
 import com.pity.appperros1.ui.inicio.fragments.DogsPostFragment;
@@ -82,8 +82,8 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
         ButterKnife.bind(this);
         setToolbar();
 
-        if (UserRepository.getInstance().getLoggedUser() == null)
-            UserRepository.getInstance().attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid());
+        /*if (UserRepository.getInstance().getLoggedUser() == null)
+            UserRepository.getInstance().attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid(), );*/
 
         init();
         showPostsView();
@@ -183,7 +183,7 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
     }
 
     private void navigateToUserProfile() {
-        startActivity(new Intent(this, ProfileActivity.class));
+        startActivity(new Intent(this, ProfileView.class));
     }
 
     @Override

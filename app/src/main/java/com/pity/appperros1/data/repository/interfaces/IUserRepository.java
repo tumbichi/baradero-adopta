@@ -1,5 +1,7 @@
 package com.pity.appperros1.data.repository.interfaces;
 
+import android.content.Context;
+
 import com.google.firebase.auth.FirebaseUser;
 import com.pity.appperros1.data.modelos.Usuario;
 
@@ -26,12 +28,13 @@ public interface IUserRepository {
 
 
     Usuario getLoggedUser();
-    void attachLoggedUser(String currentUserID);
+    void attachLoggedUser(String currentUserID, String token);
     void persistNewUserOnDatabase(Usuario newUser, CallbackUserUpdate callback);
     void updateUser(Usuario currentUser, CallbackUserUpdate callbackUserUpdate);
     void sendMailVerication(FirebaseUser currentUser, CallbackRepositorySendMail callback);
     FirebaseUser currentFirebaseUser();
-    void logoutUser();
+    void logoutUser(Context context);
+    void logoutWithoutToken();
     void isUserRegisteredOnDatabase(FirebaseUser facebookUser, CallbackIsUserRegistered callback);
     void getUserById(String id, CallbackQueryUser callbackUserById);
 

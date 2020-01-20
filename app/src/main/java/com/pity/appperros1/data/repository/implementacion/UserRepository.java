@@ -1,5 +1,7 @@
 package com.pity.appperros1.data.repository.implementacion;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -18,8 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.interfaces.IUserRepository;
 import com.pity.appperros1.utils.UserUtils;
@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class UserRepository implements IUserRepository {
 
@@ -59,38 +61,29 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void attachLoggedUser(String currentUserID) {
+    public void attachLoggedUser(String currentUserID, String token) {
         getUserById(currentUserID, new CallbackQueryUser() {
             @Override
             public void onSuccessUserQueryById(Usuario user) {
                 CURRENT_USER = user;
-                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                Log.i(TAG, "Token ID: " + token);
+
+                Map<String, Object> tokenMap = new HashMap<>();
+                tokenMap.put(UserUtils.TOKEN_KEY, token);
+                mDatabase.getReference()
+                        .child("Usuarios")
+                        .child(CURRENT_USER.getUid())
+                        .updateChildren(tokenMap);
+                updateUser(CURRENT_USER, new CallbackUserUpdate() {
                     @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (task.isSuccessful()){
-                            String token = task.getResult().getToken();
-                            Log.i(TAG, "Token ID: " + token);
+                    public void onSuccessUpdateUser() {
+                        Log.i(TAG, "User Logged and attached \n" +
+                                "token : " + token);
+                    }
 
-                            Map<String, Object> tokenMap = new HashMap<>();
-                            tokenMap.put(UserUtils.TOKEN_KEY, token);
-                            mDatabase.getReference()
-                                    .child("Usuarios")
-                                    .child(CURRENT_USER.getUid())
-                                    .updateChildren(tokenMap);
-                            updateUser(CURRENT_USER, new CallbackUserUpdate() {
-                                @Override
-                                public void onSuccessUpdateUser() {
-                                    Log.i(TAG, "User Logged and attached \n" +
-                                                    "token : " + token);
-                                }
-
-                                @Override
-                                public void onFailedUpdateUser(Exception e) {
-                                    Log.e(TAG, e.getMessage());
-                                }
-                            });
-
-                        }
+                    @Override
+                    public void onFailedUpdateUser(Exception e) {
+                        Log.e(TAG, e.getMessage());
                     }
                 });
 
@@ -159,7 +152,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public FirebaseUser currentFirebaseUser() throws NullPointerException {
-        if (mAuth.getCurrentUser() != null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             return mAuth.getCurrentUser();
         } else {
             return null;
@@ -167,7 +160,20 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void logoutUser() {
+    public void logoutUser(Context context) {
+        mDatabase.getReference().child("Usuarios").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(UserUtils.TOKEN_KEY).removeValue();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("prefernces", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("token");
+        editor.apply();
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken != null && !accessToken.isExpired()) LoginManager.getInstance().logOut();
+        CURRENT_USER = null;
+        mAuth.signOut();
+    }
+
+    @Override
+    public void logoutWithoutToken() {
         mDatabase.getReference().child("Usuarios").child(CURRENT_USER.getUid()).child(UserUtils.TOKEN_KEY).removeValue();
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken != null && !accessToken.isExpired()) LoginManager.getInstance().logOut();

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="@color/cardview_dark_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/solicitudes_item_dog_photo"
+            android:layout_width="112dp"
+            android:layout_height="144dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp">
+
+            <TextView
+                android:id="@+id/solicitudes_item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:textAlignment="center"
+                android:text="El usuario inseterDisplayName ¡Quiere adoptar a InserteNombrePerro!"
+                android:fontFamily="sans-serif-light"
+                android:textSize="12sp"
+                android:textColor="@color/icons"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Telefono: "
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:textSize="12sp"
+                    android:textColor="@color/icons" />
+                <TextView
+                    android:id="@+id/solicitudes_item_phone_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+54 3329 778899"
+                    android:fontFamily="sans-serif-condensed-light"
+                    android:textSize="12sp"
+                    android:textColor="@color/icons" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email: "
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:textSize="12sp"
+                    android:textColor="@color/icons" />
+                <TextView
+                    android:id="@+id/solicitudes_item_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="exampleemailsdfserf@gmail.com"
+                    android:fontFamily="sans-serif-condensed-light"
+                    android:textSize="12sp"
+                    android:textColor="@color/icons" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="4dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="Una vez que haya entregado el perro al nuevo dueño debera aceptar la adopcion para contabilizarla"
+                android:textSize="10sp"
+                android:textAlignment="center"
+                android:textColor="@color/icons"
+                android:background="@drawable/custom_button_purple" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="end"
+                android:padding="4dp">
+
+                <ImageButton
+                    android:id="@+id/solicitudes_item_button_cancelar"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/custom_button_red"
+                    android:src="@drawable/icon_close_white"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="@color/icons"
+                    android:text="X"/>
+
+                <Button
+                    android:id="@+id/solicitudes_item_button_aceptar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@drawable/custom_button_green"
+                    android:layout_marginStart="2dp"
+                    android:text="Aceptar"
+                    android:textColor="@color/icons"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+
+
+
+
+
+

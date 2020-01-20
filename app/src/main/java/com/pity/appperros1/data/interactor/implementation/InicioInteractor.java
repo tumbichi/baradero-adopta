@@ -1,5 +1,6 @@
 package com.pity.appperros1.data.interactor.implementation;
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -30,8 +31,8 @@ public class InicioInteractor implements IInicioInteractor,
     }
 
     @Override
-    public void logout() {
-        userRepository.logoutUser();
+    public void logout(Context context) {
+        userRepository.logoutUser(context);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class InicioInteractor implements IInicioInteractor,
 
     @Override
     public void createCurrentNewDog() {
-        newDog = new Perro(new ArrayList<>());
+        newDog = new Perro();
     }
 
     @Override
@@ -61,12 +62,10 @@ public class InicioInteractor implements IInicioInteractor,
     }
 
     @Override
-    public void startUploadNewDog(String nombre, String descripcion, String genero, String edad,
-                                  String tamanio, String castrado, String vacunado,
-                                  ArrayList<Boolean> estados,
+    public void startUploadNewDog(String nombre, String descripcion, String genero, String edad, String tamanio, String castrado, String vacunado, ArrayList<Boolean> estados,
                                   IAgregarPerroPresenter.CallbackInteractor callbackInteractor) {
-        this.callbackAgregarPerroInteractor = callbackInteractor;
 
+        this.callbackAgregarPerroInteractor = callbackInteractor;
         newDog.setNombre(nombre);
         newDog.setDescripcion(descripcion);
         newDog.setGenero(genero);
@@ -102,7 +101,7 @@ public class InicioInteractor implements IInicioInteractor,
     public void onSuccessUploadPhoto(String url, String fecha) {
         newDog.setUrlFoto(url);
         callbackAgregarPerroInteractor.onSuccessUploadPhoto();
-        dogRepository.uploadPerro(newDog, userRepository.currentFirebaseUser(), this);
+        dogRepository.uploadPerro(newDog, userRepository.getLoggedUser(), this);
 
     }
 

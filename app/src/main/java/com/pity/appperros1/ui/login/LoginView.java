@@ -47,6 +47,8 @@ public class LoginView extends BaseActivity<ILoginPresenter>
 //      getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+
     }
 
     @OnClick(R.id.login_button_iniciar_sesion)

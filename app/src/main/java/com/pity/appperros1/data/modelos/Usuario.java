@@ -22,9 +22,11 @@ public class Usuario {
 
     private boolean mailVerification;
 
-    private List<String> perrosPublicados;
-    private List<String> perrosEncontrados;
-    private List<String> perrosAdoptados;
+    private ArrayList<String> perrosPublicados;
+    private ArrayList<String> perrosEncontrados;
+    private ArrayList<String> perrosAdoptados;
+
+    private ArrayList<SolicitudReference> solicitudes;
 
     private long timestamp;
 
@@ -142,15 +144,18 @@ public class Usuario {
         return urlFotoPerfil;
     }
 
-    public List<String> getPerrosPublicados() {
+    public ArrayList<String> getPerrosPublicados() {
+        if (perrosPublicados == null) perrosPublicados = new ArrayList<>();
         return perrosPublicados;
     }
 
     public List<String> getPerrosEncontrados() {
+        if (perrosEncontrados == null) perrosEncontrados = new ArrayList<>();
         return perrosEncontrados;
     }
 
     public List<String> getPerrosAdoptados() {
+        if (perrosAdoptados == null) perrosAdoptados = new ArrayList<>();
         return perrosAdoptados;
     }
 
@@ -174,19 +179,25 @@ public class Usuario {
         this.mailVerification = mailVerification;
     }
 
-    public void setPerrosPublicados(List<String> perrosPublicados) {
+    public void setPerrosPublicados(ArrayList<String> perrosPublicados) {
         this.perrosPublicados = perrosPublicados;
     }
 
-    public void setPerrosEncontrados(List<String> perrosEncontrados) {
+    public void setPerrosEncontrados(ArrayList<String> perrosEncontrados) {
         this.perrosEncontrados = perrosEncontrados;
     }
 
-    public void setPerrosAdoptados(List<String> perrosAdoptados) {
+    public void setPerrosAdoptados(ArrayList<String> perrosAdoptados) {
         this.perrosAdoptados = perrosAdoptados;
     }
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+
+    public ArrayList<SolicitudReference> getSolicitudes() {
+        if (solicitudes == null) solicitudes = new ArrayList<>();
+        return solicitudes;
+    }
+
 }

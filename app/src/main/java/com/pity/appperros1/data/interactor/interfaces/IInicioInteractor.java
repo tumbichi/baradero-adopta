@@ -1,5 +1,6 @@
 package com.pity.appperros1.data.interactor.interfaces;
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -9,7 +10,7 @@ import com.pity.appperros1.ui.fragment_agregar_perro.interfaces.IAgregarPerroPre
 import java.util.ArrayList;
 
 public interface IInicioInteractor {
-    void logout();
+    void logout(Context context);
     ArrayList<Perro> getListPost();
     Perro getDogById(int position);
     void bringDogList(CallbackGetDogList callbackGetDogList);

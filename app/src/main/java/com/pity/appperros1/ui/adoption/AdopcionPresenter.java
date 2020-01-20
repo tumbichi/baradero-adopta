@@ -97,6 +97,7 @@ public class AdopcionPresenter extends BasePresenter<IAdopcionView> implements I
                         }
                     });
                 }
+
                 mInteractor.adoptionEvent(new IAdopcionRepository.CallbackAdoption() {
                     @Override
                     public void onSuccesAdoption() {

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/primary_text"
+        android:text="Adopciones"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/solicitudes_adopciones_text_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(Todavia no tiene solicitudes)"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/primary_text"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <ListView
+        android:id="@+id/solicitudes_adopciones_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="6dp"
+        android:visibility="gone"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>

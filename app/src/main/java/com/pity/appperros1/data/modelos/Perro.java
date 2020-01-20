@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.pity.appperros1.utils.CommonUtils;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class Perro {
@@ -23,21 +21,8 @@ public class Perro {
     private List<Boolean> etiquetas;
     private long timestamp;
     private String uid;
-    private List <Adopcion> solicitudes;
 
     public Perro(){
-
-    }
-
-    public Perro(ArrayList<Adopcion> solicitudes){
-        this.solicitudes = solicitudes;
-        timestamp = Calendar.getInstance().getTime().getTime();
-        /*Date date = new Date(timestamp);
-        Calendar dat = Calendar.getInstance();
-        dat.setTime(date);
-
-        Log.e("Fecha", "timestamp " + date.getDate() + "/" + date.getMonth() + "/" + date.getYear()
-                + " " +  date.getHours() + ":" + date.getMinutes() + ":" +  date.getSeconds());*/
 
     }
 
@@ -57,7 +42,7 @@ public class Perro {
         "timestamp: " + getTimestamp() + "\n" +
         "fecha: " + CommonUtils.timestampToString(getTimestamp()) + "\n" +
         "uid: " + getUid() + "\n" +
-        "solicitudes: " + " null for now " + "\n";
+        "SOLICITUDES: " + " null for now " + "\n";
     }
 
     public String getDid() {
@@ -164,11 +149,4 @@ public class Perro {
         this.uid = uid;
     }
 
-    public List<Adopcion> getSolicitudes() {
-        return solicitudes;
-    }
-
-    public void setSolicitudes(List<Adopcion> solicitudes) {
-        this.solicitudes = solicitudes;
-    }
 }

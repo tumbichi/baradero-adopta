@@ -65,7 +65,7 @@ public class RegistroInteractor implements IRegistroInteractor,
     @Override
     public void onSuccefulSendMail() {
         // Se envio mail
-        repository.logoutUser();
+        repository.logoutWithoutToken();
         callbackPresenter.onSuccessfulRegistro();
     }
 
