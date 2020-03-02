@@ -31,7 +31,6 @@ public class RegistroPresenter extends BasePresenter<IRegistroView>
 
     }
 
-
     private boolean validarRegistro(String email, String password1, String password2, String nombre, String apellido, String phoneNumber){
         if (TextUtils.isEmpty(email)){
             mView.showError("Por favor, ingrese un email");

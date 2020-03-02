@@ -118,14 +118,16 @@ public class DogRepository implements IDogRepository {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    DatabaseReference mRef = mDatabase.getReference().child("Usuario").child(currentUser.getUid());
+                    DatabaseReference mRef = mDatabase.getReference().child("Usuarios").child(currentUser.getUid());
 
                     ArrayList<String> publicados = new ArrayList<>();
                     if (currentUser.getPerrosPublicados() == null || currentUser.getPerrosPublicados().size() == 0){
                         publicados.add((String) nuevoPerro.get("did"));
+                        UserRepository.getInstance().getLoggedUser().setPerrosPublicados(publicados);
                     }else{
                         publicados = currentUser.getPerrosPublicados();
                         publicados.add((String) nuevoPerro.get("did"));
+                        UserRepository.getInstance().getLoggedUser().setPerrosPublicados(publicados);
                     }
 
                     HashMap<String, Object> uploadedDogs = new HashMap<>();

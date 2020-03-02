@@ -8,7 +8,7 @@ import com.pity.appperros1.base.BasePresenter;
 import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.data.modelos.Solicitud;
 import com.pity.appperros1.data.modelos.SolicitudReference;
-import com.pity.appperros1.data.modelos.SolicitudesContainer;
+import com.pity.appperros1.data.modelos.SolicitudesCache;
 import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.implementacion.AdopcionRepository;
 import com.pity.appperros1.data.repository.implementacion.DogRepository;
@@ -50,13 +50,12 @@ public class ProfilePresener extends BasePresenter<IProfileView> implements IPro
 
             @Override
             protected HashMap<String, ArrayList<Solicitud>> doInBackground(Void... voids) {
-                Usuario userLogged = UserRepository.getInstance().getLoggedUser();
                 final ArrayList<SolicitudReference> solicitudes = new ArrayList<>();
                 ArrayList<Solicitud> adopciones = new ArrayList<>();
                 ArrayList<Solicitud> perdidos = new ArrayList<>();
 
-
                 asyncSignal = new CountDownLatch(1);
+
                 AdopcionRepository.getInstance().getAdoptions(new IAdopcionRepository.CallbackGetAdoptions() {
                     @Override
                     public void onSuccessGetAdoptions(ArrayList<SolicitudReference> adoptions) {
@@ -82,11 +81,13 @@ public class ProfilePresener extends BasePresenter<IProfileView> implements IPro
 
                     for (int i = 0; i < solicitudes.size(); i++) {
                         Solicitud solicitud = new Solicitud();
+                        solicitud.setIdSolicitud(solicitudes.get(i).getAdoptionID());
                         asyncSignal = new CountDownLatch(2);
 
                         DogRepository.getInstance().queryDogBy(solicitudes.get(i).getDogID(), new IDogRepository.CallbackQueryDog() {
                             @Override
                             public void onSucessQueryDog(Perro currentDog) {
+                                solicitud.setIdDog(currentDog.getDid());
                                 solicitud.setDogName(currentDog.getNombre());
                                 solicitud.setDogUrlImage(currentDog.getUrlFoto());
 
@@ -108,6 +109,7 @@ public class ProfilePresener extends BasePresenter<IProfileView> implements IPro
                         UserRepository.getInstance().getUserById(solicitudes.get(i).getAdopterID(), new IUserRepository.CallbackQueryUser() {
                             @Override
                             public void onSuccessUserQueryById(Usuario user) {
+                                solicitud.setIdUser(user.getUid());
                                 solicitud.setAdopterDispayName(user.getDisplayName());
                                 solicitud.setAdopterEmail(user.getEmail());
                                 solicitud.setAdopterPhone(user.getTelefono());
@@ -148,7 +150,7 @@ public class ProfilePresener extends BasePresenter<IProfileView> implements IPro
 
             @Override
             protected void onPostExecute(HashMap<String, ArrayList<Solicitud>> result) {
-                SolicitudesContainer.setSolicitudes(result);
+                SolicitudesCache.setSolicitudes(result);
                 mView.stackFragmentSolicitudes();
                 mView.hideProgressBar();
             }

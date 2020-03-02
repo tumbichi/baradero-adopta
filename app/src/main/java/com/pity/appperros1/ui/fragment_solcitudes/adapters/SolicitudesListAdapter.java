@@ -1,7 +1,6 @@
 package com.pity.appperros1.ui.fragment_solcitudes.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +21,14 @@ public class SolicitudesListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Solicitud> solicitudesList;
     private int layout;
+    private View.OnClickListener onItemClick;
 
-    //private View.OnClickListener mOnClick;
 
-
-    public SolicitudesListAdapter(Context context, ArrayList<Solicitud> list, int l /*, View.OnClickListener onClickListener*/) {
+    public SolicitudesListAdapter(Context context, ArrayList<Solicitud> list, int l, View.OnClickListener onClickListener) {
         this.context = context;
         this.solicitudesList = list;
         this.layout = l;
-        //this.mOnClick = onClickListener;
+        this.onItemClick = onClickListener;
     }
 
     @Override
@@ -64,6 +62,9 @@ public class SolicitudesListAdapter extends BaseAdapter {
             holder.aceptarBtn = convertView.findViewById(R.id.solicitudes_item_button_aceptar);
             holder.cancelarBtn = convertView.findViewById(R.id.solicitudes_item_button_cancelar);
 
+            holder.aceptarBtn.setOnClickListener(onItemClick);
+            holder.cancelarBtn.setOnClickListener(onItemClick);
+
             convertView.setTag(holder);
 
         } else {
@@ -89,7 +90,7 @@ public class SolicitudesListAdapter extends BaseAdapter {
 }
 
 
-class SolicitudesListHolder implements View.OnClickListener {
+class SolicitudesListHolder {
 
     ImageView dogImageView;
     TextView titleTextView;
@@ -98,10 +99,4 @@ class SolicitudesListHolder implements View.OnClickListener {
     Button aceptarBtn;
     ImageButton cancelarBtn;
 
-
-    @Override
-    public void onClick(View v) {
-        String button = v.equals(aceptarBtn) ? "Aceptar" : "Cancelar";
-        Log.e(SolicitudesListAdapter.class.getName(), "On click" + button);
-    }
 }

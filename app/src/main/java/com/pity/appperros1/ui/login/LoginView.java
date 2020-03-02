@@ -44,7 +44,6 @@ public class LoginView extends BaseActivity<ILoginPresenter>
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//      getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 

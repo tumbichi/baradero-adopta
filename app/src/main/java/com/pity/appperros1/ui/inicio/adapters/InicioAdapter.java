@@ -104,8 +104,6 @@ public class InicioAdapter extends BaseAdapter {
 
         }
 
-
-
         return convertView;
     }
 

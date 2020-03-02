@@ -67,7 +67,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Perros adoptados"
+                android:text="Adoptados"
                 android:textAlignment="center"
                 android:textColor="@color/primary_light" />
 
@@ -91,7 +91,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Perros publicados"
+                android:text="Publicados"
                 android:textAlignment="center"
                 android:textColor="@color/primary_dark" />
 
@@ -117,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:text="Perros encontrados"
+                android:text="Encontrados"
                 android:textColor="@color/primary_light" />
 
             <TextView
@@ -161,7 +161,7 @@
 
     <ImageView
         android:id="@+id/profile_back"
-        android:layout_width="32dp"
+        android:layout_width="24dp"
         android:layout_height="32dp"
         android:src="@drawable/icon_arrow_back"
         app:layout_constraintStart_toStartOf="parent"

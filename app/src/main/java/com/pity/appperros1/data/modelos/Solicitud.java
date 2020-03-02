@@ -2,12 +2,39 @@ package com.pity.appperros1.data.modelos;
 
 public class Solicitud {
 
+    private String idSolicitud;
+    private String idUser;
+    private String idDog;
     private int type;
     private String adopterDispayName;
     private String adopterPhone;
     private String adopterEmail;
     private String dogName;
     private String dogUrlImage;
+
+    public String getIdSolicitud() {
+        return idSolicitud;
+    }
+
+    public void setIdSolicitud(String idSolicitud) {
+        this.idSolicitud = idSolicitud;
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getIdDog() {
+        return idDog;
+    }
+
+    public void setIdDog(String idDog) {
+        this.idDog = idDog;
+    }
 
     public int getType() {
         return type;

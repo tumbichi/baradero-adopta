@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.pity.appperros1.R;
 import com.pity.appperros1.data.modelos.Solicitud;
-import com.pity.appperros1.data.modelos.SolicitudesContainer;
+import com.pity.appperros1.data.modelos.SolicitudesCache;
 import com.pity.appperros1.ui.fragment_solcitudes.SolicitudesPresenter;
 import com.pity.appperros1.ui.fragment_solcitudes.adapters.SolicitudesListAdapter;
 import com.pity.appperros1.utils.DogUtils;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SolicitudesAdopcionesFragment extends Fragment {
+public class SolicitudesAdopcionesFragment extends Fragment implements View.OnClickListener {
 
     private Context context;
     private SolicitudesPresenter parentPresenter;
@@ -52,10 +52,10 @@ public class SolicitudesAdopcionesFragment extends Fragment {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_solicitudes_adopciones, null);
         ButterKnife.bind(this, root);
 
-        solicitudesAdopciones = SolicitudesContainer.SOLICITUDES.get(DogUtils.ETIQUETA_ADOPCION);
+        solicitudesAdopciones = SolicitudesCache.SOLICITUDES.get(DogUtils.ETIQUETA_ADOPCION);
 
         if (!solicitudesAdopciones.isEmpty()){
-            listView.setAdapter(new SolicitudesListAdapter(getContext(), solicitudesAdopciones, R.layout.item_card_solicitudes));
+            listView.setAdapter(new SolicitudesListAdapter(getContext(), solicitudesAdopciones, R.layout.item_card_solicitudes, this));
             listView.setVisibility(View.VISIBLE);
         }else{
             listView.setVisibility(View.GONE);
@@ -71,4 +71,8 @@ public class SolicitudesAdopcionesFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
 }

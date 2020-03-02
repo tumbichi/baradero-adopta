@@ -118,7 +118,6 @@ public class UserRepository implements IUserRepository {
     @Override
     public void updateUser(Usuario currentUser, final CallbackUserUpdate callbackUserUpdate) {
         DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_CHILD);
-
         mRef.child(currentUser.getUid())
                 .updateChildren(UserUtils.userToMap(currentUser))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

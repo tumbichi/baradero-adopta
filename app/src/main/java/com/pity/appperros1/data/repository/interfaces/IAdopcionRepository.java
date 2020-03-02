@@ -20,4 +20,5 @@ public interface IAdopcionRepository {
     void registerAdoptionOnDatabase(@NonNull Adopcion adopcion, CallbackAdoption callbackAdoption);
     void registerSolicitudOnDatabase(String uploaderID, String adopterID, CallbackAdoption callbackAdoption);
     void getAdoptions(CallbackGetAdoptions callbackGetAdoptions);
+    void deleteAdoption(String idAdoption);
 }

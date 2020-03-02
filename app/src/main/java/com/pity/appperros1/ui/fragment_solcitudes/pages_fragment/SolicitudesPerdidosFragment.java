@@ -15,7 +15,8 @@ import androidx.fragment.app.Fragment;
 
 import com.pity.appperros1.R;
 import com.pity.appperros1.data.modelos.Solicitud;
-import com.pity.appperros1.data.modelos.SolicitudesContainer;
+import com.pity.appperros1.data.modelos.SolicitudesCache;
+import com.pity.appperros1.data.repository.implementacion.AdopcionRepository;
 import com.pity.appperros1.ui.fragment_solcitudes.SolicitudesPresenter;
 import com.pity.appperros1.ui.fragment_solcitudes.adapters.SolicitudesListAdapter;
 import com.pity.appperros1.utils.DogUtils;
@@ -25,11 +26,12 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SolicitudesPerdidosFragment extends Fragment {
+public class SolicitudesPerdidosFragment extends Fragment implements View.OnClickListener {
 
     private Context context;
     private SolicitudesPresenter parentPresenter;
     private ArrayList<Solicitud> solicitudesPerdidos;
+    private SolicitudesListAdapter adapter;
 
     @BindView(R.id.solicitudes_perdidos_list_view)
     ListView listView;
@@ -52,10 +54,11 @@ public class SolicitudesPerdidosFragment extends Fragment {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_solicitudes_perdidos, null);
         ButterKnife.bind(this, root);
 
-        solicitudesPerdidos = SolicitudesContainer.SOLICITUDES.get(DogUtils.ETIQUETA_PERDIDO);
+        solicitudesPerdidos = SolicitudesCache.SOLICITUDES.get(DogUtils.ETIQUETA_PERDIDO);
 
         if (!solicitudesPerdidos.isEmpty()) {
-            listView.setAdapter(new SolicitudesListAdapter(context, solicitudesPerdidos, R.layout.item_card_solicitudes));
+            adapter = new SolicitudesListAdapter(context, solicitudesPerdidos, R.layout.item_card_solicitudes, this);
+            listView.setAdapter(adapter);
             listView.setVisibility(View.VISIBLE);
         }else{
             listView.setVisibility(View.GONE);
@@ -66,5 +69,22 @@ public class SolicitudesPerdidosFragment extends Fragment {
             Log.e("SolicitudesAdopciones", "I have a parent \n" + parent.toString());
         }
         return root;
+    }
+
+    @Override
+    public void onClick(View v) {
+        final int position = listView.getPositionForView(v);
+        switch (v.getId()){
+            case R.id.solicitudes_item_button_aceptar:
+                Solicitud solicitudAceptada = adapter.getItem(position);
+                break;
+            case R.id.solicitudes_item_button_cancelar:
+                Solicitud solicitudCancelada = adapter.getItem(position);
+                AdopcionRepository.getInstance().deleteAdoption(solicitudCancelada.getIdSolicitud());
+                adapter.notifyDataSetChanged();
+                break;
+            default:
+                Log.i(this.getTag(), Integer.toString(position));
+        }
     }
 }

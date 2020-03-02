@@ -124,7 +124,7 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
             return;
         }
 
-        mInteractor.startUploadNewDog(nombre, descripcion, genero, edad, tamanio, castrado, vacunado, getEstados(estado),this);
+        mInteractor.uploadDog(nombre, descripcion, genero, edad, tamanio, castrado, vacunado, getEstados(estado),this);
     }
 
     private boolean validateFields(String nombre, String descripcion, String genero, String edad, String tamanio, String castrado, String vacunado, Uri pathFotoPerro, int estado){

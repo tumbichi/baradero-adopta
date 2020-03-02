@@ -60,7 +60,6 @@ public class RegitroView extends BaseActivity<IRegistroPresenter>
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_registro);
         ButterKnife.bind(this);
         mPresenter.attachView(this);

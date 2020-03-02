@@ -13,8 +13,7 @@ import com.pity.appperros1.ui.fragment_agregar_perro.interfaces.IAgregarPerroPre
 
 import java.util.ArrayList;
 
-public class InicioInteractor implements IInicioInteractor,
-        IDogRepository.CallbackUploadPhoto, IDogRepository.CallbackUploadDog, IDogRepository.CallbackDogList {
+public class InicioInteractor implements IInicioInteractor {
 
     private UserRepository userRepository;
     private DogRepository dogRepository;
@@ -38,7 +37,18 @@ public class InicioInteractor implements IInicioInteractor,
     @Override
     public void bringDogList(CallbackGetDogList callbackGetDogList) {
         this.callbackInicioInteractor = callbackGetDogList;
-        dogRepository.getDogListPerdido(this);
+        dogRepository.getDogListPerdido(new IDogRepository.CallbackDogList() {
+            @Override
+            public void onSuccesGetDogList(ArrayList<Perro> dogList) {
+                postList = dogList;
+                callbackInicioInteractor.onSuccesGetDogList();
+            }
+
+            @Override
+            public void onFailureGetDogList(String error) {
+                callbackInicioInteractor.onFailureDogList(error);
+            }
+        });
     }
 
     @Override
@@ -62,8 +72,8 @@ public class InicioInteractor implements IInicioInteractor,
     }
 
     @Override
-    public void startUploadNewDog(String nombre, String descripcion, String genero, String edad, String tamanio, String castrado, String vacunado, ArrayList<Boolean> estados,
-                                  IAgregarPerroPresenter.CallbackInteractor callbackInteractor) {
+    public void uploadDog(String nombre, String descripcion, String genero, String edad, String tamanio, String castrado, String vacunado, ArrayList<Boolean> estados,
+                          IAgregarPerroPresenter.CallbackInteractor callbackInteractor) {
 
         this.callbackAgregarPerroInteractor = callbackInteractor;
         newDog.setNombre(nombre);
@@ -75,7 +85,29 @@ public class InicioInteractor implements IInicioInteractor,
         newDog.setVacunado(vacunado);
         newDog.setEtiquetas(estados);
 
-        dogRepository.uploadPhoto(Uri.parse(newDog.getPathFoto()), this);
+        dogRepository.uploadPhoto(Uri.parse(newDog.getPathFoto()), new IDogRepository.CallbackUploadPhoto() {
+            @Override
+            public void onSuccessUploadPhoto(String url, String fecha) {
+                newDog.setUrlFoto(url);
+                callbackAgregarPerroInteractor.onSuccessUploadPhoto();
+                dogRepository.uploadPerro(newDog, userRepository.getLoggedUser(), new IDogRepository.CallbackUploadDog() {
+                    @Override
+                    public void onSuccessUploadDog() {
+                        callbackAgregarPerroInteractor.onSuccesUploadDog();
+                    }
+
+                    @Override
+                    public void onFailureUploadDog(String messasgeError) {
+                        callbackAgregarPerroInteractor.onFailureUploadDog(messasgeError);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailureUploadPhoto(String messageError) {
+                callbackAgregarPerroInteractor.onFailureUploadPhoto(messageError);
+            }
+        });
     }
 
     @Override
@@ -96,39 +128,4 @@ public class InicioInteractor implements IInicioInteractor,
         return userRepository.currentFirebaseUser();
     }
 
-
-    @Override
-    public void onSuccessUploadPhoto(String url, String fecha) {
-        newDog.setUrlFoto(url);
-        callbackAgregarPerroInteractor.onSuccessUploadPhoto();
-        dogRepository.uploadPerro(newDog, userRepository.getLoggedUser(), this);
-
-    }
-
-    @Override
-    public void onFailureUploadPhoto(String messageError) {
-        callbackAgregarPerroInteractor.onFailureUploadPhoto(messageError);
-    }
-
-    @Override
-    public void onSuccessUploadDog() {
-        callbackAgregarPerroInteractor.onSuccesUploadDog();
-    }
-
-    @Override
-    public void onFailureUploadDog(String messasgeError) {
-        callbackAgregarPerroInteractor.onFailureUploadDog(messasgeError);
-    }
-
-
-    @Override
-    public void onSuccesGetDogList(ArrayList<Perro> dogList) {
-        postList = dogList;
-        callbackInicioInteractor.onSuccesGetDogList();
-    }
-
-    @Override
-    public void onFailureGetDogList(String error) {
-        callbackInicioInteractor.onFailureDogList(error);
-    }
 }

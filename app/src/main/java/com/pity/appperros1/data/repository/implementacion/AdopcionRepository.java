@@ -3,6 +3,7 @@ package com.pity.appperros1.data.repository.implementacion;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -96,6 +97,27 @@ public class AdopcionRepository implements IAdopcionRepository {
 
         });
 
+
+    }
+
+    @Override
+    public void deleteAdoption(String idAdoption) {
+        DatabaseReference mRef = database.getReference()
+                .child("Usuarios")
+                .child(UserRepository.getInstance().getLoggedUser().getUid())
+                .child("Adopciones")
+                .child(idAdoption);
+
+        mRef.removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError == null){
+                    Log.i(TAG,"Solicitud eliminada con exito! \n" + databaseReference.toString());
+                }else{
+                    Log.e(TAG, databaseError.getMessage());
+                }
+            }
+        });
 
     }
 

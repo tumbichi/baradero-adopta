@@ -18,7 +18,7 @@ public interface IInicioInteractor {
     void createCurrentNewDog();
     void deleteCurrentNewDog();
 
-    void startUploadNewDog(String nombre, String descripcion, String genero, String edad, String tamanio, String castrado, String vacunado, ArrayList<Boolean> estados, IAgregarPerroPresenter.CallbackInteractor callbackInteractor);
+    void uploadDog(String nombre, String descripcion, String genero, String edad, String tamanio, String castrado, String vacunado, ArrayList<Boolean> estados, IAgregarPerroPresenter.CallbackInteractor callbackInteractor);
     void setCurrentPathPhoto(Uri pathPhoto);
     Uri getCurrentPathPhoto();
 
