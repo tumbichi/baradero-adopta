@@ -73,7 +73,7 @@ public class AdopcionRepository implements IAdopcionRepository {
     public void getAdoptions(CallbackGetAdoptions callbackGetAdoptions) {
         DatabaseReference mRef = database.getReference().child("Usuarios").child(UserRepository.getInstance().getLoggedUser().getUid()).child("Adopciones");
         ArrayList<SolicitudReference> solicitudes = new ArrayList<>();
-        mRef.addValueEventListener(new ValueEventListener() {
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -101,7 +101,7 @@ public class AdopcionRepository implements IAdopcionRepository {
     }
 
     @Override
-    public void deleteAdoption(String idAdoption) {
+    public void deleteAdoption(String idAdoption, CallbackAdoption callbackAdoption) {
         DatabaseReference mRef = database.getReference()
                 .child("Usuarios")
                 .child(UserRepository.getInstance().getLoggedUser().getUid())
@@ -113,8 +113,10 @@ public class AdopcionRepository implements IAdopcionRepository {
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if (databaseError == null){
                     Log.i(TAG,"Solicitud eliminada con exito! \n" + databaseReference.toString());
+                    callbackAdoption.onSuccesAdoption();
                 }else{
                     Log.e(TAG, databaseError.getMessage());
+                    callbackAdoption.onFailedAdoption(new Exception(databaseError.getMessage()));
                 }
             }
         });

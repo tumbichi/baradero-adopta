@@ -40,7 +40,6 @@ import butterknife.OnClick;
 public class InicioActivity extends BaseActivity<IInicioPresentador>
         implements IInicioView{
 
-
     @BindView(R.id.floatingActionButton)
     FloatingActionButton fab;
     @BindView(R.id.fragment_layout)
@@ -73,7 +72,6 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
     public InicioPresentador createBasePresenter(Context context) {
         return new InicioPresentador(this, new InicioInteractor());
     }
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +111,7 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
             }
         });
         TextView navDrawerHeaderUsername = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_header_username);
-        navDrawerHeaderUsername.setText(UserRepository.getInstance().currentFirebaseUser().getDisplayName());
+        navDrawerHeaderUsername.setText(UserRepository.getInstance().getLoggedUser().getDisplayName());
     }
 
     private void setToolbar(){
@@ -147,7 +145,7 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
 
     @Override
     public void showPostsView() {
-        postListFragment = DogsPostFragment.newInstance(mPresenter);
+        postListFragment = DogsPostFragment.newInstance();
         fragmentManager.beginTransaction().add(R.id.fragment_layout, postListFragment).commit();
     }
 

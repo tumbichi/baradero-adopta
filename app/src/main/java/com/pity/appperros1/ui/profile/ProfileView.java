@@ -50,9 +50,7 @@ public class ProfileView extends BaseActivity<ProfilePresener> implements IProfi
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
         mPresenter.attachView(this);
-
         fragmentManager = getSupportFragmentManager();
-
         mPresenter.initView();
     }
 

@@ -21,7 +21,6 @@ public abstract class BaseActivity <TPresenter extends IBasePresenter> extends A
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (mPresenter == null) {
             mPresenter = createBasePresenter(this);
             mPresenter.attachView(this);
@@ -70,6 +69,7 @@ public abstract class BaseActivity <TPresenter extends IBasePresenter> extends A
     protected void onDestroy() {
         super.onDestroy();
         if (mPresenter != null) {
+            mPresenter.dettachView();
             mPresenter.onDestroy();
         }
     }

@@ -15,12 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.pity.appperros1.R;
 import com.pity.appperros1.base.BaseActivity;
 import com.pity.appperros1.ui.adoption.AdopcionView;
 import com.pity.appperros1.ui.informacion_perro.interfaces.IInformacionPerroView;
+import com.pity.appperros1.utils.DogUtils;
 
 import java.util.ArrayList;
 
@@ -88,16 +90,32 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
         mPresenter.attachView(this);
         String currentIDDog = getIntent().getData().toString();
         mPresenter.attachCurrentDogId(currentIDDog);
-
-
+        setToolbar();
     }
 
+    private void setToolbar(){
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        this.onBackPressed();
+        return super.onSupportNavigateUp();
+    }
 
     @Override
     public void setViewOfInformationDog(String nombre, String descripcion, String urlFoto, String genero,
                                         String tamanio, String edad, String vacunado, String castrado,
                                         ArrayList<Boolean> etiquetas) {
 
+        getSupportActionBar().setTitle(nombre);
+        getSupportActionBar().setSubtitle(etiquetas.get(DogUtils.ETIQUETA_ADOPCION_ID) ? DogUtils.ETIQUETA_ADOPCION : DogUtils.ETIQUETA_PERDIDO);
         textViewNombrePerro.setText(nombre);
         textViewDescripcionPerro.setText(descripcion);
 

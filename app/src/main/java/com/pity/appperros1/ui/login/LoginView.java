@@ -1,5 +1,7 @@
 package com.pity.appperros1.ui.login;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,8 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginView extends BaseActivity<ILoginPresenter>
-        implements ILoginView {
+public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginView {
 
     @BindView(R.id.login_button_iniciar_sesion)  Button btnLogin;
     @BindView(R.id.login_button_registrate)  Button btnRegistrate;
@@ -33,8 +34,7 @@ public class LoginView extends BaseActivity<ILoginPresenter>
     @BindView(R.id.login_edit_text_usuario)  EditText editTextMail;
     @BindView(R.id.login_edit_text_password) EditText editTextContrasenia;
     @BindView(R.id.login_progress_bar)  ProgressBar progressBar;
-
-
+    private AlertDialog progressDialog;
 
     @Override
     public LoginPresenter createBasePresenter(Context context) {
@@ -46,8 +46,14 @@ public class LoginView extends BaseActivity<ILoginPresenter>
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        createProgressDialog();
+    }
 
-
+    private void createProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setTitle("Iniciando sesion");
+        progressDialog.setMessage("Aguarde unos segundos...");
     }
 
     @OnClick(R.id.login_button_iniciar_sesion)
@@ -89,15 +95,16 @@ public class LoginView extends BaseActivity<ILoginPresenter>
         startActivity(new Intent(LoginView.this, InicioActivity.class));
     }
 
-
     @Override
     public void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
+        progressDialog.show();
+        //progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
+        progressDialog.dismiss();
+        //progressBar.setVisibility(View.GONE);
     }
 
     @Override

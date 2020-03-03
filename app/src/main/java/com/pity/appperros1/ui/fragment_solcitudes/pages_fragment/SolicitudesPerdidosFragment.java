@@ -17,6 +17,8 @@ import com.pity.appperros1.R;
 import com.pity.appperros1.data.modelos.Solicitud;
 import com.pity.appperros1.data.modelos.SolicitudesCache;
 import com.pity.appperros1.data.repository.implementacion.AdopcionRepository;
+import com.pity.appperros1.data.repository.implementacion.UserRepository;
+import com.pity.appperros1.data.repository.interfaces.IAdopcionRepository;
 import com.pity.appperros1.ui.fragment_solcitudes.SolicitudesPresenter;
 import com.pity.appperros1.ui.fragment_solcitudes.adapters.SolicitudesListAdapter;
 import com.pity.appperros1.utils.DogUtils;
@@ -68,6 +70,7 @@ public class SolicitudesPerdidosFragment extends Fragment implements View.OnClic
         if (parent != null){
             Log.e("SolicitudesAdopciones", "I have a parent \n" + parent.toString());
         }
+
         return root;
     }
 
@@ -80,8 +83,21 @@ public class SolicitudesPerdidosFragment extends Fragment implements View.OnClic
                 break;
             case R.id.solicitudes_item_button_cancelar:
                 Solicitud solicitudCancelada = adapter.getItem(position);
-                AdopcionRepository.getInstance().deleteAdoption(solicitudCancelada.getIdSolicitud());
-                adapter.notifyDataSetChanged();
+                Log.i(this.getClass().getName(), adapter.getItem(position).getDogName());
+                AdopcionRepository.getInstance()
+                        .deleteAdoption(solicitudCancelada.getIdSolicitud(), new IAdopcionRepository.CallbackAdoption() {
+                            @Override
+                            public void onSuccesAdoption() {
+                                Log.i(this.getClass().getName(), UserRepository.getInstance().getLoggedUser().getDisplayName());
+                                solicitudesPerdidos.remove(adapter.getItem(position));
+                                adapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onFailedAdoption(Exception e) {
+
+                            }
+                        });
                 break;
             default:
                 Log.i(this.getTag(), Integer.toString(position));

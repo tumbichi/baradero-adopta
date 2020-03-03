@@ -6,7 +6,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:background="@color/primary" />
+        android:background="@color/primary"
+        android:textAlignment="center"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+
+        local:subtitleTextAppearance="@style/TextAppearance.MaterialComponents.Caption"/>
 
     <!--local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
 

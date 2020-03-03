@@ -61,7 +61,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void attachLoggedUser(String currentUserID, String token) {
+    public void attachLoggedUser(String currentUserID, String token, CallbackAttachUser callbackAttachUser) {
         getUserById(currentUserID, new CallbackQueryUser() {
             @Override
             public void onSuccessUserQueryById(Usuario user) {
@@ -79,6 +79,7 @@ public class UserRepository implements IUserRepository {
                     public void onSuccessUpdateUser() {
                         Log.i(TAG, "User Logged and attached \n" +
                                 "token : " + token);
+                        callbackAttachUser.onUserAttached(user);
                     }
 
                     @Override
@@ -189,7 +190,11 @@ public class UserRepository implements IUserRepository {
         mQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) callbackUserRegistered.saveUserOnDatabase(currentUser);
+                if (!dataSnapshot.exists()){
+                    callbackUserRegistered.onNotRegisteredUser(currentUser);
+                }else{
+                    callbackUserRegistered.onRegisteredUser();
+                }
             }
 
             @Override

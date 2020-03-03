@@ -23,12 +23,17 @@ public interface IUserRepository {
     }
 
     interface CallbackIsUserRegistered {
-        void saveUserOnDatabase(FirebaseUser mNoRegisteredUser);
+        void onNotRegisteredUser(FirebaseUser mNoRegisteredUser);
+        void onRegisteredUser();
+    }
+
+    interface CallbackAttachUser {
+        void onUserAttached(Usuario user);
     }
 
 
     Usuario getLoggedUser();
-    void attachLoggedUser(String currentUserID, String token);
+    void attachLoggedUser(String currentUserID, String token, CallbackAttachUser callbackAttachUser);
     void persistNewUserOnDatabase(Usuario newUser, CallbackUserUpdate callback);
     void updateUser(Usuario currentUser, CallbackUserUpdate callbackUserUpdate);
     void sendMailVerication(FirebaseUser currentUser, CallbackRepositorySendMail callback);

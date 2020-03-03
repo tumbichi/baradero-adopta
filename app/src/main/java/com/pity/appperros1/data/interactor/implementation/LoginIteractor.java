@@ -20,7 +20,7 @@ import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.data.repository.interfaces.IUserRepository;
 
 
-public class LoginIteractor implements ILoginInteractor, IUserRepository.CallbackIsUserRegistered, IUserRepository.CallbackUserUpdate {
+public class LoginIteractor implements ILoginInteractor {
 
     private UserRepository mRepository;
     private FirebaseAuth mAuth;
@@ -34,7 +34,7 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
 
 
     @Override
-    public void login(String email, String pass, final OnLoginCallback listener) {
+    public void login(String email, String pass, final LoginCallback listener) {
         mAuth.signInWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -58,7 +58,7 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
 
 
     @Override
-    public void handleFacebookAccessToken(AccessToken token, OnLoginCallback listener) {
+    public void handleFacebookAccessToken(AccessToken token, LoginFacebookCallback listener) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -87,13 +87,31 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
     }
 
     @Override
-    public void checkIfIsRegistedOnDatabase(FirebaseUser currentUser) {
-        mRepository.isUserRegisteredOnDatabase(currentUser, this);
+    public void checkIfIsRegistedOnDatabase(FirebaseUser currentUser, IUserRepository.CallbackUserUpdate callbackUserUpdate) {
+        mRepository.isUserRegisteredOnDatabase(currentUser, new IUserRepository.CallbackIsUserRegistered() {
+            @Override
+            public void onNotRegisteredUser(FirebaseUser mNoRegisteredUser) {
+                Usuario mUser;
+                if (mNoRegisteredUser.getPhotoUrl() != null) {
+                    mUser = new Usuario(mNoRegisteredUser.getUid(), mNoRegisteredUser.getEmail(),
+                            mNoRegisteredUser.getDisplayName(), mNoRegisteredUser.getPhoneNumber(), mNoRegisteredUser.getPhotoUrl());
+                }else mUser = new Usuario(mNoRegisteredUser.getUid(), mNoRegisteredUser.getEmail(),
+                        mNoRegisteredUser.getDisplayName(), mNoRegisteredUser.getPhoneNumber());
+
+                mRepository.persistNewUserOnDatabase(mUser, callbackUserUpdate);
+            }
+
+            @Override
+            public void onRegisteredUser() {
+                callbackUserUpdate.onSuccessUpdateUser();
+            }
+        });
     }
 
     @Override
-    public void attachLoggedUser(String userID, String token) {
-        UserRepository.getInstance().attachLoggedUser(userID, token);
+    public void attachLoggedUser(String userID, String token, IUserRepository.CallbackAttachUser callbackAttachUser) {
+        UserRepository.getInstance()
+                .attachLoggedUser(userID, token, callbackAttachUser);
     }
 
 
@@ -102,26 +120,4 @@ public class LoginIteractor implements ILoginInteractor, IUserRepository.Callbac
         return mRepository.currentFirebaseUser() != null;
     }
 
-    @Override
-    public void saveUserOnDatabase(FirebaseUser mNoRegisteredUser) {
-        Usuario mUser;
-        if (mNoRegisteredUser.getPhotoUrl() != null) {
-            mUser = new Usuario(mNoRegisteredUser.getUid(), mNoRegisteredUser.getEmail(),
-                    mNoRegisteredUser.getDisplayName(), mNoRegisteredUser.getPhoneNumber(), mNoRegisteredUser.getPhotoUrl());
-        }else mUser = new Usuario(mNoRegisteredUser.getUid(), mNoRegisteredUser.getEmail(),
-                mNoRegisteredUser.getDisplayName(), mNoRegisteredUser.getPhoneNumber());
-
-        mRepository.persistNewUserOnDatabase(mUser, this);
-    }
-
-
-    @Override
-    public void onSuccessUpdateUser() {
-        Log.e("Login", "facebook:onSuccessUpdateUser()");
-    }
-
-    @Override
-    public void onFailedUpdateUser(Exception e) {
-        Log.e("Login","facebook:onFailedUpdateUser");
-    }
 }

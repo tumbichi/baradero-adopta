@@ -26,7 +26,6 @@ public class SolicitudesFragment extends BaseFragment<SolicitudesPresenter> impl
 
     @BindView(R.id.solicitudes_pager)
     ViewPager viewPager;
-
     @BindView(R.id.solicitudes_button_adopciones)
     Button btnAdopciones;
     @BindView(R.id.solicitudes_button_perdidos)

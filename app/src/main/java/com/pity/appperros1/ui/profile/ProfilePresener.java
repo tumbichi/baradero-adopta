@@ -71,7 +71,7 @@ public class ProfilePresener extends BasePresenter<IProfileView> implements IPro
 
 
                 try {
-                    asyncSignal.await(30000, TimeUnit.MILLISECONDS);
+                    asyncSignal.await(60000, TimeUnit.MILLISECONDS);
                     asyncSignal = null;
                 } catch (InterruptedException e) {
                     Log.e(ProfilePresener.class.getName(), e.getStackTrace().toString() + " \n Time out exeption?");
@@ -151,8 +151,10 @@ public class ProfilePresener extends BasePresenter<IProfileView> implements IPro
             @Override
             protected void onPostExecute(HashMap<String, ArrayList<Solicitud>> result) {
                 SolicitudesCache.setSolicitudes(result);
-                mView.stackFragmentSolicitudes();
-                mView.hideProgressBar();
+                if (isViewAttached()){
+                    mView.stackFragmentSolicitudes();
+                    mView.hideProgressBar();
+                }
             }
         }.execute();
     }

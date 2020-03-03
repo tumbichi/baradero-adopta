@@ -2,21 +2,23 @@ package com.pity.appperros1.data.interactor.interfaces;
 
 import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseUser;
+import com.pity.appperros1.data.repository.interfaces.IUserRepository;
 
 public interface ILoginInteractor {
 
-    interface OnLoginCallback {
+    interface LoginCallback {
         void onSuccess(String token);
         void onFailed(String error);
+    }
+
+    interface LoginFacebookCallback {
         void onSuccessFacebook(FirebaseUser currentUser, String token);
         void onFailedFacebook(String error);
     }
 
-
-
-    void login(String user, String pass, OnLoginCallback listener);
-    void handleFacebookAccessToken(AccessToken token, OnLoginCallback listener);
-    void checkIfIsRegistedOnDatabase(FirebaseUser currentUser);
-    void attachLoggedUser(String userID, String token);
+    void login(String user, String pass, LoginCallback listener);
+    void handleFacebookAccessToken(AccessToken token, LoginFacebookCallback listener);
+    void checkIfIsRegistedOnDatabase(FirebaseUser currentUser, IUserRepository.CallbackUserUpdate callbackUserUpdate);
+    void attachLoggedUser(String userID, String token, IUserRepository.CallbackAttachUser callbackAttachUser);
     boolean isUserLogged();
 }

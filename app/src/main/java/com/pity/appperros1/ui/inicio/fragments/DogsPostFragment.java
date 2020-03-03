@@ -16,6 +16,7 @@ import com.pity.appperros1.R;
 import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.ui.inicio.IInicioPresentador;
 import com.pity.appperros1.ui.inicio.IInicioView;
+import com.pity.appperros1.ui.inicio.InicioActivity;
 import com.pity.appperros1.ui.inicio.adapters.InicioAdapter;
 
 import java.util.ArrayList;
@@ -33,12 +34,12 @@ public class DogsPostFragment extends Fragment implements IDogsPostFragment, Vie
     private IInicioView viewParent;
     private IInicioPresentador presentParent;
 
-    public DogsPostFragment(IInicioPresentador present){
-        this.presentParent = present;
+    public DogsPostFragment(){
+
     }
 
-    public static DogsPostFragment newInstance(IInicioPresentador present){
-        DogsPostFragment postFragment = new DogsPostFragment(present);
+    public static DogsPostFragment newInstance(){
+        DogsPostFragment postFragment = new DogsPostFragment();
         Bundle bundle = new Bundle();
         postFragment.setArguments(bundle);
         return postFragment;
@@ -49,6 +50,7 @@ public class DogsPostFragment extends Fragment implements IDogsPostFragment, Vie
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
         ButterKnife.bind(this, view);
         postListView = view.findViewById(R.id.inicio_list_view);
+        viewParent = (InicioActivity) getActivity();
         return view;
     }
 
@@ -76,8 +78,13 @@ public class DogsPostFragment extends Fragment implements IDogsPostFragment, Vie
     public void onClick(View v) {
         if (v.getId() == R.id.post_button_ver_mas) {
             final int position = postListView.getPositionForView(v);
-            presentParent.onItemClickVerMas(position, getListViewAdapter());
+            onItemClickVerMas(position, getListViewAdapter());
         }
+    }
+
+    private void onItemClickVerMas(int position, InicioAdapter adapter) {
+        Perro perroModel = adapter.getItem(position);
+        if (viewParent != null) viewParent.navigateToInformacionOf(perroModel);
     }
 
     @OnItemClick(R.id.inicio_list_view)
