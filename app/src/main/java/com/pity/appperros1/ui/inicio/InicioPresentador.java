@@ -24,22 +24,11 @@ public class InicioPresentador extends BasePresenter<IInicioView> implements IIn
 
          FirebaseUser currentUser = mInteractor.getUserLogged();
          Log.d("UID" , currentUser.getUid());
+    }
 
-        mInteractor.bringDogList(new IInicioInteractor.CallbackGetDogList() {
-            @Override
-            public void onSuccesGetDogList() {
-                if (isViewAttached()) {
-                    mView.hideProgressDialog();
-                    mView.toast("Post cargados");
-                    mView.setPostListAdapter(mInteractor.getListPost());
-                }
-            }
-
-            @Override
-            public void onFailureDogList(String error) {
-                mView.toast(error);
-            }
-        });
+    @Override
+    public IInicioInteractor getInteractor(){
+         return mInteractor;
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.pity.appperros1.R;
 import com.pity.appperros1.base.BaseActivity;
 import com.pity.appperros1.data.interactor.implementation.InicioInteractor;
+import com.pity.appperros1.data.interactor.interfaces.IInicioInteractor;
 import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.ui.profile.ProfileView;
@@ -84,7 +85,7 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
             UserRepository.getInstance().attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid(), );*/
 
         init();
-        showPostsView();
+        showPostsView(mPresenter.getInteractor());
     }
 
     @Override
@@ -144,8 +145,8 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
     }
 
     @Override
-    public void showPostsView() {
-        postListFragment = DogsPostFragment.newInstance();
+    public void showPostsView(IInicioInteractor interactor) {
+        postListFragment = DogsPostFragment.newInstance(interactor);
         fragmentManager.beginTransaction().add(R.id.fragment_layout, postListFragment).commit();
     }
 

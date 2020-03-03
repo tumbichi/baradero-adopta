@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.pity.appperros1.R;
+import com.pity.appperros1.data.interactor.interfaces.IInicioInteractor;
 import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.ui.inicio.IInicioPresentador;
 import com.pity.appperros1.ui.inicio.IInicioView;
@@ -32,16 +33,17 @@ public class DogsPostFragment extends Fragment implements IDogsPostFragment, Vie
 
     private InicioAdapter mAdapter;
     private IInicioView viewParent;
-    private IInicioPresentador presentParent;
+    private IInicioInteractor interactor;
 
-    public DogsPostFragment(){
-
+    private DogsPostFragment(IInicioInteractor interactor){
+        this.interactor = interactor;
     }
 
-    public static DogsPostFragment newInstance(){
-        DogsPostFragment postFragment = new DogsPostFragment();
+    public static DogsPostFragment newInstance(IInicioInteractor interactor){
+        DogsPostFragment postFragment = new DogsPostFragment(interactor);
         Bundle bundle = new Bundle();
         postFragment.setArguments(bundle);
+
         return postFragment;
     }
 
@@ -49,9 +51,27 @@ public class DogsPostFragment extends Fragment implements IDogsPostFragment, Vie
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
         ButterKnife.bind(this, view);
-        postListView = view.findViewById(R.id.inicio_list_view);
+        //postListView = view.findViewById(R.id.inicio_list_view);
         viewParent = (InicioActivity) getActivity();
+        updateDogList();
         return view;
+    }
+
+    private void updateDogList(){
+        interactor.bringDogList(new IInicioInteractor.CallbackGetDogList() {
+            @Override
+            public void onSuccesGetDogList() {
+                if (viewParent != null) {
+                    viewParent.hideProgressDialog();
+                    setListViewAdapter(interactor.getListPost());
+                }
+            }
+
+            @Override
+            public void onFailureDogList(String error) {
+                viewParent.toast(error);
+            }
+        });
     }
 
     @Override
@@ -91,5 +111,6 @@ public class DogsPostFragment extends Fragment implements IDogsPostFragment, Vie
     public void onItemClickListener(AdapterView<?> parent, int position) {
         Log.e("InicioView" , "onItemClickListener(" + parent.getAdapter().getItem(position) + ")");
     }
+
 
 }

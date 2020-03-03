@@ -29,7 +29,7 @@ public class SolicitudesPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = new Fragment();
         switch (position) {
             case 0:
-                fragment = SolicitudesAdopcionesFragment.newInstance(context, solicitudesPresenter);
+                fragment = SolicitudesAdopcionesFragment.newInstance(context);
                 break;
             case 1:
                 fragment = SolicitudesPerdidosFragment.newInstance(context, solicitudesPresenter);
