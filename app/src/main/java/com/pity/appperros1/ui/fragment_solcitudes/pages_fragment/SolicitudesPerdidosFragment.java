@@ -1,6 +1,9 @@
 package com.pity.appperros1.ui.fragment_solcitudes.pages_fragment;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,16 +17,24 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.pity.appperros1.R;
+import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.data.modelos.Solicitud;
+import com.pity.appperros1.data.modelos.SolicitudReference;
 import com.pity.appperros1.data.modelos.SolicitudesCache;
+import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.implementacion.AdopcionRepository;
+import com.pity.appperros1.data.repository.implementacion.DogRepository;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.data.repository.interfaces.IAdopcionRepository;
+import com.pity.appperros1.data.repository.interfaces.IDogRepository;
+import com.pity.appperros1.data.repository.interfaces.IUserRepository;
 import com.pity.appperros1.ui.fragment_solcitudes.SolicitudesPresenter;
 import com.pity.appperros1.ui.fragment_solcitudes.adapters.SolicitudesListAdapter;
 import com.pity.appperros1.utils.DogUtils;
 
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,6 +91,132 @@ public class SolicitudesPerdidosFragment extends Fragment implements View.OnClic
         switch (v.getId()){
             case R.id.solicitudes_item_button_aceptar:
                 Solicitud solicitudAceptada = adapter.getItem(position);
+                new AsyncTask<String, Void, ArrayList<SolicitudReference>>(){
+                    private AlertDialog progressDialog;
+                    private CountDownLatch asyncSignal;
+                    private int i, j;
+                    @Override
+                    protected void onPreExecute() {
+                        progressDialog = new ProgressDialog(context);
+                        progressDialog.setTitle("Adopcion en proceso");
+                        progressDialog.setMessage("Espere unos segundos");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                    }
+
+                    @Override
+                    protected ArrayList<SolicitudReference> doInBackground(String... strings) {
+                        String idDog = strings[0];
+                        String idFinder = strings[1];
+
+                        asyncSignal = new CountDownLatch(3);
+
+                        UserRepository.getInstance().getUserById(idFinder, new IUserRepository.CallbackQueryUser() {
+                            @Override
+                            public void onSuccessUserQueryById(Usuario user) {
+                                user.getPerrosEncontrados().add(idDog);
+                                UserRepository.getInstance().updateUser(user, new IUserRepository.CallbackUserUpdate() {
+                                    @Override
+                                    public void onSuccessUpdateUser() {
+                                        asyncSignal.countDown();
+                                    }
+
+                                    @Override
+                                    public void onFailedUpdateUser(Exception e) {
+
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailureUserQueryById(String msgError) {
+
+                            }
+                        });
+
+                        DogRepository.getInstance().queryDogBy(idDog, new IDogRepository.CallbackQueryDog() {
+                            @Override
+                            public void onSucessQueryDog(Perro currentDog) {
+                                currentDog.setAvailable(false);
+                                DogRepository.getInstance().updateDog(currentDog, new IDogRepository.CallbackUploadDog() {
+                                    @Override
+                                    public void onSuccessUploadDog() {
+                                        asyncSignal.countDown();
+                                    }
+
+                                    @Override
+                                    public void onFailureUploadDog(String messasgeError) {
+
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailureQueryDog(String msgError) {
+
+                            }
+                        });
+
+                        ArrayList<SolicitudReference> result = new ArrayList<>();
+
+                        AdopcionRepository.getInstance().getAdoptionsOfDog(idDog, new IAdopcionRepository.CallbackGetAdoptions() {
+                            @Override
+                            public void onSuccessGetAdoptions(ArrayList<SolicitudReference> adoptions) {
+                                if (result.isEmpty()) result.addAll(adoptions);
+                                j = adoptions.size();
+                                for (i = 0 ; i < adoptions.size(); i++){
+                                    AdopcionRepository.getInstance().deleteAdoption(adoptions.get(i).getAdoptionID(), new IAdopcionRepository.CallbackAdoption() {
+                                        @Override
+                                        public void onSuccesAdoption() {
+                                            j--;
+                                            if (j == 0) asyncSignal.countDown();
+
+                                        }
+
+                                        @Override
+                                        public void onFailedAdoption(Exception e) {
+
+                                        }
+                                    });
+
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailureGetAdoptions(String msgError) {
+
+                            }
+                        });
+
+                        try {
+                            asyncSignal.await(30000, TimeUnit.MILLISECONDS);
+                            asyncSignal = null;
+                        }catch (Exception e){
+                            e.getStackTrace();
+                        }
+
+                        return result;
+                    }
+
+                    @Override
+                    protected void onPostExecute(ArrayList<SolicitudReference> deleteSolicitudes) {
+                        ArrayList<Solicitud> forDelete = new ArrayList<>();
+                        for (SolicitudReference solicitud : deleteSolicitudes){
+                            for (Solicitud adopcion : solicitudesPerdidos){
+                                if (solicitud.getAdoptionID().equals(adopcion.getIdSolicitud())){
+                                    forDelete.add(adopcion);
+                                }
+                            }
+                        }
+                        solicitudesPerdidos.removeAll(forDelete);
+                        adapter.notifyDataSetChanged();
+                        progressDialog.dismiss();
+                    }
+                }.execute(solicitudAceptada.getIdDog(), solicitudAceptada.getIdUser());
+
+
                 break;
             case R.id.solicitudes_item_button_cancelar:
                 Solicitud solicitudCancelada = adapter.getItem(position);

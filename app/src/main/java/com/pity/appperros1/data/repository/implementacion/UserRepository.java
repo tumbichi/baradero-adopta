@@ -100,7 +100,7 @@ public class UserRepository implements IUserRepository {
     @Override
     public void persistNewUserOnDatabase(Usuario newUser, final CallbackUserUpdate callbackNewUser) {
         DatabaseReference mRef = mDatabase.getReference();
-        mRef.child(UserUtils.USER_CHILD)
+        mRef.child(UserUtils.USER_DB_REF)
                 .child(newUser.getUid())
                 .updateChildren(UserUtils.userToMap(newUser))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -118,7 +118,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void updateUser(Usuario currentUser, final CallbackUserUpdate callbackUserUpdate) {
-        DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_CHILD);
+        DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_DB_REF);
         mRef.child(currentUser.getUid())
                 .updateChildren(UserUtils.userToMap(currentUser))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -183,7 +183,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void isUserRegisteredOnDatabase(FirebaseUser currentUser, CallbackIsUserRegistered callbackUserRegistered) {
-        DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_CHILD);
+        DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_DB_REF);
 
         Query mQuery = mRef.orderByKey().equalTo(currentUser.getUid()).limitToFirst(1);
 
@@ -207,7 +207,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void getUserById(String id, CallbackQueryUser callbackUserById) {
-        DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_CHILD);
+        DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_DB_REF);
         Query query = mRef.orderByKey().equalTo(id).limitToFirst(1);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -234,7 +234,7 @@ public class UserRepository implements IUserRepository {
     // Syncronic but is not asdasd
     public Usuario getUserById(String id) {
         final TaskCompletionSource<List<Usuario>> tcs = new TaskCompletionSource<>();
-        DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_CHILD);
+        DatabaseReference mRef = mDatabase.getReference().child(UserUtils.USER_DB_REF);
         Query query = mRef.orderByKey().equalTo(id).limitToFirst(1);
         final List<Usuario> currentUser = new ArrayList<>();
 

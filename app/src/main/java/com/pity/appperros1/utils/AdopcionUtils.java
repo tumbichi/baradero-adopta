@@ -5,8 +5,9 @@ import java.util.Map;
 
 public class AdopcionUtils {
 
+    public final static String ADOPTION_DB_REF = "Adopciones";
+    public final static String DOG_ID_KEY = "dogID";
     private final static String ADOPTION_ID_KEY = "adoptionID";
-    private final static String DOG_ID_KEY = "dogID";
     private final static String UPLOADER_ID_KEY = "uploaderID";
     private final static String ADOPTER_ID_KEY = "adopterID";
 

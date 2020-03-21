@@ -71,7 +71,7 @@ public class ProfilePresener extends BasePresenter<IProfileView> implements IPro
 
 
                 try {
-                    asyncSignal.await(60000, TimeUnit.MILLISECONDS);
+                    asyncSignal.await(30000, TimeUnit.MILLISECONDS);
                     asyncSignal = null;
                 } catch (InterruptedException e) {
                     Log.e(ProfilePresener.class.getName(), e.getStackTrace().toString() + " \n Time out exeption?");

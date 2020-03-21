@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 public class UserUtils {
 
-    public final static String USER_CHILD = "Usuarios";
+    public final static String USER_DB_REF = "Usuarios";
 
     public final static String UID_KEY = "id";
     public final static String DISPLAY_NAME_KEY = "displayName";

@@ -37,7 +37,7 @@ public class InicioInteractor implements IInicioInteractor {
     @Override
     public void bringDogList(CallbackGetDogList callbackGetDogList) {
         this.callbackInicioInteractor = callbackGetDogList;
-        dogRepository.getDogListPerdido(new IDogRepository.CallbackDogList() {
+        dogRepository.getDogList(new IDogRepository.CallbackDogList() {
             @Override
             public void onSuccesGetDogList(ArrayList<Perro> dogList) {
                 postList = dogList;

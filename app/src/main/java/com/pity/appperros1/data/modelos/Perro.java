@@ -21,6 +21,7 @@ public class Perro {
     private List<Boolean> etiquetas;
     private long timestamp;
     private String uid;
+    private Boolean isAvailable;
 
     public Perro(){
 
@@ -147,6 +148,14 @@ public class Perro {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public Boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(Boolean available) {
+        isAvailable = available;
     }
 
 }

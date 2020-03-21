@@ -17,18 +17,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.pity.appperros1.R;
+import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.data.modelos.Solicitud;
+import com.pity.appperros1.data.modelos.SolicitudReference;
 import com.pity.appperros1.data.modelos.SolicitudesCache;
 import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.implementacion.AdopcionRepository;
+import com.pity.appperros1.data.repository.implementacion.DogRepository;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.data.repository.interfaces.IAdopcionRepository;
+import com.pity.appperros1.data.repository.interfaces.IDogRepository;
 import com.pity.appperros1.data.repository.interfaces.IUserRepository;
-import com.pity.appperros1.ui.fragment_solcitudes.SolicitudesPresenter;
 import com.pity.appperros1.ui.fragment_solcitudes.adapters.SolicitudesListAdapter;
 import com.pity.appperros1.utils.DogUtils;
 
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,9 +84,10 @@ public class SolicitudesAdopcionesFragment extends Fragment implements View.OnCl
         switch (v.getId()){
             case R.id.solicitudes_item_button_aceptar:
                 Solicitud solicitudAceptada = adapter.getItem(position);
-                new AsyncTask<String, Void, Void>(){
+                new AsyncTask<String, Void, ArrayList<SolicitudReference>>(){
                     private AlertDialog progressDialog;
-
+                    private CountDownLatch asyncSignal;
+                    private int i, j;
                     @Override
                     protected void onPreExecute() {
                         progressDialog = new ProgressDialog(context);
@@ -92,10 +98,11 @@ public class SolicitudesAdopcionesFragment extends Fragment implements View.OnCl
                     }
 
                     @Override
-                    protected Void doInBackground(String... strings) {
-                        String idSolicitud = strings[0];
-                        String idDog = strings[1];
-                        String idAdopter = strings[2];
+                    protected ArrayList<SolicitudReference> doInBackground(String... strings) {
+                        String idDog = strings[0];
+                        String idAdopter = strings[1];
+
+                        asyncSignal = new CountDownLatch(3);
 
                         UserRepository.getInstance().getUserById(idAdopter, new IUserRepository.CallbackQueryUser() {
                             @Override
@@ -104,7 +111,7 @@ public class SolicitudesAdopcionesFragment extends Fragment implements View.OnCl
                                 UserRepository.getInstance().updateUser(user, new IUserRepository.CallbackUserUpdate() {
                                     @Override
                                     public void onSuccessUpdateUser() {
-
+                                        asyncSignal.countDown();
                                     }
 
                                     @Override
@@ -120,20 +127,82 @@ public class SolicitudesAdopcionesFragment extends Fragment implements View.OnCl
                             }
                         });
 
+                        DogRepository.getInstance().queryDogBy(idDog, new IDogRepository.CallbackQueryDog() {
+                            @Override
+                            public void onSucessQueryDog(Perro currentDog) {
+                                currentDog.setAvailable(false);
+                                DogRepository.getInstance().updateDog(currentDog, new IDogRepository.CallbackUploadDog() {
+                                    @Override
+                                    public void onSuccessUploadDog() {
+                                        asyncSignal.countDown();
+                                    }
 
+                                    @Override
+                                    public void onFailureUploadDog(String messasgeError) {
 
-                        return null;
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailureQueryDog(String msgError) {
+
+                            }
+                        });
+
+                        ArrayList<SolicitudReference> result = new ArrayList<>();
+
+                        AdopcionRepository.getInstance().getAdoptionsOfDog(idDog, new IAdopcionRepository.CallbackGetAdoptions() {
+                            @Override
+                            public void onSuccessGetAdoptions(ArrayList<SolicitudReference> adoptions) {
+                                if (result.isEmpty()) result.addAll(adoptions);
+                                j = adoptions.size();
+                                for (i = 0 ; i < adoptions.size(); i++){
+                                    AdopcionRepository.getInstance().deleteAdoption(adoptions.get(i).getAdoptionID(), new IAdopcionRepository.CallbackAdoption() {
+                                        @Override
+                                        public void onSuccesAdoption() {
+                                            j--;
+                                            if (j == 0) asyncSignal.countDown();
+                                        }
+                                        @Override
+                                        public void onFailedAdoption(Exception e) {
+
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onFailureGetAdoptions(String msgError) {
+
+                            }
+                        });
+
+                        try {
+                            asyncSignal.await(30000, TimeUnit.MILLISECONDS);
+                            asyncSignal = null;
+                        }catch (Exception e){
+                            e.getStackTrace();
+                        }
+
+                        return result;
                     }
 
                     @Override
-                    protected void onPostExecute(Void aVoid) {
+                    protected void onPostExecute(ArrayList<SolicitudReference> deleteSolicitudes) {
+                        ArrayList<Solicitud> forDelete = new ArrayList<>();
+                        for (SolicitudReference solicitud : deleteSolicitudes){
+                            for (Solicitud adopcion : solicitudesAdopciones){
+                                if (solicitud.getAdoptionID().equals(adopcion.getIdSolicitud())){
+                                    forDelete.add(adopcion);
+                                }
+                            }
+                        }
+                        solicitudesAdopciones.removeAll(forDelete);
+                        adapter.notifyDataSetChanged();
                         progressDialog.dismiss();
                     }
-                }.execute(solicitudAceptada.getIdSolicitud(), solicitudAceptada.getIdDog(), solicitudAceptada.getIdUser());
-
-
-
-
+                }.execute(solicitudAceptada.getIdDog(), solicitudAceptada.getIdUser());
                 break;
             case R.id.solicitudes_item_button_cancelar:
                 Solicitud solicitudCancelada = adapter.getItem(position);

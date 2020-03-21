@@ -70,10 +70,12 @@ public class AdopcionPresenter extends BasePresenter<IAdopcionView> implements I
 
             @Override
             protected void onPostExecute(Boolean result) {
-                mView.hideProgressBar();
-                if (result) {
-                    mView.toast("Succeful adoption");
-                    mView.killActivity();
+                if (isViewAttached()) {
+                    mView.hideProgressBar();
+                    if (result) {
+                        mView.toast("Succeful adoption");
+                        mView.killActivity();
+                    }
                 }
             }
 

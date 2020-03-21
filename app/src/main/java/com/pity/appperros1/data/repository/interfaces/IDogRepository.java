@@ -10,10 +10,10 @@ import java.util.ArrayList;
 public interface IDogRepository {
     void uploadPhoto(Uri path, CallbackUploadPhoto callbackUploadPhoto);
     void uploadPerro(Perro perro, Usuario currentUser, CallbackUploadDog callback);
+    void getDogListP(CallbackDogList callbackDogList);
     void getDogList(CallbackDogList callbackDogList);
-    void getDogListPerdido(CallbackDogList callbackDogList);
     void queryDogBy(String id, CallbackQueryDog callbackQueryDog);
-
+    void updateDog(Perro perro, CallbackUploadDog callbackUpdateDog);
 
 
     interface CallbackUploadPhoto {
