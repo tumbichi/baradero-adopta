@@ -157,7 +157,6 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
         //mPresenter.getIteamAtSpinner();
         //spinnerGenero.getSelectedItem();
 
-
         if (clicked == buttonAgregar){
             mPresenter.checkCurrentFields(
                     editTextNombrePerro.getText().toString().trim(),

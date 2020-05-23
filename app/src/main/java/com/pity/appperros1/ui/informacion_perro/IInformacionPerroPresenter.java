@@ -1,4 +1,4 @@
-package com.pity.appperros1.ui.informacion_perro.interfaces;
+package com.pity.appperros1.ui.informacion_perro;
 
 import com.pity.appperros1.base.IBasePresenter;
 

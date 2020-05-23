@@ -35,6 +35,10 @@ public class DogsPostFragment extends Fragment implements IDogsPostFragment, Vie
     private IInicioView viewParent;
     private IInicioInteractor interactor;
 
+    public DogsPostFragment(){
+
+    }
+
     private DogsPostFragment(IInicioInteractor interactor){
         this.interactor = interactor;
     }
@@ -43,7 +47,6 @@ public class DogsPostFragment extends Fragment implements IDogsPostFragment, Vie
         DogsPostFragment postFragment = new DogsPostFragment(interactor);
         Bundle bundle = new Bundle();
         postFragment.setArguments(bundle);
-
         return postFragment;
     }
 

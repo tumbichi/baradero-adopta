@@ -58,8 +58,7 @@ public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginVi
 
     @OnClick(R.id.login_button_iniciar_sesion)
     public void onClickLogin(View view){
-        mPresenter.loginUserWith(editTextMail.getText().toString(),
-                editTextContrasenia.getText().toString());
+        mPresenter.loginUserWith(editTextMail.getText().toString(), editTextContrasenia.getText().toString());
     }
 
     @OnClick(R.id.login_button_registrate)

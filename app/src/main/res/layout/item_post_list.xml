@@ -31,18 +31,25 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+
+            android:orientation="horizontal">
+
             <LinearLayout
                 android:id="@+id/post_etiqueta_adopcion"
                 android:layout_width="96dp"
                 android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
+
                 android:background="@drawable/custom_button_red"
+                android:gravity="center"
+                android:layout_gravity="start"
                 android:visibility="visible">
 
                 <TextView
@@ -50,17 +57,18 @@
                     android:layout_height="wrap_content"
                     android:text="ADOPCION"
                     android:textColor="@color/icons"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/post_etiqueta_perdido"
                 android:layout_width="96dp"
                 android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
+
+
                 android:background="@drawable/custom_button_blue"
+                android:gravity="center"
                 android:visibility="gone">
 
                 <TextView
@@ -68,21 +76,17 @@
                     android:layout_height="wrap_content"
                     android:text="PERDIDO"
                     android:textColor="@color/icons"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
 
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            app:srcCompat="@drawable/icon_share" />
 
 
     </RelativeLayout>
@@ -91,27 +95,42 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:layout_gravity="bottom"
+        android:background="@drawable/custom_bar_info"
+        android:layout_margin="4dp"
+        android:padding="2dp"
         android:layout_marginBottom="2dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/post_foto_perfil_usuario"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_post_foto_perfil_usuario"
+
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:src="@drawable/background_perro"
-            app:civ_border_width="2dp"
-            app:civ_border_color="#FFF"
             android:layout_marginStart="4dp"
+            app:cardCornerRadius="4dp"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true">
+            <ImageView
+                android:id="@+id/post_foto_perfil_usuario"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/foto_perro"
+                android:background="#fff"
+                android:scaleType="centerCrop"
+                />
+
+        </androidx.cardview.widget.CardView>
+
 
         <TextView
             android:id="@+id/post_text_view_nombre_perro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/post_foto_perfil_usuario"
-            android:layout_marginStart="4dp"
+
+            android:layout_toEndOf="@id/card_post_foto_perfil_usuario"
+            android:layout_marginStart="6dp"
+            android:layout_marginBottom="4dp"
             android:text="Nombre"
             android:textColor="#ffff"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.PopupMenu.Small" />
@@ -119,15 +138,18 @@
         <TextView
             android:id="@+id/post_text_view_descripcion"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-
-            android:layout_toEndOf="@id/post_foto_perfil_usuario"
-            android:layout_toStartOf="@id/post_button_ver_mas"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/post_text_view_nombre_perro"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="4dp"
 
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="4dp"
+            android:layout_toStartOf="@id/post_button_ver_mas"
 
+            android:layout_toEndOf="@id/card_post_foto_perfil_usuario"
+            android:ellipsize="end"
+            android:lines="2"
             android:text="Descripcion"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.DropDownItem"
             android:textColor="#ffff" />

@@ -2,8 +2,10 @@ package com.pity.appperros1.ui.inicio;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -25,10 +27,12 @@ import com.pity.appperros1.base.BaseActivity;
 import com.pity.appperros1.data.interactor.implementation.InicioInteractor;
 import com.pity.appperros1.data.interactor.interfaces.IInicioInteractor;
 import com.pity.appperros1.data.modelos.Perro;
+import com.pity.appperros1.data.modelos.Usuario;
+import com.pity.appperros1.data.repository.implementacion.AdopcionRepository;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.ui.profile.ProfileView;
 import com.pity.appperros1.ui.fragment_agregar_perro.implementation.AgregarPerroFragment;
-import com.pity.appperros1.ui.informacion_perro.implementation.InformacionPerroView;
+import com.pity.appperros1.ui.informacion_perro.InformacionPerroView;
 import com.pity.appperros1.ui.inicio.fragments.DogsPostFragment;
 import com.pity.appperros1.ui.login.LoginView;
 
@@ -84,17 +88,28 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
         /*if (UserRepository.getInstance().getLoggedUser() == null)
             UserRepository.getInstance().attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid(), );*/
 
-        init();
+        initNavDrawer();
         showPostsView(mPresenter.getInteractor());
+        UserRepository.getInstance().getServerToken(this, this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.getMenu().getItem(0).setChecked(true); // drawer item selected
     }
 
-    private void init(){
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    private void initNavDrawer(){
+        TextView notificationsCounter = (TextView) navigationView.getMenu().findItem(R.id.menu_perfil).getActionView();
+        TextView navDrawerHeaderUsername = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_header_username);
+        Usuario loggedUser = UserRepository.getInstance().getLoggedUser();
+
         fragmentManager = getSupportFragmentManager();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -111,9 +126,17 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
                 }
             }
         });
-        TextView navDrawerHeaderUsername = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_header_username);
-        navDrawerHeaderUsername.setText(UserRepository.getInstance().getLoggedUser().getDisplayName());
+
+        // Notifications count
+        notificationsCounter.setGravity(Gravity.CENTER_VERTICAL);
+        notificationsCounter.setTypeface(null, Typeface.BOLD);
+        notificationsCounter.setTextColor(getResources().getColor(R.color.primary_dark));
+
+        navDrawerHeaderUsername.setText(loggedUser == null ? "" : loggedUser.getDisplayName());
+
+        AdopcionRepository.getInstance().getNotificationsCount(notificationsCounter);
     }
+
 
     private void setToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -154,6 +177,15 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
     public void hidePostsView() {
         fragmentManager.beginTransaction().remove(postListFragment).commit();
         postListFragment = null;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (addDogFragment != null){
+            hideAgregarPerroFragment();
+        }else{
+            super.onBackPressed();
+        }
     }
 
     @Override

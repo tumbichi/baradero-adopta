@@ -52,7 +52,7 @@ public class RegistroInteractor implements IRegistroInteractor,
     public void onSuccessUpdateUser() {
         // Usuario creado en la base de datos
         Log.e("Registro", "onSuccessUpdateUser on database");
-        repository.sendMailVerication(mAuth.getCurrentUser(), this);
+        repository.sendMailVerification(mAuth.getCurrentUser(), this);
     }
 
     @Override

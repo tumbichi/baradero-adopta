@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/menu_home"
@@ -7,9 +8,10 @@
             android:icon="@drawable/icon_home">
         </item>
         <item
-         android:id="@+id/menu_perfil"
-         android:title="Perfil"
-         android:icon="@drawable/icon_perfil">
+             android:id="@+id/menu_perfil"
+             android:title="Perfil"
+             android:icon="@drawable/icon_perfil"
+             app:actionViewClass="android.widget.TextView">
        </item>
       <!--item
         android:id="@+id/menu_conf"

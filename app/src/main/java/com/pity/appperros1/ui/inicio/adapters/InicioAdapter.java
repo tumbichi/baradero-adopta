@@ -86,6 +86,12 @@ public class InicioAdapter extends BaseAdapter {
                     .centerCrop()
                     .into(holder.imageViewPerro);
 
+            Glide.with(mContext)
+                    .load(currentDog.getUrlFoto())
+                    .fitCenter()
+                    .centerCrop()
+                    .into(holder.imageViewPerfil);
+
 
             if (currentDog.getEtiquetas().get(1)){
                 holder.etiquetPerdido.setVisibility(View.GONE);

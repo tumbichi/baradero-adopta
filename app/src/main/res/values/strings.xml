@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppPerros1</string>
+    <string name="app_name">baradero adopta</string>
     <string name="facebook_application_id" translatable="false">487946478633511</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb487946478633511</string>
     <string name="default_notification_channel_id">CH_01</string>

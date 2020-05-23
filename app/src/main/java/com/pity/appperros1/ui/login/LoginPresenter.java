@@ -49,13 +49,12 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
                     if (task.isSuccessful()) {
                         String token = task.getResult().getToken();
 
-                        Log.e("CurrentToken", token);
-                        Log.e("SharedPreferenceToken", lastToken);
                         if (!lastToken.equals("") && lastToken.equals(token)) {
                             mIntereactor.attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid(), token, new IUserRepository.CallbackAttachUser() {
                                 @Override
                                 public void onUserAttached(Usuario user) {
                                     if (isViewAttached()) mView.navigateToInicio();
+
                                 }
                             });
 
@@ -131,9 +130,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
                 mIntereactor.handleFacebookAccessToken(loginResult.getAccessToken(), new ILoginInteractor.LoginFacebookCallback() {
                     @Override
                     public void onSuccessFacebook(FirebaseUser currentUser, String token) {
-                        //TODO: HACER MEJOR MANEJO DEL INICIO CON FACEBOOK
-                        Log.e("presenter", "onSuccesFacebook");
-
                         mIntereactor.checkIfIsRegistedOnDatabase(currentUser, new IUserRepository.CallbackUserUpdate() {
                             @Override
                             public void onSuccessUpdateUser() {
@@ -144,8 +140,8 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
                                 mIntereactor.attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid(), token, new IUserRepository.CallbackAttachUser() {
                                     @Override
                                     public void onUserAttached(Usuario user) {
+                                        Log.i("UserAtacched", "El usuario " + user.getDisplayName() + " se ha enlazado");
                                         if (isViewAttached()) mView.navigateToInicio();
-                                        dettachView();
                                     }
                                 });
                             }

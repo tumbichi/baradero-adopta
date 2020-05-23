@@ -1,6 +1,7 @@
 package com.pity.appperros1.data.repository.implementacion;
 
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,9 @@ import com.pity.appperros1.utils.AdopcionUtils;
 import com.pity.appperros1.utils.UserUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.security.auth.callback.Callback;
 
 public class AdopcionRepository implements IAdopcionRepository {
 
@@ -56,7 +60,7 @@ public class AdopcionRepository implements IAdopcionRepository {
 
     @Override
     public void registerSolicitudOnDatabase(String uploaderID, String adopterID, CallbackAdoption callbackAdoption) {
-        DatabaseReference mRef = database.getReference().child("Usuarios").child(uploaderID).child("Notifications").push();
+        DatabaseReference mRef = database.getReference().child(UserUtils.USER_DB_REF).child(uploaderID).child("Notifications").push();
         //String solicitudID = mRef.getKey();
 
         mRef.updateChildren(AdopcionUtils.mapSolicitud(adopterID))
@@ -68,6 +72,34 @@ public class AdopcionRepository implements IAdopcionRepository {
                         } else callbackAdoption.onFailedAdoption(task.getException());
                     }
                 });
+    }
+
+    public void getNotificationsCount(TextView badgeValue){
+        DatabaseReference ref = database.getReference().child(UserUtils.USER_DB_REF).child(UserRepository.getInstance().getLoggedUser().getUid());
+
+        ref.child(AdopcionUtils.ADOPTION_DB_REF).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<String> notifications = new ArrayList<>();
+                for (DataSnapshot data : dataSnapshot.getChildren()){
+                    //HashMap<String, Object> notification = (HashMap<String, Object>) data.getValue();
+                    notifications.add(data.getKey());
+                }
+
+                if (notifications.isEmpty()){
+                    badgeValue.setText("");
+                }else{
+                    String value = Integer.toString(notifications.size());
+                    badgeValue.setText(value);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

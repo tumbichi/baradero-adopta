@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.informacion_perro.implementation.InformacionPerroView">
+        <activity android:name=".ui.informacion_perro.InformacionPerroView">
             <intent-filter>
                 <action android:name="android.intent.action.INFORMACIONPERROVIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -67,6 +67,7 @@
         <activity android:name=".ui.profile.ProfileView">
             <intent-filter>
                 <action android:name="android.intent.action.PERFILACTIVITY"/>
+                <action android:name="com.pity.appperros1.TARGETNOTIFICATION"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
 
@@ -74,7 +75,7 @@
 
         <activity android:name=".ui.NotificationActivity">
             <intent-filter>
-                <action android:name="com.pity.appperros1.TARGETNOTIFICATION"/>
+                <!--action android:name="com.pity.appperros1.TARGETNOTIFICATION"/-->
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

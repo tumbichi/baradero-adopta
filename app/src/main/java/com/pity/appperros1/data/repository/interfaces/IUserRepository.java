@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.pity.appperros1.data.modelos.Usuario;
+import com.pity.appperros1.ui.inicio.IInicioView;
 
 public interface IUserRepository {
 
@@ -33,10 +34,11 @@ public interface IUserRepository {
 
 
     Usuario getLoggedUser();
+    void getServerToken(Context context, IInicioView view);
     void attachLoggedUser(String currentUserID, String token, CallbackAttachUser callbackAttachUser);
     void persistNewUserOnDatabase(Usuario newUser, CallbackUserUpdate callback);
     void updateUser(Usuario currentUser, CallbackUserUpdate callbackUserUpdate);
-    void sendMailVerication(FirebaseUser currentUser, CallbackRepositorySendMail callback);
+    void sendMailVerification(FirebaseUser currentUser, CallbackRepositorySendMail callback);
     FirebaseUser currentFirebaseUser();
     void logoutUser(Context context);
     void logoutWithoutToken();

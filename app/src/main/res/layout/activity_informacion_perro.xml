@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.informacion_perro.implementation.InformacionPerroView">
+    tools:context=".ui.informacion_perro.InformacionPerroView">
 
     <include
         android:id="@+id/toolbar"
@@ -94,6 +94,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="128dp"
+                android:padding="4dp"
                 android:background="#333333"
                 android:orientation="horizontal">
 

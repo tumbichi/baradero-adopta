@@ -1,4 +1,4 @@
-package com.pity.appperros1.ui.informacion_perro.implementation;
+package com.pity.appperros1.ui.informacion_perro;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -11,8 +11,6 @@ import com.pity.appperros1.data.repository.implementacion.DogRepository;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.data.repository.interfaces.IDogRepository;
 import com.pity.appperros1.data.repository.interfaces.IUserRepository;
-import com.pity.appperros1.ui.informacion_perro.interfaces.IInformacionPerroPresenter;
-import com.pity.appperros1.ui.informacion_perro.interfaces.IInformacionPerroView;
 
 import java.util.ArrayList;
 
@@ -47,7 +45,7 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
         if (TextUtils.equals(mCurrentDog.getUid(), mUserRepository.getLoggedUser().getUid())){
             mView.hideContactButton();
         }
-        mView.setViewOfInformationDog(nombre, descripcion, imageUrl, genero, tamanio, edad, vacunado, castrado, etiquetas);
+        mView.populateDogView(nombre, descripcion, imageUrl, genero, tamanio, edad, vacunado, castrado, etiquetas);
         Log.d("InfoDogPresenter", "DogAttached!");
     }
 
@@ -57,7 +55,7 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
         if (uploader.getUrlFotoPerfil() == null) {
             urlFoto = "";
         } else urlFoto = uploader.getUrlFotoPerfil();
-        mView.setViewOfInformationUser(nombre, urlFoto);
+        mView.populateUserView(nombre, urlFoto);
     }
 
 

@@ -22,6 +22,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.interfaces.IUserRepository;
+import com.pity.appperros1.ui.inicio.IInicioView;
+import com.pity.appperros1.ui.inicio.InicioActivity;
 import com.pity.appperros1.utils.UserUtils;
 
 import java.util.ArrayList;
@@ -54,10 +56,39 @@ public class UserRepository implements IUserRepository {
         return userRepository;
     }
 
-
     @Override
     public Usuario getLoggedUser() {
         return CURRENT_USER;
+    }
+
+    @Override
+    public void getServerToken(Context context, IInicioView view) {
+        DatabaseReference ref = mDatabase.getReference();
+
+        ref.child(UserUtils.USER_DB_REF).child(CURRENT_USER.getUid()).child(UserUtils.TOKEN_KEY)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        SharedPreferences sharedPreferences = context.getSharedPreferences("prefernces", MODE_PRIVATE);
+
+                        String serverToken = (String) dataSnapshot.getValue();
+                        String lastToken = sharedPreferences.getString("token", "");
+
+                        Log.e(TAG, "\n ServerToken: " + serverToken + "\n DeviceToken: " + lastToken);
+
+                        if (serverToken != null && !serverToken.equals(lastToken)){
+                            ref.removeEventListener(this);
+                            if (lastToken.isEmpty()) return;
+                            logoutUser(context);
+                            view.navigateToLogin();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     @Override
@@ -135,7 +166,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void sendMailVerication(FirebaseUser currentUser, final CallbackRepositorySendMail callback) {
+    public void sendMailVerification(FirebaseUser currentUser, final CallbackRepositorySendMail callback) {
         currentUser.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
