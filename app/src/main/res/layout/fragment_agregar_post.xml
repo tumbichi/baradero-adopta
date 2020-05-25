@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/custom_fragment"
+    tools:context=".ui.fragment_agregar_perro.implementation.AgregarPerroFragment">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_gravity="center">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:text="Agregar perro"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"/>
+
+                <ImageView
+                    android:id="@+id/button_image_view_esconder_fragment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+
+                    android:layout_gravity="end"
+                    android:src="@drawable/icon_close_black_24dp"/>
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp">
+
+                <ImageView
+                    android:id="@+id/image_view_nuevo_perro"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@mipmap/ic_launcher" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginEnd="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <ImageButton
+                        android:id="@+id/button_abrir_galeria"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:translationZ="4dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="3dp"
+                        android:background="@drawable/custom_button_galeria"
+                        android:src="@drawable/icon_gallery_white" />
+
+                    <ImageButton
+                        android:id="@+id/button_abrir_camara"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:translationZ="4dp"
+
+                        android:layout_marginStart="3dp"
+                        android:background="@drawable/custom_button_purple"
+                        android:src="@drawable/icon_camera_black"
+
+                        />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/edit_text_nombre_nuevo_perro"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:lines="1"
+                    android:hint="Nombre del Perro" />
+
+                <EditText
+                    android:id="@+id/edit_text_descripcion_nuevo_perro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:minHeight="48dp"
+                    android:hint="¿Informacion extra que desee dar del perro?"
+
+                    android:textAlignment="textStart" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinner_seleccionar_estado"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp" />
+
+                <Spinner
+                    android:id="@+id/spinner_seleccionar_genero"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp" />
+
+                <Spinner
+                    android:id="@+id/spinner_seleccionar_edad"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp" />
+
+                <Spinner
+                    android:id="@+id/spinner_seleccionar_tamanio"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+
+                    android:layout_marginTop="8dp" />
+
+
+                <Spinner
+                    android:id="@+id/spinner_seleccionar_vacunacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp" />
+
+                <Spinner
+                    android:id="@+id/spinner_seleccionar_castracion"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center">
+
+                <ProgressBar
+                    android:id="@+id/fragment_progress_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+
+
+                <Button
+                    android:id="@+id/button_agregar_nuevo_perro"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|end"
+                    android:layout_weight="1"
+                    android:background="@color/accent"
+                    android:text="Agregar"
+                    android:textColor="@color/icons" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

@@ -127,6 +127,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                Log.d("LoginPresenter", "onSuccesLoginFacebook");
                 mIntereactor.handleFacebookAccessToken(loginResult.getAccessToken(), new ILoginInteractor.LoginFacebookCallback() {
                     @Override
                     public void onSuccessFacebook(FirebaseUser currentUser, String token) {

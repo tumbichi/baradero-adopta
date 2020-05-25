@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.informacion_perro.InformacionPerroView">
+    tools:context=".ui.informacion_perro.InformacionPerroView"
+    android:background="@color/divider">
 
     <include
         android:id="@+id/toolbar"

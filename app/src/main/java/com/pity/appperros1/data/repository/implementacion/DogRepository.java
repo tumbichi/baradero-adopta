@@ -109,6 +109,7 @@ public class DogRepository implements IDogRepository {
         nuevoPerro.put("esterilizado", perro.getEsterilizado());
         nuevoPerro.put("vacunado", perro.getVacunado());
 
+        nuevoPerro.put(DogUtils.IS_AVAILABLE_KEY, true);
         nuevoPerro.put("timestamp", perro.getTimestamp());
         nuevoPerro.put("uid", perro.getUid());
 

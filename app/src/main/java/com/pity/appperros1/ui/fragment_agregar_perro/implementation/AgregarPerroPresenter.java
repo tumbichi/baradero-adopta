@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -104,8 +105,6 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
         return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
-
-
     private void openGallery() {
         Intent intentGaleria = new Intent(Intent.ACTION_PICK);
         intentGaleria.setType("image/*");
@@ -113,10 +112,9 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
 
     }
 
-  
     @Override
-    public void checkCurrentFields(String nombre, String descripcion, String genero, String edad,
-                                   String tamanio, String castrado, String vacunado, int estado) {
+    public void saveDog(String nombre, String descripcion, String genero, String edad,
+                        String tamanio, String castrado, String vacunado, int estado) {
         mView.showProgressDialog();
 
         if (!validateFields(nombre, descripcion, genero, edad, tamanio, castrado, vacunado, mInteractor.getCurrentPathPhoto(), estado)){
@@ -284,7 +282,7 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
 
     @Override
     public void onSuccessUploadPhoto() {
-        mView.showToastError("Foto subida con éxito");
+        Log.i("AgregarPerro", "Foto subida con exito!");
     }
 
     @Override
@@ -294,7 +292,7 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
 
     @Override
     public void onSuccesUploadDog() {
-        mView.showToastError("Perro subido con exito!");
+        Log.i("AgregarPerro","Perro subido con exito!");
         mView.hideProgressDialog();
         mViewParent.hideAgregarPerroFragment();
         mViewParent.notifyDataChangeForListView();

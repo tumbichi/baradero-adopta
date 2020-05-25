@@ -12,8 +12,8 @@ public interface IAgregarPerroPresenter extends IBasePresenter<IAgregarPerroFrag
     void checkPermissionGallery();
 
 
-    void checkCurrentFields(String nombre, String descripcion, String genero, String edad,
-                            String tamanio, String castrado, String vacunado, int estado);
+    void saveDog(String nombre, String descripcion, String genero, String edad,
+                 String tamanio, String castrado, String vacunado, int estado);
 
     interface CallbackInteractor{
         void onSuccessUploadPhoto();

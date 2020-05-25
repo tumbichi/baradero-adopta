@@ -27,7 +27,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.inicio.InicioActivity">
+        <activity android:name=".ui.inicio.InicioActivity"
+            android:launchMode = "singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.INICIOACTIVITY"/>
                 <category android:name="android.intent.category.DEFAULT"/>

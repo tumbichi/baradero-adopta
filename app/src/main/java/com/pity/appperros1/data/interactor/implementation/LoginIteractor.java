@@ -32,7 +32,6 @@ public class LoginIteractor implements ILoginInteractor {
         this.mRepository = UserRepository.getInstance();
     }
 
-
     @Override
     public void login(String email, String pass, final LoginCallback listener) {
         mAuth.signInWithEmailAndPassword(email, pass)
@@ -54,7 +53,6 @@ public class LoginIteractor implements ILoginInteractor {
                 });
 
     }
-
 
 
     @Override
@@ -110,14 +108,13 @@ public class LoginIteractor implements ILoginInteractor {
 
     @Override
     public void attachLoggedUser(String userID, String token, IUserRepository.CallbackAttachUser callbackAttachUser) {
-        UserRepository.getInstance()
-                .attachLoggedUser(userID, token, callbackAttachUser);
+        UserRepository.getInstance().attachLoggedUser(userID, token, callbackAttachUser);
     }
 
 
     @Override
     public boolean isUserLogged() {
-        return mRepository.currentFirebaseUser() != null;
+        return mRepository.currentFirebaseUser() != null && mRepository.getLoggedUser() != null;
     }
 
 }

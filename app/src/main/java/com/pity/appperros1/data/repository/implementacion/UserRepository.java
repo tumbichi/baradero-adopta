@@ -96,29 +96,24 @@ public class UserRepository implements IUserRepository {
         getUserById(currentUserID, new CallbackQueryUser() {
             @Override
             public void onSuccessUserQueryById(Usuario user) {
-                CURRENT_USER = user;
                 Log.i(TAG, "Token ID: " + token);
 
+                CURRENT_USER = user;
                 Map<String, Object> tokenMap = new HashMap<>();
                 tokenMap.put(UserUtils.TOKEN_KEY, token);
-                mDatabase.getReference()
-                        .child("Usuarios")
-                        .child(CURRENT_USER.getUid())
-                        .updateChildren(tokenMap);
-                updateUser(CURRENT_USER, new CallbackUserUpdate() {
-                    @Override
-                    public void onSuccessUpdateUser() {
-                        Log.i(TAG, "User Logged and attached \n" +
-                                "token : " + token);
-                        callbackAttachUser.onUserAttached(user);
-                    }
 
-                    @Override
-                    public void onFailedUpdateUser(Exception e) {
-                        Log.e(TAG, e.getMessage());
-                    }
-                });
-
+                mDatabase.getReference().child("Usuarios").child(CURRENT_USER.getUid())
+                    .updateChildren(tokenMap)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                callbackAttachUser.onUserAttached(user);
+                            }else{
+                                Log.e(TAG, task.getException() != null ? task.getException().getMessage() : "No se enlazo el usuario");
+                            }
+                        }
+                    });
             }
 
             @Override

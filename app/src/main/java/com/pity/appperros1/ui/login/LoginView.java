@@ -38,7 +38,9 @@ public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginVi
 
     @Override
     public LoginPresenter createBasePresenter(Context context) {
-        return new LoginPresenter(this, new LoginIteractor());
+        LoginPresenter loginPresenter = new LoginPresenter(this, new LoginIteractor());
+        loginPresenter.attachView(this);
+        return loginPresenter;
     }
 
     @Override
@@ -69,9 +71,8 @@ public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginVi
     @OnClick(R.id.login_button_registrate_facebook)
     public void onClickFacebook(View view){
         disableFacebookButton();
-        showProgressBar();
         mPresenter.onRequestContinueWithFacebook(this);
-
+        //showProgressBar();
     }
 
     @OnClick(R.id.text_view_login_olvidaste_password)

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -62,13 +63,11 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
     ImageView imageViewPerro;
 
     @BindView(R.id.button_abrir_camara)
-    Button buttonCamara;
+    ImageButton buttonCamara;
     @BindView(R.id.button_abrir_galeria)
-    Button buttonGaleria;
+    ImageButton buttonGaleria;
     @BindView(R.id.button_agregar_nuevo_perro)
     Button buttonAgregar;
-    @BindView(R.id.button_cancelar_nuevo_perro)
-    Button buttonCancelar;
 
     @BindView(R.id.fragment_progress_dialog)
     ProgressBar progressBar;
@@ -102,7 +101,7 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_agregar_perro, container, false);
+        View view = inflater.inflate(R.layout.fragment_agregar_post, container, false);
         ButterKnife.bind(this, view);
         mPresenter.attachView(this);
         bindAdapterSpinner();
@@ -158,7 +157,7 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
         //spinnerGenero.getSelectedItem();
 
         if (clicked == buttonAgregar){
-            mPresenter.checkCurrentFields(
+            mPresenter.saveDog(
                     editTextNombrePerro.getText().toString().trim(),
                     editTextDescripcionPerro.getText().toString().trim(),
                     adapterItemGenero.getItem(spinnerGenero.getSelectedItemPosition()).getValor(),
@@ -170,22 +169,14 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
             );
         }
     }
-    @OnClick(R.id.button_cancelar_nuevo_perro)
-    public void onClickCancelar(Button clicked)  {
-        // cancelar
-        if (clicked == buttonCancelar) {
-            mActivityView.hideAgregarPerroFragment();
-            mPresenter.onHideFragment();
-        }
-    }
 
     @OnClick(R.id.button_abrir_camara)
-    public void onClickCamara(Button clicked){
+    public void onClickCamara(ImageButton clicked){
         if (clicked == buttonCamara) mPresenter.checkPermissionCamera();
     }
 
     @OnClick(R.id.button_abrir_galeria)
-    public void onClickGaleria(Button clicked){
+    public void onClickGaleria(ImageButton clicked){
         if (clicked == buttonGaleria) mPresenter.checkPermissionGallery();
     }
 
@@ -196,7 +187,6 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
             mPresenter.onHideFragment();
         }
     }
-
 
     @Override
     public void showProgressDialog() {
