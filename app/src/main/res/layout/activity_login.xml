@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.login.LoginView"
-    android:background="@color/divider"
-    android:padding="4dp">
+    android:background="@color/divider">
 
 
 
@@ -50,6 +49,7 @@
                 android:drawableStart="@drawable/custom_start_edit_text_usuario"
                 android:hint="Usuario o Email"
                 android:textColorHint="@color/background"
+                android:textColor="@color/primary_text"
                 android:inputType="textEmailAddress"/>
 
             <EditText
@@ -65,7 +65,9 @@
                 android:drawableStart="@drawable/custom_start_edit_text_password"
                 android:hint="Contraseña"
                 android:textColorHint="@color/background"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:textColor="@color/primary_text"
+                />
 
             <TextView
                 android:id="@+id/text_view_login_olvidaste_password"
@@ -176,11 +178,11 @@
 
                     android:background="@drawable/custom_buttom_facebook"
                     android:drawableStart="@drawable/custom_start_button_facebook"
-                    android:drawablePadding="64dp"
                     android:gravity="center|start"
 
                     android:text="Inicia con Facebook"
-
+                    android:textAlignment="center"
+                    android:paddingEnd="32dp"
                     android:textColor="@color/icons"
                     android:textStyle="bold" />
             </FrameLayout>

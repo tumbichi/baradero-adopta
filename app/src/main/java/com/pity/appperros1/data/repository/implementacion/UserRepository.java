@@ -57,8 +57,19 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
+    public void setLoggedUser(Usuario user) {
+        CURRENT_USER = user;
+    }
+
+    @Override
     public Usuario getLoggedUser() {
         return CURRENT_USER;
+    }
+
+
+    @Override
+    public void getLoggedUser(CallbackQueryUser callbackQueryUser) {
+        this.getUserById(CURRENT_USER.getUid(), callbackQueryUser);
     }
 
     @Override
@@ -97,7 +108,6 @@ public class UserRepository implements IUserRepository {
             @Override
             public void onSuccessUserQueryById(Usuario user) {
                 Log.i(TAG, "Token ID: " + token);
-
                 CURRENT_USER = user;
                 Map<String, Object> tokenMap = new HashMap<>();
                 tokenMap.put(UserUtils.TOKEN_KEY, token);

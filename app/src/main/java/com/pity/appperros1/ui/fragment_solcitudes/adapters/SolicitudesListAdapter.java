@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.pity.appperros1.R;
 import com.pity.appperros1.data.modelos.Solicitud;
+import com.pity.appperros1.utils.AdopcionUtils;
+import com.pity.appperros1.utils.DogUtils;
 
 import java.util.ArrayList;
 
@@ -72,7 +74,19 @@ public class SolicitudesListAdapter extends BaseAdapter {
 
         }
         Solicitud currentSolicitud = solicitudesList.get(position);
-        String title = "El usuario " + currentSolicitud.getAdopterDispayName() + "¡Quiere adoptar a " + currentSolicitud.getDogName() + "!";
+
+        String title;
+
+        if (currentSolicitud.getType() == DogUtils.ETIQUETA_ADOPCION_ID){
+             title = "El usuario " + currentSolicitud.getAdopterDispayName() + " ¡Quiere adoptar a " + currentSolicitud.getDogName() + "!";
+        }else{
+             title = "El usuario " + currentSolicitud.getAdopterDispayName() + " ¡Encontro a " + currentSolicitud.getDogName() + "!";
+             holder.aceptarBtn.setText("Entregado");
+        }
+
+
+
+
         holder.titleTextView.setText(title);
 
         Glide.with(context)

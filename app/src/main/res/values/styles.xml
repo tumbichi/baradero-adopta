@@ -1,11 +1,17 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/accent</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/primary</item>
+    </style>
+    <style name="EditTextStyle" parent="Base.Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textColorHighlight">@color/primary_text</item>
+        <item name="android:textColorLink">@color/primary_text</item>
+
     </style>
 
 </resources>

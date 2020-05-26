@@ -60,7 +60,8 @@
                     android:id="@+id/edit_text_nombre_nuevo_perro"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:hint="Nombre del Perro" />
+                    android:hint="Nombre del Perro"
+                    style="@style/EditTextStyle"/>
 
                 <EditText
                     android:id="@+id/edit_text_descripcion_nuevo_perro"
@@ -68,7 +69,7 @@
                     android:layout_height="128dp"
                     android:layout_marginTop="8dp"
                     android:hint="¿Informacion extra que desee dar del perro?"
-
+                    android:textColor="@color/primary_text"
                     android:textAlignment="textStart" />
             </LinearLayout>
 

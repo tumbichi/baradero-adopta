@@ -39,13 +39,13 @@ public class DogRepository implements IDogRepository {
 
 
     private static DogRepository mRepository;
-    private FirebaseDatabase mDatabase;
-    private StorageReference mStorage;
+    private FirebaseDatabase database;
+    private StorageReference storageReference;
 
     private final static String TAG = "DogRepository";
     private DogRepository() {
-        mDatabase = FirebaseDatabase.getInstance();
-        mStorage = FirebaseStorage.getInstance("gs://fir-appautentificacion.appspot.com").getReference();
+        database = FirebaseDatabase.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
     }
 
     public static DogRepository getInstance() {
@@ -58,7 +58,7 @@ public class DogRepository implements IDogRepository {
     @Override
     public void uploadPhoto(Uri path, CallbackUploadPhoto callback) {
 
-        StorageReference mRefImage = mStorage.child("images/").child("foto_perro/" + path.getLastPathSegment());
+        StorageReference mRefImage = storageReference.child("images/").child("foto_perro/" + path.getLastPathSegment());
 
 
         mRefImage.putFile(path).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -90,7 +90,7 @@ public class DogRepository implements IDogRepository {
 
         perro.setUid(currentUser.getUid());
 
-        DatabaseReference mRef = mDatabase.getReference().child("Perros").push();
+        DatabaseReference mRef = database.getReference().child("Perros").push();
         String didPerro = mRef.getKey();
         perro.setDid(didPerro);
 
@@ -119,7 +119,7 @@ public class DogRepository implements IDogRepository {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    DatabaseReference mRef = mDatabase.getReference().child("Usuarios").child(currentUser.getUid());
+                    DatabaseReference mRef = database.getReference().child("Usuarios").child(currentUser.getUid());
 
                     ArrayList<String> publicados = new ArrayList<>();
                     if (currentUser.getPerrosPublicados() == null || currentUser.getPerrosPublicados().size() == 0){
@@ -157,7 +157,7 @@ public class DogRepository implements IDogRepository {
 
     @Override
     public void getDogListP(CallbackDogList callbackDogList) {
-        DatabaseReference mRef = mDatabase.getReference().child("Perros");
+        DatabaseReference mRef = database.getReference().child("Perros");
         ArrayList<Perro> mDogList = new ArrayList<>();
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -185,7 +185,7 @@ public class DogRepository implements IDogRepository {
 
     @Override
     public void getDogList(CallbackDogList callbackDogList) {
-        DatabaseReference mRef = mDatabase.getReference().child("Perros");
+        DatabaseReference mRef = database.getReference().child("Perros");
         ArrayList<Perro> perdidos = new ArrayList<>();
         //Query qe = mRef.child("etiquetas").orderByChild("2").equalTo(true);
         //Query qe = mRef.orderByChild("etiquetas/1").equalTo(true);
@@ -213,7 +213,7 @@ public class DogRepository implements IDogRepository {
 
     @Override
     public void queryDogBy(String Id, CallbackQueryDog callbackQueryDog) {
-        DatabaseReference mReference = mDatabase.getReference().child("Perros");
+        DatabaseReference mReference = database.getReference().child("Perros");
         final Perro[] currentDog = {null};
         // Query query = mReference.orderByChild("id").equalTo(Id).limitToFirst(1);
         // Query qe = mReference.child("etiquetas").orderByChild("1").equalTo(true);
@@ -237,7 +237,7 @@ public class DogRepository implements IDogRepository {
 
     @Override
     public void updateDog(Perro perro, CallbackUploadDog callbackUpdateDog) {
-        DatabaseReference mRef = mDatabase.getReference().child(DogUtils.DOG_DB_REFERENCE);
+        DatabaseReference mRef = database.getReference().child(DogUtils.DOG_DB_REFERENCE);
         mRef.child(perro.getDid())
                 .updateChildren(DogUtils.dogToMap(perro)).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -251,7 +251,7 @@ public class DogRepository implements IDogRepository {
 
     public Perro queryDogBy(String id){
         final TaskCompletionSource<List<Perro>> tcs = new TaskCompletionSource<>();
-        DatabaseReference mReference = mDatabase.getReference().child("Perros");
+        DatabaseReference mReference = database.getReference().child("Perros");
         final List<Perro> currentDog = new ArrayList<>();
         // Query query = mReference.orderByChild("id").equalTo(Id).limitToFirst(1);
         // Query qe = mReference.child("etiquetas").orderByChild("1").equalTo(true);

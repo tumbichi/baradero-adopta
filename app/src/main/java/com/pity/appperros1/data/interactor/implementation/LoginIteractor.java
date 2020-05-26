@@ -114,7 +114,7 @@ public class LoginIteractor implements ILoginInteractor {
 
     @Override
     public boolean isUserLogged() {
-        return mRepository.currentFirebaseUser() != null && mRepository.getLoggedUser() != null;
+        return mRepository.currentFirebaseUser() != null;
     }
 
 }

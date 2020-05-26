@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:indeterminateTint="@color/primary"
+        android:textColor="@color/primary_text"
         android:visibility="gone"/>
 
     <View
@@ -43,6 +43,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:padding="2dp"
+            android:textColor="@color/primary_text"
             android:background="@drawable/custom_edit_text_background_grey"
             android:hint="Email">
 
@@ -53,6 +54,7 @@
                 android:inputType="none"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
+                android:textColor="@color/primary_text"
                 android:editable="false" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -105,7 +107,8 @@
                     android:inputType="phone"
                     android:maxEms="10"
                     android:maxLength="10"
-                    android:layout_marginEnd="4dp"/>
+                    android:layout_marginEnd="4dp"
+                    android:textColor="@color/primary_text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>

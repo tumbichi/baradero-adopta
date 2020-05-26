@@ -31,13 +31,56 @@ public class ProfilePresener extends BasePresenter<IProfileView> implements IPro
 
     @Override
     public void initView() {
-        Usuario logedUser = UserRepository.getInstance().getLoggedUser();
+        new AsyncTask<Void, Void, Usuario>(){
+            CountDownLatch asyncSignal;
 
-        String cantAdoptados = Integer.toString(logedUser.getPerrosAdoptados().size());
-        String cantPublicados = Integer.toString(logedUser.getPerrosPublicados().size());
-        String cantEncontrados = Integer.toString(logedUser.getPerrosEncontrados().size());
+            @Override
+            protected void onPreExecute() {
+                asyncSignal = new CountDownLatch(1);
+            }
 
-        mView.populateView(logedUser.getDisplayName(), cantAdoptados, cantPublicados, cantEncontrados, logedUser.getUrlFotoPerfil());
+            @Override
+            protected Usuario doInBackground(Void... voids) {
+                final Usuario[] logedUser = new Usuario[1];
+
+                UserRepository.getInstance().getLoggedUser(new IUserRepository.CallbackQueryUser() {
+                    @Override
+                    public void onSuccessUserQueryById(Usuario user) {
+                        UserRepository.getInstance().setLoggedUser(user);
+                        logedUser[0] = user;
+                        asyncSignal.countDown();
+                    }
+
+                    @Override
+                    public void onFailureUserQueryById(String msgError) {
+
+                    }
+                });
+
+                try {
+                    asyncSignal.await(30000, TimeUnit.MILLISECONDS);
+                    asyncSignal = null;
+                } catch (InterruptedException e) {
+                    Log.e(ProfilePresener.class.getName(), e.getStackTrace().toString() + " \n Time out exeption?");
+                }
+
+
+                return logedUser[0];
+            }
+
+            @Override
+            protected void onPostExecute(Usuario logedUser) {
+                String cantAdoptados = Integer.toString(logedUser.getPerrosAdoptados().size());
+                String cantPublicados = Integer.toString(logedUser.getPerrosPublicados().size());
+                String cantEncontrados = Integer.toString(logedUser.getPerrosEncontrados().size());
+
+                mView.populateView(logedUser.getDisplayName(), cantAdoptados, cantPublicados, cantEncontrados, logedUser.getUrlFotoPerfil());
+            }
+        }.execute();
+
+
+
+
 
         new AsyncTask<Void, Void, HashMap<String, ArrayList<Solicitud>>>() {
             private CountDownLatch asyncSignal;

@@ -32,8 +32,9 @@ public interface IUserRepository {
         void onUserAttached(Usuario user);
     }
 
-
+    void setLoggedUser(Usuario user);
     Usuario getLoggedUser();
+    void getLoggedUser(CallbackQueryUser callbackQueryUser);
     void getServerToken(Context context, IInicioView view);
     void attachLoggedUser(String currentUserID, String token, CallbackAttachUser callbackAttachUser);
     void persistNewUserOnDatabase(Usuario newUser, CallbackUserUpdate callback);
