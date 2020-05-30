@@ -14,3 +14,4 @@
 .externalNativeBuild
 /app/build
 /app/google-services.json
+/app/debug
