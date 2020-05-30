@@ -189,8 +189,10 @@ public class UserRepository implements IUserRepository {
     @Override
     public FirebaseUser currentFirebaseUser() throws NullPointerException {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            Log.i(TAG, "User: " + mAuth.getCurrentUser().getUid() + " is logged");
             return mAuth.getCurrentUser();
         } else {
+            Log.e(TAG, "No hay usuarios logeados");
             return null;
         }
     }

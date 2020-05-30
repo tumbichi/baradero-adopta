@@ -67,7 +67,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
             });
         }
         mCallbackManager = CallbackManager.Factory.create();
-
     }
 
     @Override
@@ -106,9 +105,10 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
 
             @Override
             public void onFailed(String error) {
+                Log.e("LoginPresenter", error);
                 if (isViewAttached()){
                     mView.hideProgressBar();
-                    //mView.showMessage(error);
+                    mView.showMessage(error);
                 }
             }
         });
