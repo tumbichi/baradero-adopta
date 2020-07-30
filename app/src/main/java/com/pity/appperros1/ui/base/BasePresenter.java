@@ -1,4 +1,4 @@
-package com.pity.appperros1.base;
+package com.pity.appperros1.ui.base;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 public abstract class BasePresenter<TView extends IBaseView> implements IBasePresenter<TView> {
 
     protected Context mContext;
-    protected TView mView;
+    protected TView view;
 
 
     public BasePresenter(Context context){
@@ -27,17 +27,17 @@ public abstract class BasePresenter<TView extends IBaseView> implements IBasePre
     // enlazar una vista al presenter
     @Override
     public void attachView(TView view) {
-        mView = view;
+        this.view = view;
     }
     // desenlazar la vista
     @Override
     public void dettachView() {
-        mView = null;
+        view = null;
     }
     // preguntar si la vista esta enlazada
     @Override
     public boolean isViewAttached() {
-        return mView != null;
+        return view != null;
     }
 
     @Override

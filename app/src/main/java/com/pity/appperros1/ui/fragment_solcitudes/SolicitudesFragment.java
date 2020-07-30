@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.pity.appperros1.R;
-import com.pity.appperros1.base.BaseFragment;
+import com.pity.appperros1.ui.base.BaseFragment;
 import com.pity.appperros1.ui.fragment_solcitudes.adapters.SolicitudesPagerAdapter;
 
 import butterknife.BindView;

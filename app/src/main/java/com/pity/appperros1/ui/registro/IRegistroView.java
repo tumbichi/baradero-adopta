@@ -1,6 +1,6 @@
 package com.pity.appperros1.ui.registro;
 
-import com.pity.appperros1.base.IBaseView;
+import com.pity.appperros1.ui.base.IBaseView;
 
 public interface IRegistroView extends IBaseView {
 

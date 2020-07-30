@@ -1,7 +1,5 @@
 package com.pity.appperros1.data.interactor.implementation;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.facebook.AccessToken;
@@ -16,6 +14,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.pity.appperros1.data.interactor.interfaces.ILoginInteractor;
 import com.pity.appperros1.data.modelos.Usuario;
+import com.pity.appperros1.data.repository.DataCallback;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.data.repository.interfaces.IUserRepository;
 
@@ -38,20 +37,25 @@ public class LoginIteractor implements ILoginInteractor {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                    listener.onSuccess(task.getResult().getToken());
-                                }
-                            });
-                        }else{
+                        if (!task.isSuccessful()) {
                             listener.onFailed(task.getException().getMessage());
+                            return;
                         }
 
+                        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                listener.onSuccess(task.getResult().getToken());
+                            }
+                        });
                     }
                 });
 
+    }
+
+    @Override
+    public void logoutUser() {
+        UserRepository.getInstance().logout();
     }
 
 
@@ -62,59 +66,64 @@ public class LoginIteractor implements ILoginInteractor {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                    if (task.isSuccessful()){
-                                        listener.onSuccessFacebook(mAuth.getCurrentUser(), task.getResult().getToken());
-                                    }
-                                }
-                            });
-
-
-                        } else {
-                            // If sign in fails, display a message to the user.
+                        if (!task.isSuccessful()) {
                             listener.onFailedFacebook("Error en la autentificacion");
+                            return;
                         }
-
-                        // ...
+                        // Sign in success, update UI with the signed-in user's information
+                        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                if (task.isSuccessful()){
+                                    listener.onSuccessFacebook(mAuth.getCurrentUser(), task.getResult().getToken());
+                                }
+                            }
+                        });
                     }
                 });
     }
 
     @Override
-    public void checkIfIsRegistedOnDatabase(FirebaseUser currentUser, IUserRepository.CallbackUserUpdate callbackUserUpdate) {
-        mRepository.isUserRegisteredOnDatabase(currentUser, new IUserRepository.CallbackIsUserRegistered() {
+    public void handleDataOfLogin(FirebaseUser currentUser, IUserRepository.CallbackUserUpdate callbackUserUpdate) {
+        mRepository.doesUserExists(currentUser, new DataCallback<FirebaseUser>() {
             @Override
-            public void onNotRegisteredUser(FirebaseUser mNoRegisteredUser) {
-                Usuario mUser;
-                if (mNoRegisteredUser.getPhotoUrl() != null) {
-                    mUser = new Usuario(mNoRegisteredUser.getUid(), mNoRegisteredUser.getEmail(),
-                            mNoRegisteredUser.getDisplayName(), mNoRegisteredUser.getPhoneNumber(), mNoRegisteredUser.getPhotoUrl());
-                }else mUser = new Usuario(mNoRegisteredUser.getUid(), mNoRegisteredUser.getEmail(),
-                        mNoRegisteredUser.getDisplayName(), mNoRegisteredUser.getPhoneNumber());
+            public void onSuccess(FirebaseUser notRegisteredUser) {
+                Usuario user = notRegisteredUser.getPhotoUrl() != null ?
+                        new Usuario(
+                            notRegisteredUser.getUid(),
+                            notRegisteredUser.getEmail(),
+                            notRegisteredUser.getDisplayName(),
+                            notRegisteredUser.getPhoneNumber(),
+                            notRegisteredUser.getPhotoUrl()
+                        )
+                        : new Usuario(
+                            notRegisteredUser.getUid(),
+                            notRegisteredUser.getEmail(),
+                            notRegisteredUser.getDisplayName(),
+                            notRegisteredUser.getPhoneNumber()
+                        );
 
-                mRepository.persistNewUserOnDatabase(mUser, callbackUserUpdate);
+                mRepository.saveUser(user, callbackUserUpdate);
             }
 
             @Override
-            public void onRegisteredUser() {
+            public void onFailure(String error) {
                 callbackUserUpdate.onSuccessUpdateUser();
             }
         });
+
     }
 
     @Override
-    public void attachLoggedUser(String userID, String token, IUserRepository.CallbackAttachUser callbackAttachUser) {
-        UserRepository.getInstance().attachLoggedUser(userID, token, callbackAttachUser);
+    public void attachLoggedUser(String token, DataCallback<Usuario> callbackAttachUser) {
+        UserRepository.getInstance().attachLoggedUser(token, callbackAttachUser);
     }
-
 
     @Override
     public boolean isUserLogged() {
         return mRepository.currentFirebaseUser() != null;
     }
+
+
 
 }

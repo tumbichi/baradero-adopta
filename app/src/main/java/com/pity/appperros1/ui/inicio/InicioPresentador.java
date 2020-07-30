@@ -1,17 +1,12 @@
 package com.pity.appperros1.ui.inicio;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.pity.appperros1.base.BasePresenter;
+import com.pity.appperros1.ui.base.BasePresenter;
 import com.pity.appperros1.data.interactor.implementation.InicioInteractor;
 import com.pity.appperros1.data.interactor.interfaces.IInicioInteractor;
-import com.pity.appperros1.data.modelos.Perro;
-import com.pity.appperros1.ui.inicio.adapters.InicioAdapter;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class InicioPresentador extends BasePresenter<IInicioView> implements IInicioPresentador {
 
@@ -33,8 +28,8 @@ public class InicioPresentador extends BasePresenter<IInicioView> implements IIn
 
     @Override
     public void logoutToFirebase() {
-        mInteractor.logout(mContext);
-        mView.navigateToLogin();
+        mInteractor.logoutUser();
+        view.navigateToLogin();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.pity.appperros1.base;
+package com.pity.appperros1.ui.base;
 
 import java.util.ArrayList;
 

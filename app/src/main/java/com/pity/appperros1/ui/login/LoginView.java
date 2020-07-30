@@ -1,5 +1,6 @@
 package com.pity.appperros1.ui.login;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,7 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.pity.appperros1.R;
-import com.pity.appperros1.base.BaseActivity;
+import com.pity.appperros1.data.prefs.PreferencesManager;
+import com.pity.appperros1.ui.base.BaseActivity;
 import com.pity.appperros1.data.interactor.implementation.LoginIteractor;
 import com.pity.appperros1.ui.inicio.InicioActivity;
 import com.pity.appperros1.ui.olvidaste_contrasenia.OlvidasteContraseniaView;
@@ -48,19 +50,22 @@ public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        PreferencesManager.initializeInstance(getApplicationContext());
         createProgressDialog();
     }
 
     private void createProgressDialog() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
-        progressDialog.setTitle("Iniciando sesion");
-        progressDialog.setMessage("Aguarde unos segundos...");
+        progressDialog.setTitle(getString(R.string.iniciando_sesion));
+        progressDialog.setMessage(getString(R.string.aguarde));
     }
 
     @OnClick(R.id.login_button_iniciar_sesion)
     public void onClickLogin(View view){
-        mPresenter.loginUserWith(editTextMail.getText().toString(), editTextContrasenia.getText().toString());
+        String email = editTextMail.getText().toString();
+        String pass = editTextContrasenia.getText().toString();
+        mPresenter.loginUserWith(email, pass);
     }
 
     @OnClick(R.id.login_button_registrate)
@@ -70,9 +75,7 @@ public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginVi
 
     @OnClick(R.id.login_button_registrate_facebook)
     public void onClickFacebook(View view){
-        disableFacebookButton();
-        showProgressBar();
-        mPresenter.onRequestContinueWithFacebook(this);
+        mPresenter.manageLoginWithFacebook();
     }
 
     @OnClick(R.id.text_view_login_olvidaste_password)
@@ -90,8 +93,13 @@ public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginVi
 
     @Override
     public void navigateToInicio() {
-        finish();
         startActivity(new Intent(LoginView.this, InicioActivity.class));
+        finish();
+    }
+
+    @Override
+    public Activity provideActivity() {
+        return LoginView.this;
     }
 
     @Override
@@ -117,7 +125,7 @@ public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginVi
     }
 
     @Override
-    public void showMessage(String message) {
+    public void toast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 

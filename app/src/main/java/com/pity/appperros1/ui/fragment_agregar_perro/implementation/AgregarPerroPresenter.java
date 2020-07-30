@@ -18,7 +18,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-import com.pity.appperros1.base.BasePresenter;
+import com.pity.appperros1.ui.base.BasePresenter;
 import com.pity.appperros1.data.interactor.implementation.InicioInteractor;
 import com.pity.appperros1.ui.fragment_agregar_perro.interfaces.IAgregarPerroFragment;
 import com.pity.appperros1.ui.fragment_agregar_perro.interfaces.IAgregarPerroPresenter;
@@ -60,7 +60,7 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
 
     @Override
     public void onHideFragment() {
-        mView.cleanFields();
+        view.cleanFields();
         mInteractor.deleteCurrentNewDog();
     }
 
@@ -88,7 +88,7 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
 
                 mInteractor.setCurrentPathPhoto(currentPathFoto);
                 intentFoto.putExtra(MediaStore.EXTRA_OUTPUT, currentPathFoto);
-                mView.navigateForResult(intentFoto, CODIGO_CAMARA);
+                view.navigateForResult(intentFoto, CODIGO_CAMARA);
 
             }
 
@@ -108,17 +108,17 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
     private void openGallery() {
         Intent intentGaleria = new Intent(Intent.ACTION_PICK);
         intentGaleria.setType("image/*");
-        mView.navigateForResult(Intent.createChooser(intentGaleria, "Seleccione galeria preferida"), CODIGO_GALERIA);
+        view.navigateForResult(Intent.createChooser(intentGaleria, "Seleccione galeria preferida"), CODIGO_GALERIA);
 
     }
 
     @Override
     public void saveDog(String nombre, String descripcion, String genero, String edad,
                         String tamanio, String castrado, String vacunado, int estado) {
-        mView.showProgressDialog();
+        view.showProgressDialog();
 
         if (!validateFields(nombre, descripcion, genero, edad, tamanio, castrado, vacunado, mInteractor.getCurrentPathPhoto(), estado)){
-            mView.hideProgressDialog();
+            view.hideProgressDialog();
             return;
         }
 
@@ -127,47 +127,47 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
 
     private boolean validateFields(String nombre, String descripcion, String genero, String edad, String tamanio, String castrado, String vacunado, Uri pathFotoPerro, int estado){
         if (TextUtils.isEmpty(nombre)){
-            mView.showToastError("Por favor, ingrese un email");
+            view.showToastError("Por favor, ingrese un email");
             return false;
         }
 
         if (TextUtils.isEmpty(descripcion)){
-            mView.showToastError("Debe ingresar una breve descripcion, de su situacion con el animal");
+            view.showToastError("Debe ingresar una breve descripcion, de su situacion con el animal");
             return false;
         }
 
         if (TextUtils.equals(genero, "Genero")){
-            mView.showToastError("Debe ingresar el genero del perro");
+            view.showToastError("Debe ingresar el genero del perro");
             return false;
         }
 
         if (TextUtils.equals(edad, "Edad")){
-            mView.showToastError("Debe ingresar la edad del perro");
+            view.showToastError("Debe ingresar la edad del perro");
             return false;
         }
 
         if (TextUtils.equals(tamanio, "Tamaño")){
-            mView.showToastError("Debe ingresar de que tamaño es el perro");
+            view.showToastError("Debe ingresar de que tamaño es el perro");
             return false;
         }
 
         if (TextUtils.equals(castrado, "Esterilizado")){
-            mView.showToastError("Debe ingresar, si el perro esta castrado, o no");
+            view.showToastError("Debe ingresar, si el perro esta castrado, o no");
             return false;
         }
 
         if (TextUtils.equals(vacunado, "Vacunado")){
-            mView.showToastError("Debe ingresar, si el perro esta vacunado, o no");
+            view.showToastError("Debe ingresar, si el perro esta vacunado, o no");
             return false;
         }
 
         if (pathFotoPerro == null){
-            mView.showToastError("Debe subir al menos una foto del perro");
+            view.showToastError("Debe subir al menos una foto del perro");
             return false;
         }
 
         if (estado == 0){
-            mView.showToastError
+            view.showToastError
                     ("El nuevo perro tiene que tener un estado, para darlo en adopcion o ser reportado como un perro perdido");
             return false;
         }
@@ -208,7 +208,7 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
                 if (checkPermission(Manifest.permission.CAMERA)){
                     openCamera();
                 }else{
-                    mView.showToastError("Se necesitan permisos de la camara para seguir");
+                    view.showToastError("Se necesitan permisos de la camara para seguir");
                 }
             }
         }
@@ -229,7 +229,7 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
             if (checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
                 openGallery();
             }else{
-                mView.showToastError("Se necesitan permisos de la storage para seguir");
+                view.showToastError("Se necesitan permisos de la storage para seguir");
             }
         }
     }
@@ -246,7 +246,7 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
                 Bitmap fotoBitmap = null;
                 try {
                     fotoBitmap = MediaStore.Images.Media.getBitmap(mActivity.getContentResolver(), mInteractor.getCurrentPathPhoto());
-                    mView.setImageViewFotoPerroTo(fotoBitmap);
+                    view.setImageViewFotoPerroTo(fotoBitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -262,7 +262,7 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
                 if (data != null) {
                     currentPathFoto = data.getData();
                     mInteractor.setCurrentPathPhoto(currentPathFoto);
-                    mView.setImageViewFotoPerroTo(currentPathFoto);
+                    view.setImageViewFotoPerroTo(currentPathFoto);
                 }
             }
         }
@@ -275,7 +275,7 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openCamera();
             } else {
-                mView.showToastError("Se necesitan permisos de la camara para seguir");
+                view.showToastError("Se necesitan permisos de la camara para seguir");
             }
         }
     }
@@ -287,20 +287,20 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
 
     @Override
     public void onFailureUploadPhoto(String msg) {
-        mView.showToastError(msg);
+        view.showToastError(msg);
     }
 
     @Override
     public void onSuccesUploadDog() {
         Log.i("AgregarPerro","Perro subido con exito!");
-        mView.hideProgressDialog();
+        view.hideProgressDialog();
         mViewParent.hideAgregarPerroFragment();
         mViewParent.notifyDataChangeForListView();
     }
 
     @Override
     public void onFailureUploadDog(String msg) {
-        mView.showToastError(msg);
-        mView.hideProgressDialog();
+        view.showToastError(msg);
+        view.hideProgressDialog();
     }
 }

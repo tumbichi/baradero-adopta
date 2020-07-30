@@ -1,6 +1,6 @@
 package com.pity.appperros1.ui.inicio.fragments;
 
-import com.pity.appperros1.base.IBaseView;
+import com.pity.appperros1.ui.base.IBaseView;
 import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.ui.inicio.adapters.InicioAdapter;
 

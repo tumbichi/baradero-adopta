@@ -20,8 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.pity.appperros1.R;
-import com.pity.appperros1.base.BaseFragment;
-import com.pity.appperros1.base.BaseItem;
+import com.pity.appperros1.ui.base.BaseFragment;
+import com.pity.appperros1.ui.base.BaseItem;
 import com.pity.appperros1.ui.fragment_agregar_perro.adapters.AdapterItemSpinner;
 import com.pity.appperros1.ui.fragment_agregar_perro.adapters.models_item_spinners.EdadItem;
 import com.pity.appperros1.ui.fragment_agregar_perro.adapters.models_item_spinners.EstadoItem;

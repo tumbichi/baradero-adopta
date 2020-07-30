@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
-import com.pity.appperros1.base.BasePresenter;
+import com.pity.appperros1.ui.base.BasePresenter;
 import com.pity.appperros1.data.interactor.implementation.AdopcionInteractor;
 import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.interfaces.IAdopcionRepository;
@@ -35,7 +35,7 @@ public class AdopcionPresenter extends BasePresenter<IAdopcionView> implements I
                 if (mInteractor.getCurrentAdopcion().getUPLOADER() != null && mInteractor.getCurrentAdopcion().getDOG() != null && mInteractor.getCurrentAdopcion().getADOPTER() != null) {
                     Log.i(TAG, "Attach 'Adoption' success");
                     updateView(mInteractor.getCurrentAdopcion().getADOPTER());
-                    mView.hideProgressBar();
+                    view.hideProgressBar();
                 }
             }
 
@@ -55,7 +55,7 @@ public class AdopcionPresenter extends BasePresenter<IAdopcionView> implements I
         }
         if (!UserUtils.isPhoneNumberValid(phone)) {
             Log.e(TAG, "Invalid phone " + phone);
-            mView.toast("Debe ingresar un numero valido. Recuerde que solo se permiten números argentinos");
+            this.view.toast("Debe ingresar un numero valido. Recuerde que solo se permiten números argentinos");
             return;
         }
 
@@ -64,17 +64,17 @@ public class AdopcionPresenter extends BasePresenter<IAdopcionView> implements I
 
             @Override
             protected void onPreExecute() {
-                mView.showProgressBar();
+                AdopcionPresenter.this.view.showProgressBar();
                 asyncSignal = new CountDownLatch(2);
             }
 
             @Override
             protected void onPostExecute(Boolean result) {
                 if (isViewAttached()) {
-                    mView.hideProgressBar();
+                    AdopcionPresenter.this.view.hideProgressBar();
                     if (result) {
-                        mView.toast("Succeful adoption");
-                        mView.killActivity();
+                        AdopcionPresenter.this.view.toast("Succeful adoption");
+                        AdopcionPresenter.this.view.killActivity();
                     }
                 }
             }
@@ -141,9 +141,9 @@ public class AdopcionPresenter extends BasePresenter<IAdopcionView> implements I
 
     private void updateView(Usuario adopter){
         if (adopter.getTelefono() == null) {
-            mView.populateUI(adopter.getEmail(), "");
+            view.populateUI(adopter.getEmail(), "");
         }else if (adopter.getEmail() != null && adopter.getTelefono() != null){
-            mView.populateUI(adopter.getEmail(), adopter.getTelefono().substring(3));
+            view.populateUI(adopter.getEmail(), adopter.getTelefono().substring(3));
         }
     }
 

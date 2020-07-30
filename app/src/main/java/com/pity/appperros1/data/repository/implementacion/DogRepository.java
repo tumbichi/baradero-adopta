@@ -124,11 +124,11 @@ public class DogRepository implements IDogRepository {
                     ArrayList<String> publicados = new ArrayList<>();
                     if (currentUser.getPerrosPublicados() == null || currentUser.getPerrosPublicados().size() == 0){
                         publicados.add((String) nuevoPerro.get("did"));
-                        UserRepository.getInstance().getLoggedUser().setPerrosPublicados(publicados);
+                        UserRepository.getInstance().getCurrentUser().setPerrosPublicados(publicados);
                     }else{
                         publicados = currentUser.getPerrosPublicados();
                         publicados.add((String) nuevoPerro.get("did"));
-                        UserRepository.getInstance().getLoggedUser().setPerrosPublicados(publicados);
+                        UserRepository.getInstance().getCurrentUser().setPerrosPublicados(publicados);
                     }
 
                     HashMap<String, Object> uploadedDogs = new HashMap<>();
@@ -230,7 +230,7 @@ public class DogRepository implements IDogRepository {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                callbackQueryDog.onFailureQueryDog(databaseError.getMessage());
+                callbackQueryDog.onFailureQueryDog(databaseError.getMessage() + "dogId: " + Id);
             }
         });
     }

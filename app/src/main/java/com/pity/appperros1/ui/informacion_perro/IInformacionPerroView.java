@@ -1,6 +1,6 @@
 package com.pity.appperros1.ui.informacion_perro;
 
-import com.pity.appperros1.base.IBaseView;
+import com.pity.appperros1.ui.base.IBaseView;
 
 import java.util.ArrayList;
 

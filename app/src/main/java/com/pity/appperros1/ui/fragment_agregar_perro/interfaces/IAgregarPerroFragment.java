@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
-import com.pity.appperros1.base.IBaseView;
+import com.pity.appperros1.ui.base.IBaseView;
 
 public interface IAgregarPerroFragment extends IBaseView {
 

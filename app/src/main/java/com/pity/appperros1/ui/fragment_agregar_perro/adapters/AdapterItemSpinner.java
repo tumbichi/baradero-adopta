@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.pity.appperros1.R;
-import com.pity.appperros1.base.BaseItem;
+import com.pity.appperros1.ui.base.BaseItem;
 
 import java.util.ArrayList;
 

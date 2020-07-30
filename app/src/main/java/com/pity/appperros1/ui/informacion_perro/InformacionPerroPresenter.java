@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.pity.appperros1.base.BasePresenter;
+import com.pity.appperros1.ui.base.BasePresenter;
 import com.pity.appperros1.data.modelos.Perro;
 import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.repository.implementacion.DogRepository;
@@ -42,10 +42,10 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
         ArrayList<Boolean> etiquetas = (ArrayList<Boolean>) perroModel.getEtiquetas();
 
 
-        if (TextUtils.equals(mCurrentDog.getUid(), mUserRepository.getLoggedUser().getUid())){
-            mView.hideContactButton();
+        if (TextUtils.equals(mCurrentDog.getUid(), mUserRepository.getCurrentUser().getUid())){
+            view.hideContactButton();
         }
-        mView.populateDogView(nombre, descripcion, imageUrl, genero, tamanio, edad, vacunado, castrado, etiquetas);
+        view.populateDogView(nombre, descripcion, imageUrl, genero, tamanio, edad, vacunado, castrado, etiquetas);
         Log.d("InfoDogPresenter", "DogAttached!");
     }
 
@@ -55,7 +55,7 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
         if (uploader.getUrlFotoPerfil() == null) {
             urlFoto = "";
         } else urlFoto = uploader.getUrlFotoPerfil();
-        mView.populateUserView(nombre, urlFoto);
+        view.populateUserView(nombre, urlFoto);
     }
 
 
@@ -65,7 +65,7 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
             @Override
             public void onSucessQueryDog(Perro currentDog) {
                 mCurrentDog = currentDog;
-                if (!TextUtils.equals(currentDog.getUid(), mUserRepository.getLoggedUser().getUid())){
+                if (!TextUtils.equals(currentDog.getUid(), mUserRepository.getCurrentUser().getUid())){
                     mUserRepository.getUserById(currentDog.getUid(), new IUserRepository.CallbackQueryUser() {
                         @Override
                         public void onSuccessUserQueryById(Usuario user) {
@@ -79,7 +79,7 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
                         }
                     });
                 }else{
-                    bindRowsOfUserInformation(mUserRepository.getLoggedUser());
+                    bindRowsOfUserInformation(mUserRepository.getCurrentUser());
                     bindRowsOfDogInformation(currentDog);
                 }
 
@@ -87,7 +87,7 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
 
             @Override
             public void onFailureQueryDog(String msgError) {
-                mView.toast(msgError);
+                view.toast(msgError);
             }
         });
     }
@@ -98,7 +98,7 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
         String uploaderID = mCurrentDog.getUid();
         String adopterID = mUserRepository.currentFirebaseUser().getUid();
 
-        mView.navigateToAdoption(dogID, uploaderID, adopterID);
+        view.navigateToAdoption(dogID, uploaderID, adopterID);
     }
 
 

@@ -1,6 +1,6 @@
 package com.pity.appperros1.ui.profile;
 
-import com.pity.appperros1.base.IBaseView;
+import com.pity.appperros1.ui.base.IBaseView;
 
 public interface IProfileView extends IBaseView {
 

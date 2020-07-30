@@ -3,4 +3,7 @@
     <string name="facebook_application_id" translatable="false">487946478633511</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb487946478633511</string>
     <string name="default_notification_channel_id">CH_01</string>
+
+    <string name="iniciando_sesion">Iniciando sesion</string>
+    <string name="aguarde">Aguarde unos segundos...</string>
 </resources>

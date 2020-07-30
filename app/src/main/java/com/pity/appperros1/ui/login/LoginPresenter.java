@@ -3,7 +3,6 @@ package com.pity.appperros1.ui.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -17,61 +16,76 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.pity.appperros1.base.BasePresenter;
+import com.pity.appperros1.data.prefs.PreferencesManager;
+import com.pity.appperros1.data.repository.DataCallback;
+import com.pity.appperros1.ui.base.BasePresenter;
 import com.pity.appperros1.data.interactor.implementation.LoginIteractor;
 import com.pity.appperros1.data.interactor.interfaces.ILoginInteractor;
 import com.pity.appperros1.data.modelos.Usuario;
-import com.pity.appperros1.data.repository.implementacion.UserRepository;
 import com.pity.appperros1.data.repository.interfaces.IUserRepository;
-
 import java.util.Arrays;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginPresenter {
 
-    private LoginIteractor mIntereactor;
+    private LoginIteractor interactor;
     private CallbackManager mCallbackManager;
-    private SharedPreferences sharedPreferences = mContext.getSharedPreferences("prefernces", MODE_PRIVATE);
+    private DataCallback<Usuario> attachCallback;
 
     LoginPresenter(Context context, LoginIteractor intereactor) {
         super(context);
-        this.mIntereactor = intereactor;
-
-        if (mIntereactor.isUserLogged()) {
+        this.interactor = intereactor;
+        initAttachCallback();
+        if (interactor.isUserLogged()) {
             FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                 @Override
                 public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                    String lastToken = sharedPreferences.getString("token", "");
-                    if (task.isSuccessful()) {
-                        String token = task.getResult().getToken();
+                    if (!task.isSuccessful()) return;
 
-                        if (!lastToken.equals("") && lastToken.equals(token)) {
-                            mIntereactor.attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid(), token, new IUserRepository.CallbackAttachUser() {
-                                @Override
-                                public void onUserAttached(Usuario user) {
-                                    if (isViewAttached()) mView.navigateToInicio();
+                    String lastToken = PreferencesManager.getInstance().getToken();
+                    String serverToken = task.getResult().getToken();
 
-                                }
-                            });
-
-                        }else{
-                            mCallbackManager = CallbackManager.Factory.create();
-                            UserRepository.getInstance().logoutUser(mContext);
-                        }
+                    if (!isDeviceTokenValid(lastToken, serverToken)){
+                        intereactor.logoutUser();
+                        return;
                     }
+
+                    Log.d("LoginPresenter", "user loged: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    interactor.attachLoggedUser(serverToken, attachCallback);
+
                 }
             });
         }
         mCallbackManager = CallbackManager.Factory.create();
     }
 
+    private void initAttachCallback(){
+        attachCallback = new DataCallback<Usuario>() {
+            @Override
+            public void onSuccess(Usuario usuario) {
+                if (isViewAttached()){
+                    view.navigateToInicio();
+                    view.hideProgressBar();
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        };
+    }
+
+    private boolean isDeviceTokenValid(String deviceToken, String serverToken){
+        return !deviceToken.isEmpty() && deviceToken.equals(serverToken);
+    }
+
     @Override
     public void loginUserWith(String email, String password) {
-        mView.showProgressBar();
+        view.showProgressBar();
 
         if (TextUtils.isEmpty(email)) {
             onEmptyEmail();
@@ -83,23 +97,12 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
             return;
         }
 
-        mIntereactor.login(email, password, new ILoginInteractor.LoginCallback() {
+        interactor.login(email, password, new ILoginInteractor.LoginCallback() {
             @Override
             public void onSuccess(String token) {
                 if (isViewAttached()) {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("token", token);
-                    editor.apply();
-                    mIntereactor.attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid(), token, new IUserRepository.CallbackAttachUser() {
-                        @Override
-                        public void onUserAttached(Usuario user) {
-                            if (isViewAttached()){
-                                mView.navigateToInicio();
-                                mView.hideProgressBar();
-                            }
-                        }
-                    });
-
+                    PreferencesManager.getInstance().setToken(token);
+                    interactor.attachLoggedUser(token, attachCallback);
                 }
             }
 
@@ -107,11 +110,18 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
             public void onFailed(String error) {
                 Log.e("LoginPresenter", error);
                 if (isViewAttached()){
-                    mView.hideProgressBar();
-                    mView.showMessage(error);
+                    view.hideProgressBar();
+                    view.toast(error);
                 }
             }
         });
+    }
+
+    @Override
+    public void manageLoginWithFacebook() {
+        view.disableFacebookButton();
+        view.showProgressBar();
+        onRequestContinueWithFacebook(view.provideActivity());
     }
 
     @Override
@@ -119,30 +129,21 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    public void onRequestContinueWithFacebook(Activity mActivity) {
+    private void onRequestContinueWithFacebook(Activity mActivity) {
         LoginManager.getInstance().logInWithReadPermissions(mActivity, Arrays.asList("email", "public_profile"));
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("LoginPresenter", "onSuccesLoginFacebook");
-                mIntereactor.handleFacebookAccessToken(loginResult.getAccessToken(), new ILoginInteractor.LoginFacebookCallback() {
+                interactor.handleFacebookAccessToken(loginResult.getAccessToken(), new ILoginInteractor.LoginFacebookCallback() {
                     @Override
                     public void onSuccessFacebook(FirebaseUser currentUser, String token) {
-                        mIntereactor.checkIfIsRegistedOnDatabase(currentUser, new IUserRepository.CallbackUserUpdate() {
+                        Log.d("LoginPresenter", "user " + currentUser.getUid() + " with token: " + token + "is loged");
+                        interactor.handleDataOfLogin(currentUser, new IUserRepository.CallbackUserUpdate() {
                             @Override
                             public void onSuccessUpdateUser() {
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("token", token);
-                                editor.commit();
-
-                                mIntereactor.attachLoggedUser(UserRepository.getInstance().currentFirebaseUser().getUid(), token, new IUserRepository.CallbackAttachUser() {
-                                    @Override
-                                    public void onUserAttached(Usuario user) {
-                                        Log.i("UserAtacched", "El usuario " + user.getDisplayName() + " se ha enlazado");
-                                        if (isViewAttached()) mView.navigateToInicio();
-                                    }
-                                });
+                                Log.d("LoginPresenter", "onSuccesUpadateFacebookUser");
+                                PreferencesManager.getInstance().setToken(token);
+                                interactor.attachLoggedUser(token, attachCallback);
                             }
 
                             @Override
@@ -155,7 +156,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
 
                     @Override
                     public void onFailedFacebook(String error) {
-                        mView.showMessage(error);
+                        Log.e("LoginPresenter", error);
                     }
                 });
             }
@@ -163,26 +164,27 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
             @Override
             public void onCancel() {
                 Log.e("LoginPresenter", "facebook:onCancel");
-                mView.hideProgressBar();
-                mView.enabledFacebookButton();
+                view.hideProgressBar();
+                view.enabledFacebookButton();
             }
 
             @Override
             public void onError(FacebookException error) {
-                mView.showMessage(error.getMessage());
+                //view.showMessage(error.getMessage());
             }
         });
     }
 
     private void onEmptyEmail() {
-        mView.hideProgressBar();
-        mView.showMessage("Por favor, ingrese un mail");
+        view.hideProgressBar();
+        view.toast("Por favor, ingrese un mail");
     }
 
     private void onEmptyPassword() {
-        mView.hideProgressBar();
-        mView.showMessage("Por favor, ingrese una contraseña");
+        view.hideProgressBar();
+        view.toast("Por favor, ingrese una contraseña");
     }
+
 
 
 }

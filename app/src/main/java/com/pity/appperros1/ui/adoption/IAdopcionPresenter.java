@@ -2,7 +2,7 @@ package com.pity.appperros1.ui.adoption;
 
 import android.view.View;
 
-import com.pity.appperros1.base.IBasePresenter;
+import com.pity.appperros1.ui.base.IBasePresenter;
 
 public interface IAdopcionPresenter extends IBasePresenter<IAdopcionView> {
 

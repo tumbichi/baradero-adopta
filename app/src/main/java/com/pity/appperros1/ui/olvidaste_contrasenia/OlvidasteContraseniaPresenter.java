@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Patterns;
 
-import com.pity.appperros1.base.BasePresenter;
+import com.pity.appperros1.ui.base.BasePresenter;
 import com.pity.appperros1.data.interactor.implementation.OlvidasteContraseniaInteractor;
 import com.pity.appperros1.data.interactor.interfaces.IOlvidasteContraseniaInteractor;
 
@@ -23,17 +23,17 @@ public class OlvidasteContraseniaPresenter extends BasePresenter<IOlvidasteContr
     @Override
     public void enviarMailDeRecuperacionA(String email) {
 
-        mView.showProgressBar();
+        view.showProgressBar();
 
         if (TextUtils.isEmpty(email)){
-            mView.showError("El email esta vacio");
-            mView.hideProgressBar();
+            view.showError("El email esta vacio");
+            view.hideProgressBar();
             return;
         }
 
         if(!validarEmail(email)){
-            mView.showError("El email no es valido");
-            mView.hideProgressBar();
+            view.showError("El email no es valido");
+            view.hideProgressBar();
             return;
         }
 
@@ -49,9 +49,9 @@ public class OlvidasteContraseniaPresenter extends BasePresenter<IOlvidasteContr
     @Override
     public void onSuccess() {
         if (isViewAttached()) {
-            mView.showMessage("Por favor revise su email para reestablecer la contraseña");
-            mView.navagateToLogin();
-            mView.hideProgressBar();
+            view.showMessage("Por favor revise su email para reestablecer la contraseña");
+            view.navagateToLogin();
+            view.hideProgressBar();
 
         }
     }
@@ -59,8 +59,8 @@ public class OlvidasteContraseniaPresenter extends BasePresenter<IOlvidasteContr
     @Override
     public void onFailed(Exception e) {
         if (isViewAttached()) {
-            mView.showError(e.getMessage());
-            mView.hideProgressBar();
+            view.showError(e.getMessage());
+            view.hideProgressBar();
         }
     }
 }

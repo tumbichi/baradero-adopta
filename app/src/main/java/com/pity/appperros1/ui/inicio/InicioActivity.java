@@ -23,7 +23,8 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.pity.appperros1.R;
-import com.pity.appperros1.base.BaseActivity;
+import com.pity.appperros1.data.repository.SimpleCallback;
+import com.pity.appperros1.ui.base.BaseActivity;
 import com.pity.appperros1.data.interactor.implementation.InicioInteractor;
 import com.pity.appperros1.data.interactor.interfaces.IInicioInteractor;
 import com.pity.appperros1.data.modelos.Perro;
@@ -90,7 +91,17 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
 
         initNavDrawer();
         showPostsView(mPresenter.getInteractor());
-        UserRepository.getInstance().getServerToken(this, this);
+        UserRepository.getInstance().getServerToken(new SimpleCallback() {
+            @Override
+            public void onSuccess() {
+                navigateToLogin();
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+        });
     }
 
     @Override
@@ -108,7 +119,7 @@ public class InicioActivity extends BaseActivity<IInicioPresentador>
     private void initNavDrawer(){
         TextView notificationsCounter = (TextView) navigationView.getMenu().findItem(R.id.menu_perfil).getActionView();
         TextView navDrawerHeaderUsername = navigationView.getHeaderView(0).findViewById(R.id.navigation_drawer_header_username);
-        Usuario loggedUser = UserRepository.getInstance().getLoggedUser();
+        Usuario loggedUser = UserRepository.getInstance().getCurrentUser();
 
         fragmentManager = getSupportFragmentManager();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

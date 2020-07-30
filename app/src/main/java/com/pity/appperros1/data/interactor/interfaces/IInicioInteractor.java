@@ -10,7 +10,7 @@ import com.pity.appperros1.ui.fragment_agregar_perro.interfaces.IAgregarPerroPre
 import java.util.ArrayList;
 
 public interface IInicioInteractor {
-    void logout(Context context);
+    void logoutUser();
     ArrayList<Perro> getListPost();
     Perro getDogById(int position);
     void bringDogList(CallbackGetDogList callbackGetDogList);

@@ -225,7 +225,7 @@ public class SolicitudesPerdidosFragment extends Fragment implements View.OnClic
                         .deleteAdoption(solicitudCancelada.getIdSolicitud(), new IAdopcionRepository.CallbackAdoption() {
                             @Override
                             public void onSuccesAdoption() {
-                                Log.i(this.getClass().getName(), UserRepository.getInstance().getLoggedUser().getDisplayName());
+                                Log.i(this.getClass().getName(), UserRepository.getInstance().getCurrentUser().getDisplayName());
                                 solicitudesPerdidos.remove(adapter.getItem(position));
                                 adapter.notifyDataSetChanged();
                             }

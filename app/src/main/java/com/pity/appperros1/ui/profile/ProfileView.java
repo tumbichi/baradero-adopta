@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.pity.appperros1.R;
-import com.pity.appperros1.base.BaseActivity;
+import com.pity.appperros1.ui.base.BaseActivity;
 import com.pity.appperros1.ui.fragment_solcitudes.SolicitudesFragment;
 
 import butterknife.BindView;

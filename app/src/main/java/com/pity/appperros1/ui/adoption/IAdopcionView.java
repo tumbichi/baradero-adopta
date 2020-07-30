@@ -1,6 +1,6 @@
 package com.pity.appperros1.ui.adoption;
 
-import com.pity.appperros1.base.IBaseView;
+import com.pity.appperros1.ui.base.IBaseView;
 
 public interface IAdopcionView extends IBaseView {
 

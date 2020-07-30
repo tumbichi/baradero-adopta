@@ -32,7 +32,7 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.pity.appperros1.R;
-import com.pity.appperros1.base.BaseActivity;
+import com.pity.appperros1.ui.base.BaseActivity;
 import com.pity.appperros1.ui.adoption.AdopcionView;
 import com.pity.appperros1.utils.DogUtils;
 

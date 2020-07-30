@@ -1,4 +1,4 @@
-package com.pity.appperros1.base;
+package com.pity.appperros1.ui.base;
 
 import android.content.Context;
 import android.content.Intent;

@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.pity.appperros1.R;
-import com.pity.appperros1.base.BaseActivity;
+import com.pity.appperros1.ui.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

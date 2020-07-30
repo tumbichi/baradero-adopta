@@ -39,7 +39,7 @@ public class RegistroInteractor implements IRegistroInteractor,
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Usuario newUser = new Usuario(mAuth.getCurrentUser().getUid(), email, nombre, apellido, telefono);
-                            repository.persistNewUserOnDatabase(newUser, callbackRepositoryNewUser);
+                            repository.saveUser(newUser, callbackRepositoryNewUser);
                         } else {
                             callbackRegistro.onFailedRegistro(task.getException());
 
@@ -65,7 +65,7 @@ public class RegistroInteractor implements IRegistroInteractor,
     @Override
     public void onSuccefulSendMail() {
         // Se envio mail
-        repository.logoutWithoutToken();
+        repository.logout();
         callbackPresenter.onSuccessfulRegistro();
     }
 

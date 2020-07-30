@@ -1,6 +1,6 @@
 package com.pity.appperros1.ui.olvidaste_contrasenia;
 
-import com.pity.appperros1.base.IBasePresenter;
+import com.pity.appperros1.ui.base.IBasePresenter;
 
 public interface IOlvidasteContraseniaPresenter extends IBasePresenter<IOlvidasteContraseniaView> {
 

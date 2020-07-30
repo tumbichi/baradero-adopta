@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.textfield.TextInputEditText;
 import com.hbb20.CountryCodePicker;
 import com.pity.appperros1.R;
-import com.pity.appperros1.base.BaseActivity;
+import com.pity.appperros1.ui.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -20,9 +20,6 @@ import com.pity.appperros1.utils.AdopcionUtils;
 import com.pity.appperros1.utils.UserUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.security.auth.callback.Callback;
 
 public class AdopcionRepository implements IAdopcionRepository {
 
@@ -75,7 +72,7 @@ public class AdopcionRepository implements IAdopcionRepository {
     }
 
     public void getNotificationsCount(TextView badgeValue){
-        DatabaseReference ref = database.getReference().child(UserUtils.USER_DB_REF).child(UserRepository.getInstance().getLoggedUser().getUid());
+        DatabaseReference ref = database.getReference().child(UserUtils.USER_DB_REF).child(UserRepository.getInstance().getCurrentUser().getUid());
 
         ref.child(AdopcionUtils.ADOPTION_DB_REF).addValueEventListener(new ValueEventListener() {
             @Override
@@ -106,7 +103,7 @@ public class AdopcionRepository implements IAdopcionRepository {
     public void getAdoptions(CallbackGetAdoptions callbackGetAdoptions) {
         DatabaseReference mRef = database.getReference()
                 .child("Usuarios")
-                .child(UserRepository.getInstance().getLoggedUser().getUid())
+                .child(UserRepository.getInstance().getCurrentUser().getUid())
                 .child("Adopciones");
         ArrayList<SolicitudReference> solicitudes = new ArrayList<>();
         mRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -136,7 +133,7 @@ public class AdopcionRepository implements IAdopcionRepository {
         ArrayList<SolicitudReference> solicitudes = new ArrayList<>();
         DatabaseReference mRef = database.getReference()
                 .child(UserUtils.USER_DB_REF)
-                .child(UserRepository.getInstance().getLoggedUser().getUid())
+                .child(UserRepository.getInstance().getCurrentUser().getUid())
                 .child(AdopcionUtils.ADOPTION_DB_REF);
 
         mRef.orderByChild(AdopcionUtils.DOG_ID_KEY).equalTo(dogID).addValueEventListener(new ValueEventListener() {
@@ -162,7 +159,7 @@ public class AdopcionRepository implements IAdopcionRepository {
     public void deleteAdoption(String idAdoption, CallbackAdoption callbackAdoption) {
         DatabaseReference mRef = database.getReference()
                 .child("Usuarios")
-                .child(UserRepository.getInstance().getLoggedUser().getUid())
+                .child(UserRepository.getInstance().getCurrentUser().getUid())
                 .child("Adopciones")
                 .child(idAdoption);
 

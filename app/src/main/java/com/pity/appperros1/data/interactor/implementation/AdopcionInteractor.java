@@ -26,7 +26,7 @@ public class AdopcionInteractor implements IAdopcionInteractor {
 
     @Override
     public void attachRequestedData(String dog, String uploader, String adopter, IAdopcionPresenter.CallbackResquest callbackResquest) {
-        adopcion.setADOPTER(UserRepository.getInstance().getLoggedUser());
+        adopcion.setADOPTER(UserRepository.getInstance().getCurrentUser());
         Log.i(TAG, "Adopter{ \n" + getCurrentAdopcion().getADOPTER().toString() + "}");
         DogRepository.getInstance().queryDogBy(dog, new IDogRepository.CallbackQueryDog() {
             @Override

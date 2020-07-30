@@ -2,7 +2,7 @@ package com.pity.appperros1.ui.fragment_agregar_perro.interfaces;
 
 import android.content.Context;
 
-import com.pity.appperros1.base.IBasePresenter;
+import com.pity.appperros1.ui.base.IBasePresenter;
 
 public interface IAgregarPerroPresenter extends IBasePresenter<IAgregarPerroFragment> {
 

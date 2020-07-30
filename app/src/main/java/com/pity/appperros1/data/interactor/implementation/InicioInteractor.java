@@ -1,6 +1,5 @@
 package com.pity.appperros1.data.interactor.implementation;
 
-import android.content.Context;
 import android.net.Uri;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -15,9 +14,6 @@ import java.util.ArrayList;
 
 public class InicioInteractor implements IInicioInteractor {
 
-    private UserRepository userRepository;
-    private DogRepository dogRepository;
-
     private IAgregarPerroPresenter.CallbackInteractor callbackAgregarPerroInteractor;
     private CallbackGetDogList callbackInicioInteractor;
 
@@ -25,19 +21,17 @@ public class InicioInteractor implements IInicioInteractor {
     private ArrayList<Perro> postList;
 
     public InicioInteractor(){
-        this.userRepository = UserRepository.getInstance();
-        this.dogRepository = DogRepository.getInstance();
     }
 
     @Override
-    public void logout(Context context) {
-        userRepository.logoutUser(context);
+    public void logoutUser() {
+        UserRepository.getInstance().logout();
     }
 
     @Override
     public void bringDogList(CallbackGetDogList callbackGetDogList) {
         this.callbackInicioInteractor = callbackGetDogList;
-        dogRepository.getDogList(new IDogRepository.CallbackDogList() {
+        DogRepository.getInstance().getDogList(new IDogRepository.CallbackDogList() {
             @Override
             public void onSuccesGetDogList(ArrayList<Perro> dogList) {
                 postList = dogList;
@@ -85,12 +79,12 @@ public class InicioInteractor implements IInicioInteractor {
         newDog.setVacunado(vacunado);
         newDog.setEtiquetas(estados);
 
-        dogRepository.uploadPhoto(Uri.parse(newDog.getPathFoto()), new IDogRepository.CallbackUploadPhoto() {
+        DogRepository.getInstance().uploadPhoto(Uri.parse(newDog.getPathFoto()), new IDogRepository.CallbackUploadPhoto() {
             @Override
             public void onSuccessUploadPhoto(String url, String fecha) {
                 newDog.setUrlFoto(url);
                 callbackAgregarPerroInteractor.onSuccessUploadPhoto();
-                dogRepository.uploadPerro(newDog, userRepository.getLoggedUser(), new IDogRepository.CallbackUploadDog() {
+                DogRepository.getInstance().uploadPerro(newDog, UserRepository.getInstance().getCurrentUser(), new IDogRepository.CallbackUploadDog() {
                     @Override
                     public void onSuccessUploadDog() {
                         callbackAgregarPerroInteractor.onSuccesUploadDog();
@@ -125,7 +119,7 @@ public class InicioInteractor implements IInicioInteractor {
 
     @Override
     public FirebaseUser getUserLogged() {
-        return userRepository.currentFirebaseUser();
+        return UserRepository.getInstance().currentFirebaseUser();
     }
 
 }
