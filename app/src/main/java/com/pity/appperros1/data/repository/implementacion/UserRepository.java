@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.pity.appperros1.utils.UserUtils.USER_DB_REF;
+import static com.pity.appperros1.utils.UserUtils.compareToken;
 
 public class UserRepository implements IUserRepository {
 
@@ -83,7 +84,7 @@ public class UserRepository implements IUserRepository {
 
                         Log.e(TAG, "\n ServerToken: " + serverToken + "\n DeviceToken: " + lastToken);
 
-                        if (equalsToken(lastToken, serverToken)) return;
+                        if (compareToken(lastToken, serverToken)) return;
 
                         ref.removeEventListener(this);
                         logout();
@@ -99,9 +100,6 @@ public class UserRepository implements IUserRepository {
 
     public void getServerToken(OnCompleteListener<InstanceIdResult> onCompleteListener){
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(onCompleteListener);
-    }
-    private boolean equalsToken(String deviceToken, String serverToken){
-        return serverToken != null && serverToken.equals(deviceToken);
     }
 
     @Override

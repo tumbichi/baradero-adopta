@@ -86,7 +86,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
     }
 
     private boolean isDeviceTokenValid(String deviceToken, String serverToken){
-        return !deviceToken.isEmpty() && deviceToken.equals(serverToken);
+        return !deviceToken.isEmpty() && serverToken.equals(deviceToken);
     }
 
     @Override
@@ -103,14 +103,13 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
             return;
         }
 
-        interactor.login(email, password, new OnCompleteListener<AuthResult>() {
+        interactor.sendLogin(email, password, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()){
                     Log.e("LoginPresenter", "Cannot login user with email: " + email);
                     return;
                 }
-
                 FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -127,8 +126,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
                 });
             }
         });
-
-
     }
 
     @Override
@@ -148,11 +145,11 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                interactor.handleFacebookAccessToken(loginResult.getAccessToken(), new ILoginInteractor.LoginFacebookCallback() {
+                interactor.requestFacebookAccessToken(loginResult.getAccessToken(), new ILoginInteractor.LoginFacebookCallback() {
                     @Override
                     public void onSuccessFacebook(FirebaseUser currentUser, String token) {
                         Log.d("LoginPresenter", "user " + currentUser.getUid() + " with token: " + token + "is loged");
-                        interactor.handleDataOfLoginWithFacebook(currentUser, new SimpleCallback() {
+                        interactor.saveDataOfLoginWithFacebook(currentUser, new SimpleCallback() {
                             @Override
                             public void onSuccess() {
                                 Log.d("LoginPresenter", "onSuccesUpadateFacebookUser");

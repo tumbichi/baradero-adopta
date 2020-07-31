@@ -17,10 +17,10 @@ public interface ILoginInteractor {
         void onFailedFacebook(String error);
     }
 
-    void login(String user, String pass, OnCompleteListener<AuthResult> onComplete);
+    void sendLogin(String user, String pass, OnCompleteListener<AuthResult> onComplete);
     void logoutUser();
-    void handleFacebookAccessToken(AccessToken token, LoginFacebookCallback listener);
-    void handleDataOfLoginWithFacebook(FirebaseUser currentUser, SimpleCallback callbackUpdate);
+    void requestFacebookAccessToken(AccessToken token, LoginFacebookCallback listener);
+    void saveDataOfLoginWithFacebook(FirebaseUser currentUser, SimpleCallback callbackUpdate);
     void requestServerToken(OnCompleteListener<InstanceIdResult> onCompleteListener);
     void attachLoggedUser(String token, DataCallback<Usuario> callbackAttachUser);
     boolean isUserLogged();

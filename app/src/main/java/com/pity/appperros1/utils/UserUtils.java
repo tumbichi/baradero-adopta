@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 public class UserUtils {
 
     public final static String USER_DB_REF = "Usuarios";
-
     public final static String UID_KEY = "id";
     public final static String DISPLAY_NAME_KEY = "displayName";
     public final static String EMAIL_KEY = "email";
@@ -90,6 +89,10 @@ public class UserUtils {
             resultList.add((String) childList.child(pos).getValue());
         }
         return resultList;
+    }
+
+    public static boolean compareToken(String deviceT, String serverT){
+        return serverT != null && !serverT.isEmpty() && serverT.equals(deviceT);
     }
 
 }

@@ -19,13 +19,10 @@ import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.DataCallback;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
 
-
 public class LoginIteractor implements ILoginInteractor {
 
     private UserRepository repository;
     private FirebaseAuth mAuth;
-
-    private final static String TAG = "LoginInteractor";
 
     public LoginIteractor(){
         this.mAuth = FirebaseAuth.getInstance();
@@ -33,9 +30,8 @@ public class LoginIteractor implements ILoginInteractor {
     }
 
     @Override
-    public void login(String email, String pass, OnCompleteListener<AuthResult> onComplete) {
-        mAuth.signInWithEmailAndPassword(email, pass)
-                .addOnCompleteListener(onComplete);
+    public void sendLogin(String email, String pass, OnCompleteListener<AuthResult> onComplete) {
+        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(onComplete);
     }
 
     @Override
@@ -48,7 +44,7 @@ public class LoginIteractor implements ILoginInteractor {
     }
 
     @Override
-    public void handleFacebookAccessToken(AccessToken token, LoginFacebookCallback listener) {
+    public void requestFacebookAccessToken(AccessToken token, LoginFacebookCallback listener) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -72,7 +68,7 @@ public class LoginIteractor implements ILoginInteractor {
     }
 
     @Override
-    public void handleDataOfLoginWithFacebook(FirebaseUser currentUser, SimpleCallback callback) {
+    public void saveDataOfLoginWithFacebook(FirebaseUser currentUser, SimpleCallback callback) {
         repository.doesUserExists(currentUser, new ExistingCallback<FirebaseUser>() {
             @Override
             public void isInExistence(FirebaseUser notRegisteredUser) {
@@ -111,7 +107,5 @@ public class LoginIteractor implements ILoginInteractor {
     public boolean isUserLogged() {
         return repository.currentFirebaseUser() != null;
     }
-
-
 
 }
