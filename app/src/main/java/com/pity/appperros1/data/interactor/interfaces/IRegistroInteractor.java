@@ -1,12 +1,7 @@
 package com.pity.appperros1.data.interactor.interfaces;
 
+import com.pity.appperros1.data.SimpleCallback;
+
 public interface IRegistroInteractor {
-
-    interface CallbackRegistro{
-        void onSuccessfulRegistro();
-        void onFailedRegistro(Exception e);
-    }
-
-    void agregarUsuarioToFirebase(String email, String contrasenia1, String nombre, String apellido,String telefono, CallbackRegistro callbackRegistro);
-
+    void registerUser(String email, String contrasenia1, String nombre, String apellido, String telefono, SimpleCallback callbackRegistro);
 }

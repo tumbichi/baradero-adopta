@@ -23,7 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.pity.appperros1.R;
-import com.pity.appperros1.data.repository.SimpleCallback;
+import com.pity.appperros1.data.SimpleCallback;
 import com.pity.appperros1.ui.base.BaseActivity;
 import com.pity.appperros1.data.interactor.implementation.InicioInteractor;
 import com.pity.appperros1.data.interactor.interfaces.IInicioInteractor;

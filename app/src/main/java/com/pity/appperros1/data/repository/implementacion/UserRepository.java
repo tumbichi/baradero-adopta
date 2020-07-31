@@ -1,6 +1,5 @@
 package com.pity.appperros1.data.repository.implementacion;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -9,6 +8,7 @@ import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -17,10 +17,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.pity.appperros1.data.ExistingCallback;
 import com.pity.appperros1.data.modelos.Usuario;
 import com.pity.appperros1.data.prefs.PreferencesManager;
-import com.pity.appperros1.data.repository.DataCallback;
-import com.pity.appperros1.data.repository.SimpleCallback;
+import com.pity.appperros1.data.DataCallback;
+import com.pity.appperros1.data.SimpleCallback;
 import com.pity.appperros1.data.repository.interfaces.IUserRepository;
 import com.pity.appperros1.utils.UserUtils;
 
@@ -94,6 +97,9 @@ public class UserRepository implements IUserRepository {
                 });
     }
 
+    public void getServerToken(OnCompleteListener<InstanceIdResult> onCompleteListener){
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(onCompleteListener);
+    }
     private boolean equalsToken(String deviceToken, String serverToken){
         return serverToken != null && serverToken.equals(deviceToken);
     }
@@ -135,7 +141,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void saveUser(Usuario newUser, final CallbackUserUpdate callbackNewUser) {
+    public void saveUser(Usuario newUser, SimpleCallback callbackNewUser) {
         DatabaseReference mRef = database.getReference();
         mRef.child(USER_DB_REF)
                 .child(newUser.getUid())
@@ -144,10 +150,10 @@ public class UserRepository implements IUserRepository {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            callbackNewUser.onSuccessUpdateUser();
+                            callbackNewUser.onSuccess();
 
                         } else {
-                            callbackNewUser.onFailedUpdateUser(task.getException());
+                            callbackNewUser.onFailure(task.getException().getMessage());
                         }
                     }
                 });
@@ -172,15 +178,15 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void sendMailVerification(FirebaseUser currentUser, final CallbackRepositorySendMail callback) {
+    public void sendMailVerification(FirebaseUser currentUser) {
         currentUser.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            callback.onSuccefulSendMail();
+                            Log.d(TAG, "Email sended");
                         } else {
-                            callback.onFailedSendMail(task.getException());
+                            Log.e(TAG, "Email not sended");
                         }
                     }
                 });
@@ -209,7 +215,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void doesUserExists(FirebaseUser currentUser, DataCallback<FirebaseUser> callbackDontExist) {
+    public void doesUserExists(FirebaseUser currentUser, ExistingCallback<FirebaseUser> callback) {
         DatabaseReference mRef = database.getReference().child(USER_DB_REF);
 
         Query mQuery = mRef.orderByKey().equalTo(currentUser.getUid()).limitToFirst(1);
@@ -218,9 +224,9 @@ public class UserRepository implements IUserRepository {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()){
-                    callbackDontExist.onSuccess(currentUser);
+                    callback.isInExistence(currentUser);
                 }else{
-                    callbackDontExist.onFailure("");
+                    callback.notInExistence();
                 }
             }
 
@@ -229,7 +235,6 @@ public class UserRepository implements IUserRepository {
 
             }
         });
-
     }
 
     @Override

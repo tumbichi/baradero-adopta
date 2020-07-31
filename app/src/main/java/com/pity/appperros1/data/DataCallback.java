@@ -1,4 +1,4 @@
-package com.pity.appperros1.data.repository;
+package com.pity.appperros1.data;
 
 public interface DataCallback<T extends Object> {
     void onSuccess(T t);

@@ -105,13 +105,11 @@ public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginVi
     @Override
     public void showProgressBar() {
         progressDialog.show();
-        //progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
         progressDialog.dismiss();
-        //progressBar.setVisibility(View.GONE);
     }
 
     @Override

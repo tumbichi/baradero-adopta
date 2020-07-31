@@ -16,17 +16,19 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.pity.appperros1.data.SimpleCallback;
 import com.pity.appperros1.data.prefs.PreferencesManager;
-import com.pity.appperros1.data.repository.DataCallback;
+import com.pity.appperros1.data.DataCallback;
 import com.pity.appperros1.ui.base.BasePresenter;
 import com.pity.appperros1.data.interactor.implementation.LoginIteractor;
 import com.pity.appperros1.data.interactor.interfaces.ILoginInteractor;
 import com.pity.appperros1.data.modelos.Usuario;
-import com.pity.appperros1.data.repository.interfaces.IUserRepository;
+
 import java.util.Arrays;
 
 public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginPresenter {
@@ -35,12 +37,18 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
     private CallbackManager mCallbackManager;
     private DataCallback<Usuario> attachCallback;
 
-    LoginPresenter(Context context, LoginIteractor intereactor) {
+    LoginPresenter(Context context, LoginIteractor interactor) {
         super(context);
-        this.interactor = intereactor;
+        this.interactor = interactor;
         initAttachCallback();
+        checkUserLogged();
+
+        mCallbackManager = CallbackManager.Factory.create();
+    }
+
+    private void checkUserLogged(){
         if (interactor.isUserLogged()) {
-            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            interactor.requestServerToken(new OnCompleteListener<InstanceIdResult>() {
                 @Override
                 public void onComplete(@NonNull Task<InstanceIdResult> task) {
                     if (!task.isSuccessful()) return;
@@ -49,17 +57,15 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
                     String serverToken = task.getResult().getToken();
 
                     if (!isDeviceTokenValid(lastToken, serverToken)){
-                        intereactor.logoutUser();
+                        interactor.logoutUser();
                         return;
                     }
 
                     Log.d("LoginPresenter", "user loged: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
                     interactor.attachLoggedUser(serverToken, attachCallback);
-
                 }
             });
         }
-        mCallbackManager = CallbackManager.Factory.create();
     }
 
     private void initAttachCallback(){
@@ -97,24 +103,32 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
             return;
         }
 
-        interactor.login(email, password, new ILoginInteractor.LoginCallback() {
+        interactor.login(email, password, new OnCompleteListener<AuthResult>() {
             @Override
-            public void onSuccess(String token) {
-                if (isViewAttached()) {
-                    PreferencesManager.getInstance().setToken(token);
-                    interactor.attachLoggedUser(token, attachCallback);
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()){
+                    Log.e("LoginPresenter", "Cannot login user with email: " + email);
+                    return;
                 }
-            }
 
-            @Override
-            public void onFailed(String error) {
-                Log.e("LoginPresenter", error);
-                if (isViewAttached()){
-                    view.hideProgressBar();
-                    view.toast(error);
-                }
+                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("LoginPresenter", "" + task.getException().getMessage());
+                            if (isViewAttached()) view.hideProgressBar();
+                            return;
+                        }
+                        String token = task.getResult().getToken();
+
+                        PreferencesManager.getInstance().setToken(token);
+                        interactor.attachLoggedUser(token, attachCallback);
+                    }
+                });
             }
         });
+
+
     }
 
     @Override
@@ -138,16 +152,16 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
                     @Override
                     public void onSuccessFacebook(FirebaseUser currentUser, String token) {
                         Log.d("LoginPresenter", "user " + currentUser.getUid() + " with token: " + token + "is loged");
-                        interactor.handleDataOfLogin(currentUser, new IUserRepository.CallbackUserUpdate() {
+                        interactor.handleDataOfLoginWithFacebook(currentUser, new SimpleCallback() {
                             @Override
-                            public void onSuccessUpdateUser() {
+                            public void onSuccess() {
                                 Log.d("LoginPresenter", "onSuccesUpadateFacebookUser");
                                 PreferencesManager.getInstance().setToken(token);
                                 interactor.attachLoggedUser(token, attachCallback);
                             }
 
                             @Override
-                            public void onFailedUpdateUser(Exception e) {
+                            public void onFailure(String error) {
 
                             }
                         });
@@ -170,7 +184,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
 
             @Override
             public void onError(FacebookException error) {
-                //view.showMessage(error.getMessage());
+
             }
         });
     }

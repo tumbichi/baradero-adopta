@@ -1,4 +1,4 @@
-package com.pity.appperros1.data.repository;
+package com.pity.appperros1.data;
 
 public interface SimpleCallback {
     void onSuccess();

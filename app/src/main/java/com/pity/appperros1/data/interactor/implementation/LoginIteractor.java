@@ -12,45 +12,30 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.pity.appperros1.data.ExistingCallback;
+import com.pity.appperros1.data.SimpleCallback;
 import com.pity.appperros1.data.interactor.interfaces.ILoginInteractor;
 import com.pity.appperros1.data.modelos.Usuario;
-import com.pity.appperros1.data.repository.DataCallback;
+import com.pity.appperros1.data.DataCallback;
 import com.pity.appperros1.data.repository.implementacion.UserRepository;
-import com.pity.appperros1.data.repository.interfaces.IUserRepository;
 
 
 public class LoginIteractor implements ILoginInteractor {
 
-    private UserRepository mRepository;
+    private UserRepository repository;
     private FirebaseAuth mAuth;
 
     private final static String TAG = "LoginInteractor";
 
     public LoginIteractor(){
         this.mAuth = FirebaseAuth.getInstance();
-        this.mRepository = UserRepository.getInstance();
+        this.repository = UserRepository.getInstance();
     }
 
     @Override
-    public void login(String email, String pass, final LoginCallback listener) {
+    public void login(String email, String pass, OnCompleteListener<AuthResult> onComplete) {
         mAuth.signInWithEmailAndPassword(email, pass)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()) {
-                            listener.onFailed(task.getException().getMessage());
-                            return;
-                        }
-
-                        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                listener.onSuccess(task.getResult().getToken());
-                            }
-                        });
-                    }
-                });
-
+                .addOnCompleteListener(onComplete);
     }
 
     @Override
@@ -58,6 +43,9 @@ public class LoginIteractor implements ILoginInteractor {
         UserRepository.getInstance().logout();
     }
 
+    public void requestServerToken(OnCompleteListener<InstanceIdResult> onCompleteListener){
+        repository.getServerToken(onCompleteListener);
+    }
 
     @Override
     public void handleFacebookAccessToken(AccessToken token, LoginFacebookCallback listener) {
@@ -84,10 +72,10 @@ public class LoginIteractor implements ILoginInteractor {
     }
 
     @Override
-    public void handleDataOfLogin(FirebaseUser currentUser, IUserRepository.CallbackUserUpdate callbackUserUpdate) {
-        mRepository.doesUserExists(currentUser, new DataCallback<FirebaseUser>() {
+    public void handleDataOfLoginWithFacebook(FirebaseUser currentUser, SimpleCallback callback) {
+        repository.doesUserExists(currentUser, new ExistingCallback<FirebaseUser>() {
             @Override
-            public void onSuccess(FirebaseUser notRegisteredUser) {
+            public void isInExistence(FirebaseUser notRegisteredUser) {
                 Usuario user = notRegisteredUser.getPhotoUrl() != null ?
                         new Usuario(
                             notRegisteredUser.getUid(),
@@ -103,12 +91,12 @@ public class LoginIteractor implements ILoginInteractor {
                             notRegisteredUser.getPhoneNumber()
                         );
 
-                mRepository.saveUser(user, callbackUserUpdate);
+                repository.saveUser(user, callback);
             }
 
             @Override
-            public void onFailure(String error) {
-                callbackUserUpdate.onSuccessUpdateUser();
+            public void notInExistence() {
+                callback.onSuccess();
             }
         });
 
@@ -121,7 +109,7 @@ public class LoginIteractor implements ILoginInteractor {
 
     @Override
     public boolean isUserLogged() {
-        return mRepository.currentFirebaseUser() != null;
+        return repository.currentFirebaseUser() != null;
     }
 
 

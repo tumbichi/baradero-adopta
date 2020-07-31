@@ -17,8 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegitroView extends BaseActivity<IRegistroPresenter>
-            implements IRegistroView  {
+public class RegitroView extends BaseActivity<IRegistroPresenter> implements IRegistroView  {
 
     @BindView(R.id.edit_text_email_registro)
     EditText editTextMail;
@@ -40,16 +39,15 @@ public class RegitroView extends BaseActivity<IRegistroPresenter>
 
     @OnClick (R.id.registro_button_registrate)
     public void onClickRegistrate(Button btnRegistrate){
-        if (btnRegistrate == this.btnRegistrate){
-            mPresenter.sendRegistro(
-                    editTextMail.getText().toString(),
-                    editTextPassword1.getText().toString(),
-                    editTextPassword2.getText().toString(),
-                    editTextNombre.getText().toString(),
-                    editTextApellido.getText().toString(),
-                    editTextPhone.getText().toString()
-            );
-        }
+        showProgressBar();
+        mPresenter.handleValidationOfRegister(
+                editTextMail.getText().toString(),
+                editTextPassword1.getText().toString(),
+                editTextPassword2.getText().toString(),
+                editTextNombre.getText().toString(),
+                editTextApellido.getText().toString(),
+                editTextPhone.getText().toString()
+        );
     }
 
     @Override
@@ -76,19 +74,13 @@ public class RegitroView extends BaseActivity<IRegistroPresenter>
     }
 
     @Override
-    public void showError(String messageError) {
-        Toast.makeText(this, messageError, Toast.LENGTH_LONG).show();
+    public void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void showToastMessage(String msj) {
-        Toast.makeText(this, msj, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void finishRegistro() {
+    public void finish() {
         finish();
     }
-
 
 }
