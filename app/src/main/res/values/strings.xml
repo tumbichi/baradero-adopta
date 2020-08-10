@@ -1,9 +1,15 @@
 <resources>
-    <string name="app_name">baradero adopta</string>
+    <string name="app_name">bara-adopta</string>
     <string name="facebook_application_id" translatable="false">487946478633511</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb487946478633511</string>
     <string name="default_notification_channel_id">CH_01</string>
 
-    <string name="iniciando_sesion">Iniciando sesion</string>
-    <string name="aguarde">Aguarde unos segundos...</string>
+    <string name="email">Email</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="olvidaste_contraseña">¿Olvidaste tu contraseña?</string>
+    <string name="iniciar_sesion">Iniciar Sesión</string>
+    <string name="iniciar_sesion_con_fb">Inicia con Facebook</string>
+    <string name="registrate">¿No tenes cuenta? Registrate</string>
+    <string name="iniciando_sesion">Iniciando sesión</string>
+    <string name="aguarde">Aguarde unos segundos…</string>
 </resources>

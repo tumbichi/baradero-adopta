@@ -16,8 +16,12 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -107,25 +111,61 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()){
-                    Log.e("LoginPresenter", "Cannot login user with email: " + email);
-                    return;
-                }
-                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.e("LoginPresenter", "" + task.getException().getMessage());
-                            if (isViewAttached()) view.hideProgressBar();
-                            return;
-                        }
-                        String token = task.getResult().getToken();
-
-                        PreferencesManager.getInstance().setToken(token);
-                        interactor.attachLoggedUser(token, attachCallback);
+                    try {
+                        throw task.getException();
+                    }catch (FirebaseAuthException e) {
+                        Log.e("LoginPresenter", e.getErrorCode() + ": " + e.getMessage());
+                        onAuthError(e.getErrorCode());
+                    }catch (FirebaseTooManyRequestsException e) {
+                        Log.e("LoginPresenter", "ERROR_TOO_MANY_REQUEST" + ": " + e.getMessage());
+                        onAuthError("ERROR_TOO_MANY_REQUEST");
+                    } catch (Exception e) {
+                        Log.e("LoginPresenter", e.getMessage());
+                        Log.e("LoginPresenter", e.getLocalizedMessage());
+                        Log.e("LoginPresenter", e.toString());
+                        e.printStackTrace();
                     }
-                });
+                }else{
+                    FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                            if (!task.isSuccessful()) {
+                                Log.e("LoginPresenter", "Hostia" + task.getException().getMessage());
+                                if (isViewAttached()) view.hideProgressBar();
+                            }
+                            String token = task.getResult().getToken();
+
+                            PreferencesManager.getInstance().setToken(token);
+                            interactor.attachLoggedUser(token, attachCallback);
+                        }
+                    });
+                }
             }
         });
+    }
+
+    private void onAuthError(String errorCode){
+        if (!isViewAttached()) return;
+
+        switch (errorCode) {
+            case "ERROR_INVALID_EMAIL":
+                view.toast("Debe ingresar un email valido");
+                break;
+            case "ERROR_WRONG_PASSWORD":
+                view.toast("Contraseña invalida");
+                break;
+            case "ERROR_USER_NOT_FOUND":
+                view.toast("El usuario que intenta acceder no existe");
+                break;
+            case "ERROR_TOO_MANY_REQUEST":
+                view.toast("Supero el numero de intentos, intente de nuevo en unos minutos");
+                break;
+            default:
+                view.toast("Error inesperado, intente nuevamente");
+                break;
+        }
+
+        view.hideProgressBar();
     }
 
     @Override

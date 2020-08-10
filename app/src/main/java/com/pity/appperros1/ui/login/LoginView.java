@@ -35,7 +35,7 @@ public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginVi
     @BindView(R.id.text_view_login_olvidaste_password) TextView textViewOlvidasteContrasenia;
     @BindView(R.id.login_edit_text_usuario)  EditText editTextMail;
     @BindView(R.id.login_edit_text_password) EditText editTextContrasenia;
-    @BindView(R.id.login_progress_bar)  ProgressBar progressBar;
+
     private AlertDialog progressDialog;
 
     @Override

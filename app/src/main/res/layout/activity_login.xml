@@ -14,14 +14,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="Baradero Adopta"
+            android:text="@string/app_name"
             android:textColor="@color/icons"
             android:textSize="40dp"
             android:textStyle="bold" />
@@ -41,73 +44,44 @@
                 android:id="@+id/login_edit_text_usuario"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/custom_edit_text_white"
                 android:drawableStart="@drawable/custom_start_edit_text_usuario"
-                android:hint="Usuario o Email"
+                android:hint="@string/email"
                 android:textColorHint="@color/background"
                 android:textColor="@color/primary_text"
-                android:inputType="textEmailAddress"/>
+                android:inputType="textEmailAddress"
+                android:autofillHints="email" />
 
             <EditText
                 android:id="@+id/login_edit_text_password"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/custom_edit_text_white"
                 android:drawableStart="@drawable/custom_start_edit_text_password"
-                android:hint="Contraseña"
+                android:hint="@string/contraseña"
                 android:textColorHint="@color/background"
                 android:inputType="textPassword"
                 android:textColor="@color/primary_text"
-                />
+                android:nextFocusDown="@id/login_button_iniciar_sesion"
+                android:autofillHints="password" />
 
             <TextView
                 android:id="@+id/text_view_login_olvidaste_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:layout_marginEnd="20dp"
-                android:text="¿Olvidaste tu contraseña?"
+                android:text="@string/olvidaste_contraseña"
                 android:textColor="#9fff"
                 android:textStyle="italic" />
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-            <ProgressBar
-                android:id="@+id/login_progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-
-                android:visibility="gone" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
-
 
         <View
             android:layout_width="match_parent"
@@ -127,14 +101,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
 
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
 
                 android:background="@drawable/custom_button_purple"
 
-                android:text="Iniciar Sesión"
+                android:text="@string/iniciar_sesion"
                 android:textColor="@color/icons"
                 android:textStyle="bold" />
 
@@ -144,14 +117,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
 
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
+
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
 
                 android:background="@drawable/custom_button_pink"
 
-                android:text="¿No tenes cuenta? Registrate"
+                android:text="@string/registrate"
                 android:textColor="@color/icons"
                 android:textStyle="bold" />
 
@@ -171,16 +143,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
 
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
+
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
 
                     android:background="@drawable/custom_buttom_facebook"
                     android:drawableStart="@drawable/custom_start_button_facebook"
                     android:gravity="center|start"
 
-                    android:text="Inicia con Facebook"
+                    android:text="@string/iniciar_sesion_con_fb"
                     android:textAlignment="center"
                     android:paddingEnd="32dp"
                     android:textColor="@color/icons"
@@ -188,7 +158,6 @@
             </FrameLayout>
 
         </LinearLayout>
-
 
     </LinearLayout>
 
