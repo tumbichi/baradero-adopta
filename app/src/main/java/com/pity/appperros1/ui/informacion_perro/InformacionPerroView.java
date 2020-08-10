@@ -45,10 +45,10 @@ import butterknife.OnClick;
 public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter>
         implements IInformacionPerroView {
 
-    @BindView(R.id.informacion_perro_layout_adopcion)
+    /*@BindView(R.id.informacion_perro_layout_adopcion)
     LinearLayout layoutAdopcion;
     @BindView(R.id.informacion_perro_layout_perdido)
-    LinearLayout layoutPerdido;
+    LinearLayout layoutPerdido;*/
     @BindView(R.id.informacion_perro_image_view_foto)
     ImageView imageViewFotoPerro;
     @BindView(R.id.informacion_perro_text_view_nombre)
@@ -57,24 +57,24 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
     TextView textViewDescripcionPerro;
     @BindView(R.id.informacion_perro_image_view_genero)
     ImageView imageViewGenero;
-    @BindView(R.id.informacion_perro_text_view_genero)
-    TextView textViewGenero;
+    /*@BindView(R.id.informacion_perro_text_view_genero)
+    TextView textViewGenero;*/
     @BindView(R.id.informacion_perro_image_view_tamanio)
     ImageView imageViewTamanio;
-    @BindView(R.id.informacion_perro_text_view_tamanio)
-    TextView textViewTamanio;
+    /*@BindView(R.id.informacion_perro_text_view_tamanio)
+    TextView textViewTamanio;*/
     @BindView(R.id.informacion_perro_image_view_edad)
     ImageView imageViewEdad;
-    @BindView(R.id.informacion_perro_text_view_edad)
-    TextView textViewEdad;
+    /*@BindView(R.id.informacion_perro_text_view_edad)
+    TextView textViewEdad;*/
     @BindView(R.id.informacion_perro_image_view_vacuna)
     ImageView imageViewVacuna;
-    @BindView(R.id.informacion_perro_text_view_vacuna)
-    TextView textViewVacunado;
+    /*@BindView(R.id.informacion_perro_text_view_vacuna)
+    TextView textViewVacunado;*/
     @BindView(R.id.informacion_perro_image_view_castrado)
     ImageView imageViewCastrado;
-    @BindView(R.id.informacion_perro_text_view_castrado)
-    TextView textViewCastrado;
+    /*@BindView(R.id.informacion_perro_text_view_castrado)
+    TextView textViewCastrado;*/
     @BindView(R.id.informacion_perro_button_contactar)
     Button buttonContactar;
 
@@ -194,19 +194,19 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
         textViewNombrePerro.setText(nombre);
         textViewDescripcionPerro.setText(descripcion);
 
-        textViewGenero.setText(genero);
+       /* textViewGenero.setText(genero);*/
         attachIconGeneroOnView(genero);
 
-        textViewTamanio.setText(tamanio);
+        /*textViewTamanio.setText(tamanio);*/
         attachIconTamanioOnView(tamanio);
 
-        textViewEdad.setText(edad);
+        /*textViewEdad.setText(edad);*/
         attachIconEdadOnView(edad);
 
-        textViewVacunado.setText(vacunado);
+        /*textViewVacunado.setText(vacunado);*/
         attachIconVacunadoOnView(vacunado);
 
-        textViewCastrado.setText(castrado);
+        /*textViewCastrado.setText(castrado);*/
         attachIconCastradoOnView(castrado);
 
         showEtiqueta(etiquetas);
@@ -249,13 +249,14 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
     }
 
     private void showEtiqueta(ArrayList<Boolean> etiquetas){
-        if (etiquetas.get(1)){
+        /*if (etiquetas.get(1)){
             layoutPerdido.setVisibility(View.GONE);
             layoutAdopcion.setVisibility(View.VISIBLE);
-        }else if (etiquetas.get(2)){
-            layoutAdopcion.setVisibility(View.GONE);
-            layoutPerdido.setVisibility(View.VISIBLE);
-            }
+        }else
+            if (etiquetas.get(2)){
+                layoutAdopcion.setVisibility(View.GONE);
+                layoutPerdido.setVisibility(View.VISIBLE);
+        }*/
 
     }
 
