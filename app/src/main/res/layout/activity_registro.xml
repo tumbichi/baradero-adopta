@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.registro.RegitroView"
 
-    android:layout_margin="4dp"
     android:background="@color/background"
     android:orientation="vertical">
 
@@ -15,9 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginTop="4dp"
-        android:text="Baradero Adopta"
+        android:text="Registro"
         android:textColor="@color/icons"
-        android:textSize="40dp"
+        android:textSize="36dp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"/>
     <View
@@ -105,7 +104,9 @@
                 android:textColorHint="@color/background"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:inputType="phone"
-                android:digits="0123456789"/>
+                android:digits="0123456789"
+                android:imeOptions="actionNext"
+                />
 
 
             <EditText
@@ -122,7 +123,8 @@
                 android:hint="Contraseña"
                 android:textColorHint="@color/background"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:imeOptions="actionNext" />
 
             <EditText
                 android:id="@+id/edit_text_confirmar_password_registro"
@@ -138,7 +140,8 @@
                 android:hint="Confirmar contraseña"
                 android:textColorHint="@color/background"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:imeOptions="actionNext" />
 
         </LinearLayout>
 

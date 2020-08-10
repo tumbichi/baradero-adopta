@@ -55,6 +55,7 @@ public class RegitroView extends BaseActivity<IRegistroPresenter> implements IRe
         return new RegistroPresenter(context);
     }
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +80,8 @@ public class RegitroView extends BaseActivity<IRegistroPresenter> implements IRe
     }
 
     @Override
-    public void finish() {
-        finish();
+    public void backToLogin() {
+        onBackPressed();
     }
 
 }

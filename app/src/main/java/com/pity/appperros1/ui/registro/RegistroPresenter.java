@@ -30,7 +30,7 @@ public class RegistroPresenter extends BasePresenter<IRegistroView> implements I
                 if (isViewAttached()) {
                     view.toast("Registro exitoso! Por favor compruebe su email");
                     view.hideProgressBar();
-                    view.finish();
+                    view.backToLogin();
                 }
             }
 

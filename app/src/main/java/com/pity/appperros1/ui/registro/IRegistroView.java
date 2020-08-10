@@ -6,5 +6,5 @@ public interface IRegistroView extends IBaseView {
     void showProgressBar();
     void hideProgressBar();
     void toast(String msg);
-    void finish();
+    void backToLogin();
 }

@@ -29,8 +29,8 @@ import butterknife.OnClick;
 
 public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginView {
 
-    @BindView(R.id.login_button_iniciar_sesion)  Button btnLogin;
-    @BindView(R.id.login_button_registrate)  Button btnRegistrate;
+    @BindView(R.id.login_button_iniciar_sesion) Button btnLogin;
+    @BindView(R.id.login_button_registrate) Button btnRegistrate;
     @BindView(R.id.login_button_registrate_facebook) Button btnFacebook;
     @BindView(R.id.text_view_login_olvidaste_password) TextView textViewOlvidasteContrasenia;
     @BindView(R.id.login_edit_text_usuario)  EditText editTextMail;

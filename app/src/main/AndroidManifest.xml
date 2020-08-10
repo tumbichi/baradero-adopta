@@ -35,7 +35,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.registro.RegitroView">
+        <activity android:name=".ui.registro.RegitroView"
+                android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.REGISTROVIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
