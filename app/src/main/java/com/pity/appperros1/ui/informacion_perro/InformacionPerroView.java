@@ -123,7 +123,6 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         switch (item.getItemId()){
             case R.id.menu_share:
                 checkPermissionForShareDog();
