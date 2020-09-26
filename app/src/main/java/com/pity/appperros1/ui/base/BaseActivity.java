@@ -2,6 +2,7 @@ package com.pity.appperros1.ui.base;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,14 +14,12 @@ public abstract class BaseActivity <TPresenter extends IBasePresenter> extends A
 
     public TPresenter mPresenter;
 
-
     public abstract TPresenter createBasePresenter(final Context context);
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if (mPresenter == null) {
             mPresenter = createBasePresenter(this);
             mPresenter.attachView(this);
@@ -29,9 +28,7 @@ public abstract class BaseActivity <TPresenter extends IBasePresenter> extends A
         if (mPresenter != null){
             mPresenter.onCreate(savedInstanceState);
         }
-
     }
-
 
     @Override
     protected void onStart() {
