@@ -26,7 +26,7 @@
             android:gravity="center"
             android:text="@string/app_name"
             android:textColor="@color/icons"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:textStyle="bold" />
 
         <View
@@ -101,7 +101,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
 
-
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
 
@@ -113,17 +112,12 @@
 
             <Button
                 android:id="@+id/login_button_registrate"
-
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-
-
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-
                 android:background="@drawable/custom_button_pink"
-
-                android:text="@string/registrate"
+                android:text="@string/registrate_login"
                 android:textColor="@color/icons"
                 android:textStyle="bold" />
 
@@ -139,11 +133,8 @@
 
                 <Button
                     android:id="@+id/login_button_registrate_facebook"
-
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-
-
                     android:layout_marginTop="5dp"
 
                     android:background="@drawable/custom_buttom_facebook"
@@ -154,7 +145,8 @@
                     android:textAlignment="center"
                     android:paddingEnd="32dp"
                     android:textColor="@color/icons"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="RtlSymmetry"/>
             </FrameLayout>
 
         </LinearLayout>

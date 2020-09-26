@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">bara-adopta</string>
+    <string name="app_name">Baradopta</string>
     <string name="facebook_application_id" translatable="false">487946478633511</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb487946478633511</string>
     <string name="default_notification_channel_id">CH_01</string>
@@ -9,7 +9,17 @@
     <string name="olvidaste_contraseña">¿Olvidaste tu contraseña?</string>
     <string name="iniciar_sesion">Iniciar Sesión</string>
     <string name="iniciar_sesion_con_fb">Inicia con Facebook</string>
-    <string name="registrate">¿No tenes cuenta? Registrate</string>
+    <string name="registrate_login">¿No tenes cuenta? Registrate</string>
     <string name="iniciando_sesion">Iniciando sesión</string>
     <string name="aguarde">Aguarde unos segundos…</string>
+    <string name="registro">Registro</string>
+    <string name="confirmar_contraseña">Confirmar contraseña</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="numero_de_telefono">Número de telefono</string>
+    <string name="telefono_message_registro">NO debe incluir espacios, ni guinones, el 0 ni la caracterista de nuestro pais(+54).</string>
+    <string name="telefono_ej_registro">Ej: 3329001122 o 1133445566</string>
+    <string name="registrate">Registrate</string>
+    <string name="ingresa_el_email">Ingresa el email de tu cuenta</string>
+    <string name="enviar">Enviar</string>
 </resources>

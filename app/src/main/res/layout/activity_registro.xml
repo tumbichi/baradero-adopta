@@ -4,204 +4,204 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.registro.RegitroView"
-
     android:background="@color/background"
-    android:orientation="vertical">
 
+    android:orientation="vertical"
+    tools:context=".ui.registro.RegitroView">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="4dp"
-        android:text="Registro"
+        android:text="@string/registro"
         android:textColor="@color/icons"
-        android:textSize="36dp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"/>
+        android:textSize="36sp"
+        android:textStyle="bold"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center">
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+        android:layout_gravity="center">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical"
-            android:layout_gravity="center"
-            android:gravity="center">
-            <EditText
-                android:id="@+id/edit_text_nombre_registro"
+            android:layout_marginHorizontal="20dp">
+
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/custom_edit_text_white"
-                android:drawableStart="@drawable/custom_start_edit_text_usuario"
-                android:hint="Nombre"
-                android:textColorHint="@color/background"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:inputType="text"/>
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-            <EditText
-                android:id="@+id/edit_text_apellido_registro"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/custom_edit_text_white"
-                android:drawableStart="@drawable/custom_start_edit_text_usuario"
-                android:hint="Apellido"
-                android:textColorHint="@color/background"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:inputType="text"/>
-
-            <EditText
-                android:id="@+id/edit_text_email_registro"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/custom_edit_text_white"
-                android:drawableStart="@drawable/custom_start_edit_test_email"
-                android:hint="Email"
-                android:textColorHint="@color/background"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:inputType="textEmailAddress"/>
-
-            <EditText
-                android:id="@+id/edit_text_telefono_registro"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/custom_edit_text_white"
-                android:drawableStart="@drawable/custom_start_edit_text_phone"
-                android:hint="Numero de telefono"
-                android:textColorHint="@color/background"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:inputType="phone"
-                android:digits="0123456789"
-                android:imeOptions="actionNext"
-                />
-
-
-            <EditText
-                android:id="@+id/edit_text_password_registro"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/custom_edit_text_white"
-                android:drawableStart="@drawable/custom_start_edit_text_password"
-                android:hint="Contraseña"
-                android:textColorHint="@color/background"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:inputType="textPassword"
-                android:imeOptions="actionNext" />
-
-            <EditText
-                android:id="@+id/edit_text_confirmar_password_registro"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/custom_edit_text_white"
-                android:drawableStart="@drawable/custom_start_edit_text_password"
-                android:hint="Confirmar contraseña"
-                android:textColorHint="@color/background"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:inputType="textPassword"
-                android:imeOptions="actionNext" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:gravity="center">
-            <ProgressBar
-                android:id="@+id/registro_progress_bar"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
 
+                <EditText
+                    android:id="@+id/edit_text_email_registro"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
 
+                    android:layout_marginTop="5dp"
 
-                android:visibility="gone"/>
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/custom_edit_text_white"
+                    android:drawableStart="@drawable/custom_start_edit_test_email"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textColorHint="@color/background"
+                    android:importantForAutofill="no" />
 
+                <EditText
+                    android:id="@+id/edit_text_password_registro"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/custom_edit_text_white"
+                    android:drawableStart="@drawable/custom_start_edit_text_password"
+                    android:hint="@string/contraseña"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textColorHint="@color/background"
+                    android:importantForAutofill="no" />
+
+                <EditText
+                    android:id="@+id/edit_text_confirmar_password_registro"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/custom_edit_text_white"
+                    android:drawableStart="@drawable/custom_start_edit_text_password"
+                    android:hint="@string/confirmar_contraseña"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textColorHint="@color/background"
+                    android:importantForAutofill="no" />
+
+                <EditText
+                    android:id="@+id/edit_text_nombre_registro"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+
+                    android:layout_marginTop="5dp"
+
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/custom_edit_text_white"
+                    android:drawableStart="@drawable/custom_start_edit_text_usuario"
+                    android:hint="@string/nombre"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textColorHint="@color/background"
+                    android:importantForAutofill="no" />
+
+                <EditText
+                    android:id="@+id/edit_text_apellido_registro"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+
+                    android:layout_marginTop="5dp"
+
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/custom_edit_text_white"
+                    android:drawableStart="@drawable/custom_start_edit_text_usuario"
+                    android:hint="@string/apellido"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textColorHint="@color/background"
+                    android:importantForAutofill="no" />
+
+                <EditText
+                    android:id="@+id/edit_text_telefono_registro"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/custom_edit_text_white"
+                    android:digits="0123456789"
+                    android:drawableStart="@drawable/custom_start_edit_text_phone"
+                    android:hint="@string/numero_de_telefono"
+                    android:imeOptions="actionDone"
+                    android:inputType="phone"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textColorHint="@color/background"
+                    android:importantForAutofill="no" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="6dp"
+                    android:gravity="start"
+                    android:text="@string/telefono_message_registro"
+                    android:textColor="#9fff"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="6dp"
+                    android:gravity="start"
+                    android:text="@string/telefono_ej_registro"
+                    android:textColor="#9fff"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
         </LinearLayout>
+    </ScrollView>
 
-
-
-    </LinearLayout>
-
-
-</ScrollView>
-
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:gravity="center">
 
+        <ProgressBar
+            android:id="@+id/registro_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center|bottom"
         android:layout_gravity="bottom"
-        android:orientation="vertical">
+        android:gravity="center|bottom"
+        android:orientation="vertical"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp">
 
         <Button
             android:id="@+id/registro_button_registrate"
-
             android:layout_width="match_parent"
             android:layout_height="50dp"
-
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
-
             android:background="@drawable/custom_button_purple"
-
-            android:text="Registrate"
+            android:text="@string/registrate"
             android:textColor="@color/icons"
             android:textStyle="bold" />
     </LinearLayout>
-
-
 
 </LinearLayout>
