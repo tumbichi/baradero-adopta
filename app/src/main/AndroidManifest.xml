@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".ui.login.LoginView">
+        <activity android:screenOrientation="portrait" android:name=".ui.login.LoginView">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +27,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.inicio.InicioActivity"
+        <activity android:screenOrientation="portrait" android:name=".ui.inicio.InicioActivity"
+
             android:launchMode = "singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.INICIOACTIVITY"/>
@@ -34,7 +36,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.registro.RegitroView"
+        <activity android:screenOrientation="portrait" android:name=".ui.registro.RegitroView"
+
                 android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.REGISTROVIEW"/>
@@ -42,14 +45,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.olvidaste_contrasenia.OlvidasteContraseniaView">
+        <activity android:screenOrientation="portrait" android:name=".ui.olvidaste_contrasenia.OlvidasteContraseniaView">
+
             <intent-filter>
                 <action android:name="android.intent.action.OLVIDASTECONTRASENIAVIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.informacion_perro.InformacionPerroView">
+        <activity android:screenOrientation="portrait" android:name=".ui.informacion_perro.InformacionPerroView">
+
             <intent-filter>
                 <action android:name="android.intent.action.INFORMACIONPERROVIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -57,7 +62,8 @@
 
         </activity>
 
-        <activity android:name=".ui.adoption.AdopcionView">
+        <activity android:screenOrientation="portrait" android:name=".ui.adoption.AdopcionView">
+
             <intent-filter>
                 <action android:name="android.intent.action.ADOPCIONPERROVIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -65,7 +71,8 @@
 
         </activity>
 
-        <activity android:name=".ui.profile.ProfileView">
+        <activity android:screenOrientation="portrait" android:name=".ui.profile.ProfileView">
+
             <intent-filter>
                 <action android:name="android.intent.action.PERFILACTIVITY"/>
                 <action android:name="com.pity.appperros1.TARGETNOTIFICATION"/>
@@ -74,7 +81,8 @@
 
         </activity>
 
-        <activity android:name=".ui.NotificationActivity">
+        <activity android:screenOrientation="portrait" android:name=".ui.NotificationActivity">
+
             <intent-filter>
                 <!--action android:name="com.pity.appperros1.TARGETNOTIFICATION"/-->
                 <category android:name="android.intent.category.DEFAULT"/>
