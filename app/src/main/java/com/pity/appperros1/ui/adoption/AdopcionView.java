@@ -37,11 +37,6 @@ public class AdopcionView extends BaseActivity<AdopcionPresenter> implements IAd
     ProgressBar progressBar;
     CountryCodePicker countryCodePicker;
 
-
-
-
-
-
     @Override
     public AdopcionPresenter createBasePresenter(Context context) {
         return new AdopcionPresenter(this);

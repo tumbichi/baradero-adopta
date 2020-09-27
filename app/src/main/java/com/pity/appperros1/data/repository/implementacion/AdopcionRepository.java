@@ -56,11 +56,11 @@ public class AdopcionRepository implements IAdopcionRepository {
     }
 
     @Override
-    public void registerSolicitudOnDatabase(String uploaderID, String adopterID, CallbackAdoption callbackAdoption) {
+    public void registerSolicitudOnDatabase(String uploaderID, String adopterID, String dogID, CallbackAdoption callbackAdoption) {
         DatabaseReference mRef = database.getReference().child(UserUtils.USER_DB_REF).child(uploaderID).child("Notifications").push();
         //String solicitudID = mRef.getKey();
 
-        mRef.updateChildren(AdopcionUtils.mapSolicitud(adopterID))
+        mRef.updateChildren(AdopcionUtils.mapSolicitud(adopterID, dogID))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

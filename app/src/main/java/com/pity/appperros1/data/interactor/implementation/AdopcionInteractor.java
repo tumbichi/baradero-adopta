@@ -71,7 +71,7 @@ public class AdopcionInteractor implements IAdopcionInteractor {
 
     @Override
     public void sendNotification(IAdopcionRepository.CallbackAdoption callbackAdoption) {
-        AdopcionRepository.getInstance().registerSolicitudOnDatabase(adopcion.getUPLOADER().getUid(), adopcion.getADOPTER().getUid(), callbackAdoption);
+        AdopcionRepository.getInstance().registerSolicitudOnDatabase(adopcion.getUPLOADER().getUid(), adopcion.getADOPTER().getUid(), adopcion.getDOG().getDid(), callbackAdoption);
     }
 
 

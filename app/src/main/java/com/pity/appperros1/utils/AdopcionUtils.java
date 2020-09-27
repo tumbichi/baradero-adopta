@@ -1,5 +1,7 @@
 package com.pity.appperros1.utils;
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,9 +22,10 @@ public class AdopcionUtils {
         return adoption;
     }
 
-    public static Map<String, Object> mapSolicitud(String adopterID){
+    public static Map<String, Object> mapSolicitud(String adopterID, String dogId){
         Map<String, Object> solicitud = new HashMap<>();
         solicitud.put("from_user_id", adopterID);
+        solicitud.put("dog_id", dogId);
         return solicitud;
     }
 }
