@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 public class DogRepository implements IDogRepository {
@@ -215,24 +217,26 @@ public class DogRepository implements IDogRepository {
     public void queryDogBy(String Id, CallbackQueryDog callbackQueryDog) {
         DatabaseReference mReference = database.getReference().child("Perros");
         final Perro[] currentDog = {null};
+
         // Query query = mReference.orderByChild("id").equalTo(Id).limitToFirst(1);
         // Query qe = mReference.child("etiquetas").orderByChild("1").equalTo(true);
-        Query q = mReference.orderByKey().equalTo(Id).limitToFirst(1);
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        ValueEventListener queryListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Perro currentDog = null;
                 if (dataSnapshot != null) {
-                    currentDog = dataSnapshot.getChildren().iterator().next().getValue(Perro.class);
+                    currentDog[0] = dataSnapshot.getChildren().iterator().next().getValue(Perro.class);
                 }
-                callbackQueryDog.onSucessQueryDog(currentDog);
+                callbackQueryDog.onSucessQueryDog(currentDog[0]);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 callbackQueryDog.onFailureQueryDog(databaseError.getMessage() + "dogId: " + Id);
             }
-        });
+        };
+
+        Query q = mReference.orderByKey().equalTo(Id).limitToFirst(1);
+        q.addListenerForSingleValueEvent(queryListener);
     }
 
     @Override

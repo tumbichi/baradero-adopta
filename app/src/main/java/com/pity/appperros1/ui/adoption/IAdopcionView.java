@@ -8,5 +8,5 @@ public interface IAdopcionView extends IBaseView {
     void showProgressBar();
     void hideProgressBar();
     void toast(String text);
-    void killActivity();
+    void finishAdoption(boolean result);
 }

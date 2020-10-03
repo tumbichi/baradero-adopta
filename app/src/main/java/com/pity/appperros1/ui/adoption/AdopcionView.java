@@ -2,6 +2,7 @@ package com.pity.appperros1.ui.adoption;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,13 +16,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.hbb20.CountryCodePicker;
 import com.pity.appperros1.R;
 import com.pity.appperros1.ui.base.BaseActivity;
+import com.pity.appperros1.utils.CommonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class AdopcionView extends BaseActivity<AdopcionPresenter> implements IAdopcionView {
-
 
     @BindView(R.id.content_view_adoption)
     LinearLayout contentView;
@@ -49,11 +50,16 @@ public class AdopcionView extends BaseActivity<AdopcionPresenter> implements IAd
         ButterKnife.bind(this);
         mPresenter.attachView(this);
         showProgressBar();
-        requestData();
+
+        if (CommonUtils.isNetworkAvailable(this)){
+            requestData();
+        }else{
+            finishAdoption(false);
+        }
+
         countryCodePicker = findViewById(R.id.adopcion_country_code_picker);
         countryCodePicker.setArrowColor(getResources().getColor(R.color.accent));
         onChangedCountryCodeListener(countryCodePicker);
-
     }
 
     private void requestData() {
@@ -66,7 +72,6 @@ public class AdopcionView extends BaseActivity<AdopcionPresenter> implements IAd
         editTextEmail.setText(email);
         editTextTelefono.setText(telefono);
     }
-
 
     @Override
     public void showProgressBar() {
@@ -100,7 +105,10 @@ public class AdopcionView extends BaseActivity<AdopcionPresenter> implements IAd
     }
 
     @Override
-    public void killActivity() {
+    public void finishAdoption(boolean result) {
+        Intent data = new Intent();
+        data.setData(Uri.parse(Boolean.toString(result)));
+        setResult(RESULT_OK, data);
         finish();
     }
 }

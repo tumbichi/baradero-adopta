@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +43,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+// TODO: Pasar todos los strings de esta Clase a res/strings.xml
 public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter>
         implements IInformacionPerroView {
 
@@ -145,21 +147,20 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
                     shareDog();
             }
         }else{
-            // Older 23
+            // Older than SDK 23
             if (checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
                 shareDog();
             }else{
-                toast("Se necesitan permisos de la storage para seguir");
+                toast(getString(R.string.error_permisos_storage));
             }
         }
     }
 
-    private boolean checkPermission(String permission){ // comprueba si existe el permiso
+    // Comprueba si existe el 'permission' para la versiones de la SDK '< 23'
+    private boolean checkPermission(String permission){
         int resultado = ContextCompat.checkSelfPermission(this, permission);
         return resultado == PackageManager.PERMISSION_GRANTED;
     }
-
-
 
     private void shareDog() {
         Drawable drawable = imageViewFotoPerro.getDrawable();
@@ -173,8 +174,8 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/*");
         share.putExtra(Intent.EXTRA_STREAM, uri);
-        share.putExtra(Intent.EXTRA_TEXT, textViewNombrePerro.getText().toString() + " Descripcion: " + textViewDescripcionPerro.getText().toString());
-        startActivity(Intent.createChooser(share, "Eliga el medio donde quiera compartir a este perro"));
+        share.putExtra(Intent.EXTRA_TEXT, textViewNombrePerro.getText().toString() + " "+ getString(R.string.description) + ": " + textViewDescripcionPerro.getText().toString());
+        startActivity(Intent.createChooser(share, getString(R.string.choose_app_share_dog)));
     }
 
     @Override
@@ -184,28 +185,18 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
     }
 
     @Override
-    public void populateDogView(String nombre, String descripcion, String urlFoto, String genero,
-                                String tamanio, String edad, String vacunado, String castrado,
-                                ArrayList<Boolean> etiquetas) {
+    public void populateDogView(String nombre, String descripcion, String urlFoto, String genero, String tamanio, String edad, String vacunado, String castrado, ArrayList<Boolean> etiquetas) {
 
         getSupportActionBar().setTitle(nombre);
         getSupportActionBar().setSubtitle(etiquetas.get(DogUtils.ETIQUETA_ADOPCION_ID) ? DogUtils.ETIQUETA_ADOPCION : DogUtils.ETIQUETA_PERDIDO);
+
         textViewNombrePerro.setText(nombre);
         textViewDescripcionPerro.setText(descripcion);
 
-       /* textViewGenero.setText(genero);*/
         attachIconGeneroOnView(genero);
-
-        /*textViewTamanio.setText(tamanio);*/
         attachIconTamanioOnView(tamanio);
-
-        /*textViewEdad.setText(edad);*/
         attachIconEdadOnView(edad);
-
-        /*textViewVacunado.setText(vacunado);*/
         attachIconVacunadoOnView(vacunado);
-
-        /*textViewCastrado.setText(castrado);*/
         attachIconCastradoOnView(castrado);
 
         showEtiqueta(etiquetas);
@@ -218,7 +209,6 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
 
         progressBar.setVisibility(View.GONE);
         mainView.setVisibility(View.VISIBLE);
-
     }
 
     @Override
@@ -234,7 +224,42 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
         intentAdoption.putExtra("dog", dogID);
         intentAdoption.putExtra("uploader", uploaderID);
         intentAdoption.putExtra("adopter", adopterID);
-        startActivity(intentAdoption);
+        startActivityForResult(intentAdoption, 99);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 99){
+            if (resultCode == RESULT_OK){
+                boolean adoptionResult = Boolean.parseBoolean(data.getData().toString());
+                Log.d("InformacionPerro", "StringResult " + data.getData().toString());
+                Log.d("InformacionPerro", "BooleanResult " + adoptionResult);
+                showFinishAlertAdoption(adoptionResult);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void showFinishAlertAdoption(boolean adoptionResult){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setCancelable(false);
+
+        if (adoptionResult){
+            dialogBuilder.setTitle("¡Adopción exitosa!");
+            dialogBuilder.setMessage("Ahora debe esperar que el usuario que lo publico se comunique con usted");
+            dialogBuilder.setIcon(R.mipmap.ic_launcher_round);
+
+        }else{
+            dialogBuilder.setTitle("¡Ups! Ha ocurrido un error inesperado");
+            dialogBuilder.setMessage("Revise que su conexión a internet este funcionando bien, y vuelva a intentarlo");
+            dialogBuilder.setIcon(R.drawable.icon_error);
+        }
+
+        dialogBuilder.setNeutralButton("Ok", (dialogInterface, i) -> {
+            dialogInterface.dismiss();
+        });
+
+        dialogBuilder.show();
     }
 
     @Override
@@ -256,7 +281,6 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
                 layoutAdopcion.setVisibility(View.GONE);
                 layoutPerdido.setVisibility(View.VISIBLE);
         }*/
-
     }
 
     private void attachIconGeneroOnView(String genero){
@@ -267,12 +291,14 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
     }
 
     private void attachIconTamanioOnView(String tamanio){
-        if (TextUtils.equals ("Grande" ,tamanio)){
+        if (TextUtils.equals (getString(R.string.big) ,tamanio)){
             Glide.with(this).load(R.drawable.grande).into(imageViewTamanio);
         }else{
             if (TextUtils.equals("Mediano", tamanio)) {
                 Glide.with(this).load(R.drawable.mediano).into(imageViewTamanio);
-            }   else Glide.with(this).load(R.drawable.pequnio).into(imageViewTamanio);
+            } else {
+                Glide.with(this).load(R.drawable.pequnio).into(imageViewTamanio);
+            }
         }
     }
 
@@ -304,25 +330,24 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
         }
     }
 
-
     @OnClick(R.id.informacion_perro_button_contactar)
     public void onClickIniciarAdopcion(View clicked){
-        AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
-        mDialog.setTitle("¿Esta seguro que quiere adoptar este perro? ");
-        mDialog.setMessage("Esto implica que debera proporcionar un numero y email de contacto");
-        mDialog.setCancelable(false);
-        mDialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("¿Esta seguro que quiere adoptar este perro? ");
+        dialogBuilder.setMessage("Debera proporcionar un numero y email de contacto. Y Luego esperar a ser contactado por la persona que lo publico");
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mPresenter.initDogAdoption();
+                mPresenter.startDogAdoption();
             }
         });
-        mDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+        dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                toast("shameeee");
+
             }
         });
-        mDialog.show();
+        dialogBuilder.show();
     }
 }

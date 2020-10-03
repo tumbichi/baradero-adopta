@@ -27,7 +27,6 @@ public class AdopcionInteractor implements IAdopcionInteractor {
     @Override
     public void attachRequestedData(String dog, String uploader, String adopter, IAdopcionPresenter.CallbackResquest callbackResquest) {
         adopcion.setADOPTER(UserRepository.getInstance().getCurrentUser());
-        Log.i(TAG, "Adopter{ \n" + getCurrentAdopcion().getADOPTER().toString() + "}");
         DogRepository.getInstance().queryDogBy(dog, new IDogRepository.CallbackQueryDog() {
             @Override
             public void onSucessQueryDog(Perro currentDog) {
@@ -38,6 +37,7 @@ public class AdopcionInteractor implements IAdopcionInteractor {
 
             @Override
             public void onFailureQueryDog(String msgError) {
+                Log.e(TAG, "Adoption Error: " + msgError);
                 callbackResquest.onFailureRequest(msgError);
             }
         });
@@ -52,6 +52,7 @@ public class AdopcionInteractor implements IAdopcionInteractor {
 
             @Override
             public void onFailureUserQueryById(String msgError) {
+                Log.e(TAG, "Adoption Error: " + msgError);
                 callbackResquest.onFailureRequest(msgError);
             }
         });
@@ -74,11 +75,8 @@ public class AdopcionInteractor implements IAdopcionInteractor {
         AdopcionRepository.getInstance().registerSolicitudOnDatabase(adopcion.getUPLOADER().getUid(), adopcion.getADOPTER().getUid(), adopcion.getDOG().getDid(), callbackAdoption);
     }
 
-
     @Override
     public Adopcion getCurrentAdopcion() {
         return adopcion;
     }
-
-
 }

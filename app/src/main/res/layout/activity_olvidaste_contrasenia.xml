@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.olvidaste_contrasenia.OlvidasteContraseniaView"
     android:padding="8dp"
-    android:layout_margin="4dp"
     android:background="@color/background"
     android:orientation="vertical"
     android:gravity="center">

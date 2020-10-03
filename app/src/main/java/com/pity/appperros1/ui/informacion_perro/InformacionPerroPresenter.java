@@ -1,6 +1,7 @@
 package com.pity.appperros1.ui.informacion_perro;
 
 import android.content.Context;
+import android.net.Network;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -58,7 +59,6 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
         view.populateUserView(nombre, urlFoto);
     }
 
-
     @Override
     public void attachCurrentDogId(String currentId) {
         mDogRepository.queryDogBy(currentId, new IDogRepository.CallbackQueryDog() {
@@ -93,7 +93,7 @@ public class InformacionPerroPresenter extends BasePresenter<IInformacionPerroVi
     }
 
     @Override
-    public void initDogAdoption() {
+    public void startDogAdoption() {
         String dogID = mCurrentDog.getDid();
         String uploaderID = mCurrentDog.getUid();
         String adopterID = mUserRepository.currentFirebaseUser().getUid();

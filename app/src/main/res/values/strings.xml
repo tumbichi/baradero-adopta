@@ -22,4 +22,18 @@
     <string name="registrate">Registrate</string>
     <string name="ingresa_el_email">Ingresa el email de tu cuenta</string>
     <string name="enviar">Enviar</string>
+    <string name="description">Descripción</string>
+
+
+    <!-- DOGS -->
+    <string name="big">Grande</string>
+    <string name="medium">Mediano</string>
+    <string name="little">Pequeño</string>
+
+    <string name="choose_app_share_dog">Eliga el medio donde quiera compartir a este perro</string>
+
+    <!-- Errores -->
+    <string name="error_permisos_storage">Se necesitan permisos del almacenamiento para seguir</string>
+    <string name="invalid_email">Debe ingresar un email valido</string>
+    <string name="invalid_number">Debe ingresar un número valido</string>
 </resources>
