@@ -5,11 +5,13 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,13 +31,20 @@ import butterknife.OnClick;
 
 public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginView {
 
-    @BindView(R.id.login_button_iniciar_sesion) Button btnLogin;
-    @BindView(R.id.login_button_registrate) Button btnRegistrate;
-    @BindView(R.id.login_button_registrate_facebook) Button btnFacebook;
-    @BindView(R.id.text_view_login_olvidaste_password) TextView textViewOlvidasteContrasenia;
-    @BindView(R.id.login_edit_text_usuario)  EditText editTextMail;
-    @BindView(R.id.login_edit_text_password) EditText editTextContrasenia;
-
+    @BindView(R.id.login_button_iniciar_sesion)
+    Button btnLogin;
+    @BindView(R.id.login_button_registrate)
+    Button btnRegistrate;
+    @BindView(R.id.login_button_registrate_facebook)
+    Button btnFacebook;
+    @BindView(R.id.text_view_login_olvidaste_password)
+    TextView textViewOlvidasteContrasenia;
+    @BindView(R.id.login_edit_text_usuario)
+    EditText editTextMail;
+    @BindView(R.id.login_edit_text_password)
+    EditText editTextContrasenia;
+    @BindView(R.id.main_login_container)
+    RelativeLayout mainLayout;
     private AlertDialog progressDialog;
 
     @Override
@@ -47,11 +56,18 @@ public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginVi
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         PreferencesManager.initializeInstance(getApplicationContext());
         createProgressDialog();
+
+        mPresenter.checkUserLogged();
     }
 
     private void createProgressDialog() {
@@ -62,31 +78,31 @@ public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginVi
     }
 
     @OnClick(R.id.login_button_iniciar_sesion)
-    public void onClickLogin(View view){
+    public void onClickLogin(View view) {
         String email = editTextMail.getText().toString();
         String pass = editTextContrasenia.getText().toString();
         mPresenter.loginUserWith(email, pass);
     }
 
     @OnClick(R.id.login_button_registrate)
-    public void onClickRegistrate(View view){
+    public void onClickRegistrate(View view) {
         navigateTo(RegitroView.class);
     }
 
     @OnClick(R.id.login_button_registrate_facebook)
-    public void onClickFacebook(View view){
+    public void onClickFacebook(View view) {
         mPresenter.manageLoginWithFacebook();
     }
 
     @OnClick(R.id.text_view_login_olvidaste_password)
-    public void onClickRegistrate(TextView textView){
+    public void onClickRegistrate(TextView textView) {
         if (textView == this.textViewOlvidasteContrasenia) {
             navigateTo(OlvidasteContraseniaView.class);
         }
     }
 
     @Override
-    public void navigateTo(Class activity){
+    public void navigateTo(Class activity) {
         startActivity(new Intent(this,
                 activity));
     }
@@ -100,6 +116,20 @@ public class LoginView extends BaseActivity<ILoginPresenter> implements ILoginVi
     @Override
     public Activity provideActivity() {
         return LoginView.this;
+    }
+
+    @Override
+    public void showSplashScreen() {
+        if (Build.VERSION.SDK_INT >= 23){
+            mainLayout.setForeground(getDrawable(R.drawable.splashscreen));
+        }
+    }
+
+    @Override
+    public void hideSplashScreen() {
+        if (Build.VERSION.SDK_INT >= 23){
+            mainLayout.setForeground(null);
+        }
     }
 
     @Override

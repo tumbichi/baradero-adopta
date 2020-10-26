@@ -12,13 +12,6 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <ProgressBar
-        android:id="@+id/informacion_perro_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -27,14 +20,21 @@
             android:id="@+id/informacion_perro_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             android:orientation="vertical"
-            android:visibility="visible"
-            android:clipToPadding="false">
+            android:visibility="visible">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/divider" />
+
+            <ProgressBar
+                android:id="@+id/informacion_perro_progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="0dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,8 +44,7 @@
                 <ImageView
                     android:id="@+id/informacion_perro_image_view_foto"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 
@@ -96,95 +95,95 @@
                 android:layout_height="148dp"
                 android:layout_marginTop="-36dp"
                 android:background="@drawable/custom_perfil_top_background"
-                android:padding="4dp"
                 android:elevation="128dp"
                 android:orientation="horizontal"
+                android:padding="4dp"
                 android:weightSum="4">
 
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/informacion_perro_text_view_nombre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Nombre"
+                        android:textColor="@color/icons"
+                        android:textSize="24sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@color/icons" />
+
+                    <TextView
+                        android:id="@+id/informacion_perro_text_view_descripcion"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:overScrollMode="always"
+                        android:text="Descripcion"
+                        android:textColor="@color/icons"
+                        android:textSize="12sp" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:orientation="vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|end">
 
                         <TextView
-                            android:id="@+id/informacion_perro_text_view_nombre"
+                            android:id="@+id/informacion_perro_text_view_ver_mas"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:text="Nombre"
-                            android:textColor="@color/icons"
-                            android:textSize="24sp" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="16dp"
-                            android:background="@color/icons" />
-
-                        <TextView
-                            android:id="@+id/informacion_perro_text_view_descripcion"
-                            android:layout_width="match_parent"
-                            android:layout_height="42dp"
-                            android:layout_gravity="start"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="6dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginBottom="8dp"
-                            android:text="Descripcion"
-                            android:textColor="@color/icons"
-                            android:textSize="12sp"
-                            android:overScrollMode="always"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical|end"
-                            >
-
-                            <TextView
-                                android:id="@+id/informacion_perro_text_view_ver_mas"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:text="VER MAS"
-                                android:textColor="#FF5722"
-                                android:textSize="14sp" />
-
-                        </LinearLayout>
+                            android:layout_height="match_parent"
+                            android:text="VER MAS"
+                            android:textColor="#FF5722"
+                            android:textSize="14sp" />
 
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center">
 
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/informacion_perro_image_view_user"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/background_perro"
-                            app:civ_border_color="#FFF"
-                            app:civ_border_width="2dp" />
+                </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/informacion_perro_text_view_user_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:gravity="top|center"
-                            android:text="User Name"
-                            android:textColor="@color/icons"
-                            android:textSize="10sp" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                    </LinearLayout>
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/informacion_perro_image_view_user"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/background_perro"
+                        app:civ_border_color="#FFF"
+                        app:civ_border_width="2dp" />
+
+                    <TextView
+                        android:id="@+id/informacion_perro_text_view_user_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="top|center"
+                        android:text="User Name"
+                        android:textColor="@color/icons"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
@@ -202,23 +201,22 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:baselineAligned="true"
                     android:gravity="center"
-                    >
+                    android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="110dp"
                         android:layout_height="110dp"
-                        app:cardCornerRadius="64dp"
+                        android:layout_margin="6dp"
                         app:cardBackgroundColor="@color/primary_light"
-                        android:layout_margin="6dp">
+                        app:cardCornerRadius="64dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:padding="8dp"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:padding="8dp">
 
                             <ImageView
                                 android:id="@+id/informacion_perro_image_view_genero"
@@ -247,32 +245,33 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:baselineAligned="true"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="110dp"
                         android:layout_height="110dp"
-                        app:cardCornerRadius="64dp"
-                        app:cardBackgroundColor="@color/primary"
                         android:layout_marginTop="6dp"
+                        android:layout_marginEnd="32dp"
                         android:layout_marginBottom="6dp"
-                        android:layout_marginEnd="32dp">
+                        app:cardBackgroundColor="@color/primary"
+                        app:cardCornerRadius="64dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:padding="6dp"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:padding="6dp">
+
                             <ImageView
                                 android:id="@+id/informacion_perro_image_view_tamanio"
                                 android:layout_width="96dp"
                                 android:layout_height="96dp"
                                 android:layout_gravity="center_vertical"
 
-                                android:src="@drawable/pequnio"
-                                android:contentDescription="Pequeño" />
+                                android:contentDescription="Pequeño"
+                                android:src="@drawable/pequnio" />
                         </LinearLayout>
                         <!--TextView
                             android:id="@+id/informacion_perro_text_view_tamanio"
@@ -290,23 +289,24 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="110dp"
                         android:layout_height="110dp"
-                        app:cardCornerRadius="64dp"
-                        app:cardBackgroundColor="@color/primary"
+                        android:layout_marginStart="32dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginBottom="6dp"
-                        android:layout_marginStart="32dp">
+                        app:cardBackgroundColor="@color/primary"
+                        app:cardCornerRadius="64dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:padding="8dp"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:padding="8dp">
+
                             <ImageView
                                 android:id="@+id/informacion_perro_image_view_edad"
                                 android:layout_width="96dp"
                                 android:layout_height="96dp"
-                                android:src="@drawable/cachorro"
-                                android:contentDescription="edad" />
+                                android:contentDescription="edad"
+                                android:src="@drawable/cachorro" />
                         </LinearLayout>
                         <!--TextView
                             android:id="@+id/informacion_perro_text_view_edad"
@@ -325,24 +325,25 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:baselineAligned="true"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="110dp"
                         android:layout_height="110dp"
-                        app:cardCornerRadius="64dp"
-                        app:cardBackgroundColor="@color/primary_light"
                         android:layout_marginTop="6dp"
+                        android:layout_marginEnd="32dp"
                         android:layout_marginBottom="6dp"
-                        android:layout_marginEnd="32dp">
+                        app:cardBackgroundColor="@color/primary_light"
+                        app:cardCornerRadius="64dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:padding="8dp"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:padding="8dp">
+
                             <ImageView
                                 android:id="@+id/informacion_perro_image_view_vacuna"
                                 android:layout_width="72dp"
@@ -361,20 +362,22 @@
                             android:textStyle="bold" /-->
 
                     </androidx.cardview.widget.CardView>
+
                     <androidx.cardview.widget.CardView
                         android:layout_width="110dp"
                         android:layout_height="110dp"
-                        app:cardCornerRadius="64dp"
-                        app:cardBackgroundColor="@color/primary_light"
+                        android:layout_marginStart="32dp"
                         android:layout_marginTop="6dp"
                         android:layout_marginBottom="6dp"
-                        android:layout_marginStart="32dp">
+                        app:cardBackgroundColor="@color/primary_light"
+                        app:cardCornerRadius="64dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:padding="8dp"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:padding="8dp">
+
                             <ImageView
                                 android:id="@+id/informacion_perro_image_view_castrado"
                                 android:layout_width="72dp"
@@ -408,9 +411,9 @@
                 android:layout_gravity="bottom"
                 android:layout_margin="12dp"
                 android:background="@drawable/custom_button_purple"
+                android:elevation="128dp"
                 android:text="CONTACT WITH OWNER"
-                android:textColor="@color/icons"
-                android:elevation="128dp"/>
+                android:textColor="@color/icons" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

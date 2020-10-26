@@ -44,24 +44,28 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
     LoginPresenter(Context context, LoginIteractor interactor) {
         super(context);
         this.interactor = interactor;
-        initAttachCallback();
-        checkUserLogged();
 
         mCallbackManager = CallbackManager.Factory.create();
     }
 
-    private void checkUserLogged(){
+    @Override
+    public void checkUserLogged() {
+        initAttachCallback();
         if (interactor.isUserLogged()) {
             interactor.requestServerToken(new OnCompleteListener<InstanceIdResult>() {
                 @Override
                 public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                    if (!task.isSuccessful()) return;
+                    if (!task.isSuccessful()) {
+                        view.hideSplashScreen();
+                        return;
+                    }
 
                     String lastToken = PreferencesManager.getInstance().getToken();
                     String serverToken = task.getResult().getToken();
 
-                    if (!isDeviceTokenValid(lastToken, serverToken)){
+                    if (!isDeviceTokenValid(lastToken, serverToken)) {
                         interactor.logoutUser();
+                        view.hideSplashScreen();
                         return;
                     }
 
@@ -69,16 +73,20 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
                     interactor.attachLoggedUser(serverToken, attachCallback);
                 }
             });
+        } else {
+            Log.e("LoginPresenter", "isViewAttach?" + isViewAttached());
+            view.hideSplashScreen();
         }
     }
 
-    private void initAttachCallback(){
+    private void initAttachCallback() {
         attachCallback = new DataCallback<Usuario>() {
             @Override
             public void onSuccess(Usuario usuario) {
-                if (isViewAttached()){
-                    view.navigateToInicio();
+                if (isViewAttached()) {
+                    view.showSplashScreen();
                     view.hideProgressBar();
+                    view.navigateToInicio();
                 }
             }
 
@@ -89,7 +97,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
         };
     }
 
-    private boolean isDeviceTokenValid(String deviceToken, String serverToken){
+    private boolean isDeviceTokenValid(String deviceToken, String serverToken) {
         return !deviceToken.isEmpty() && serverToken.equals(deviceToken);
     }
 
@@ -110,13 +118,13 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
         interactor.sendLogin(email, password, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()){
+                if (!task.isSuccessful()) {
                     try {
                         throw task.getException();
-                    }catch (FirebaseAuthException e) {
+                    } catch (FirebaseAuthException e) {
                         Log.e("LoginPresenter", e.getErrorCode() + ": " + e.getMessage());
                         onAuthError(e.getErrorCode());
-                    }catch (FirebaseTooManyRequestsException e) {
+                    } catch (FirebaseTooManyRequestsException e) {
                         Log.e("LoginPresenter", "ERROR_TOO_MANY_REQUEST" + ": " + e.getMessage());
                         onAuthError("ERROR_TOO_MANY_REQUEST");
                     } catch (Exception e) {
@@ -125,7 +133,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
                         Log.e("LoginPresenter", e.toString());
                         e.printStackTrace();
                     }
-                }else{
+                } else {
                     FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                         @Override
                         public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -144,7 +152,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
         });
     }
 
-    private void onAuthError(String errorCode){
+    private void onAuthError(String errorCode) {
         if (!isViewAttached()) return;
 
         switch (errorCode) {
@@ -235,7 +243,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> implements ILoginP
         view.hideProgressBar();
         view.toast("Por favor, ingrese una contraseña");
     }
-
 
 
 }
