@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -11,7 +10,9 @@
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:textColorHighlight">@color/primary_text</item>
         <item name="android:textColorLink">@color/primary_text</item>
-
+    </style>
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splashscreen</item>
     </style>
 
 </resources>

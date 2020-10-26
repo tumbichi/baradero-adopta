@@ -1,7 +1,5 @@
 package com.pity.appperros1.utils;
 
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.Map;
 
