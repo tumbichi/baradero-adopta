@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.pity.appperros1">
+    package="com.pity.baradopta">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:screenOrientation="portrait" android:name=".ui.login.LoginView"
+        <activity android:screenOrientation="portrait" android:name="com.pity.baradopta.ui.login.LoginView"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:screenOrientation="portrait" android:name=".ui.inicio.InicioActivity"
+        <activity android:screenOrientation="portrait" android:name="com.pity.baradopta.ui.inicio.InicioActivity"
 
             android:launchMode = "singleTask">
             <intent-filter>
@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:screenOrientation="portrait" android:name=".ui.registro.RegitroView"
+        <activity android:screenOrientation="portrait" android:name="com.pity.baradopta.ui.registro.RegitroView"
 
                 android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:screenOrientation="portrait" android:name=".ui.olvidaste_contrasenia.OlvidasteContraseniaView">
+        <activity android:screenOrientation="portrait" android:name="com.pity.baradopta.ui.olvidaste_contrasenia.OlvidasteContraseniaView">
 
             <intent-filter>
                 <action android:name="android.intent.action.OLVIDASTECONTRASENIAVIEW"/>
@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:screenOrientation="portrait" android:name=".ui.informacion_perro.InformacionPerroView">
+        <activity android:screenOrientation="portrait" android:name="com.pity.baradopta.ui.informacion_perro.InformacionPerroView">
 
             <intent-filter>
                 <action android:name="android.intent.action.INFORMACIONPERROVIEW"/>
@@ -62,7 +62,7 @@
 
         </activity>
 
-        <activity android:screenOrientation="portrait" android:name=".ui.adoption.AdopcionView">
+        <activity android:screenOrientation="portrait" android:name="com.pity.baradopta.ui.adoption.AdopcionView">
 
             <intent-filter>
                 <action android:name="android.intent.action.ADOPCIONPERROVIEW"/>
@@ -71,7 +71,7 @@
 
         </activity>
 
-        <activity android:screenOrientation="portrait" android:name=".ui.profile.ProfileView">
+        <activity android:screenOrientation="portrait" android:name="com.pity.baradopta.ui.profile.ProfileView">
 
             <intent-filter>
                 <action android:name="android.intent.action.PERFILACTIVITY"/>
@@ -81,7 +81,7 @@
 
         </activity>
 
-        <activity android:screenOrientation="portrait" android:name=".ui.NotificationActivity">
+        <activity android:screenOrientation="portrait" android:name="com.pity.baradopta.ui.NotificationActivity">
 
             <intent-filter>
                 <!--action android:name="com.pity.appperros1.TARGETNOTIFICATION"/-->
@@ -111,7 +111,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.pity.appperros1.android.FileProvider"
+            android:authorities="com.pity.baradopta.android.FileProvider"
             android:enabled="true"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -121,7 +121,7 @@
         </provider>
 
         <service
-            android:name=".service.FirebaseMessagingService"
+            android:name="com.pity.baradopta.service.FirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
