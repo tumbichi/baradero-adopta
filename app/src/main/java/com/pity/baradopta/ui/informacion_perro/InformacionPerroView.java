@@ -199,7 +199,15 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
         attachIconVacunadoOnView(vacunado);
         attachIconCastradoOnView(castrado);
 
-        showEtiqueta(etiquetas);
+//        showEtiqueta(etiquetas);
+//
+        if (etiquetas.get(DogUtils.ETIQUETA_ADOPCION_ID)) {
+            buttonContactar.setText("Adoptar a " + nombre);
+        }else{
+            if (etiquetas.get(DogUtils.ETIQUETA_PERDIDO_ID)) {
+                buttonContactar.setText("Contactar");
+            }
+        }
 
         Glide.with(this)
                 .load(urlFoto)
@@ -251,7 +259,7 @@ public class InformacionPerroView extends BaseActivity<InformacionPerroPresenter
 
         }else{
             dialogBuilder.setTitle("¡Ups! Ha ocurrido un error inesperado");
-            dialogBuilder.setMessage("Revise que su conexión a internet este funcionando bien, y vuelva a intentarlo");
+            dialogBuilder.setMessage("Revise que su conexión a internet esté funcionando bien, y vuelva a intentarlo");
             dialogBuilder.setIcon(R.drawable.icon_error);
         }
 

@@ -153,9 +153,6 @@ public class AgregarPerroFragment extends BaseFragment<AgregarPerroPresenter>
 
     @OnClick(R.id.button_agregar_nuevo_perro)
     public void onClickAgregar(Button clicked) {
-        //mPresenter.getIteamAtSpinner();
-        //spinnerGenero.getSelectedItem();
-
         if (clicked == buttonAgregar){
             mPresenter.saveDog(
                     editTextNombrePerro.getText().toString().trim(),

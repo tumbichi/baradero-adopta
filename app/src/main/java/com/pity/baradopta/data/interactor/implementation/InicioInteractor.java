@@ -1,6 +1,7 @@
 package com.pity.baradopta.data.interactor.implementation;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.pity.baradopta.data.interactor.interfaces.IInicioInteractor;

@@ -60,7 +60,6 @@ public class DogRepository implements IDogRepository {
 
         StorageReference mRefImage = storageReference.child("images/").child("foto_perro/" + path.getLastPathSegment());
 
-
         mRefImage.putFile(path).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -152,8 +151,6 @@ public class DogRepository implements IDogRepository {
         });
 
     }
-
-
 
     @Override
     public void getDogListP(CallbackDogList callbackDogList) {

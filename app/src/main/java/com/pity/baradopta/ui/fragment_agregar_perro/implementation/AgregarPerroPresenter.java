@@ -101,7 +101,7 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
         String imageFileName = "IMG_" + timeCreate + "_";
         File storageDir = mActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        //String pathFoto = image.getAbsolutePath();
+        // String pathFoto = image.getAbsolutePath();
         return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
@@ -263,6 +263,10 @@ public class AgregarPerroPresenter extends BasePresenter<IAgregarPerroFragment>
                     currentPathFoto = data.getData();
                     mInteractor.setCurrentPathPhoto(currentPathFoto);
                     view.setImageViewFotoPerroTo(currentPathFoto);
+
+                    Log.d("InicioInteractorPath", currentPathFoto.toString());
+                    Log.d("InicioInteractorLastPat", currentPathFoto.getLastPathSegment());
+
                 }
             }
         }

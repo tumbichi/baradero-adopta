@@ -8,24 +8,22 @@
     android:minHeight="?attr/actionBarSize"
     android:textAlignment="center"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-
     local:subtitleTextAppearance="@style/TextAppearance.MaterialComponents.Caption">
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="end"
+        android:background="@color/fui_transparent"
         android:layout_marginEnd="16dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="logo"
             android:src="@mipmap/ic_launcher_round" />
-
-    </LinearLayout>
-
+    </LinearLayout> -->
+<!--local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
 </androidx.appcompat.widget.Toolbar>
 
-
-    <!--local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
 

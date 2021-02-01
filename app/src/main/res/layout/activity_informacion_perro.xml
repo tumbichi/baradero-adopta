@@ -412,7 +412,7 @@
                 android:layout_margin="12dp"
                 android:background="@drawable/custom_button_purple"
                 android:elevation="128dp"
-                android:text="CONTACT WITH OWNER"
+                android:text="Contactar"
                 android:textColor="@color/icons" />
         </LinearLayout>
     </ScrollView>
